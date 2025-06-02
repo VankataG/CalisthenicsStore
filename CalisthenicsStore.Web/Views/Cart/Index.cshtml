@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CalisthenicsStore.Data.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Your Cart";
+    decimal total = Model.Sum(item => item.Product.Price * item.Quantity);
+}
+
+<section class="container py-5">
+    <h1 class="mb-4">Shopping Cart</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Your cart is currently empty.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price (BGN)</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" width="60" class="rounded shadow-sm" />
+                                <span>@item.Product.Name</span>
+                            </div>
+                        </td>
+                        <td>@item.Product.Price.ToString("F2")</td>
+                        <td>@item.Quantity</td>
+                        <td>@((item.Product.Price * item.Quantity).ToString("F2"))</td>
+                        <td>
+                            <form asp-controller="Cart" asp-action="Remove" method="post">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                    <td colspan="2" class="fw-bold">@total.ToString("F2") BGN</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="text-end">
+            <a asp-controller="Checkout" asp-action="Index" class="btn btn-success btn-lg">
+                Proceed to Checkout
+            </a>
+        </div>
+    }
+</section>

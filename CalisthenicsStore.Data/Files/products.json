@@ -1,0 +1,237 @@
+﻿[
+    {
+
+        "Name": "Wall-Mounted Pull-Up Bar",
+        "Description": "Heavy-duty bar with multiple grips, mounts to wall.",
+        "Price": 89.99,
+        "ImageUrl": "https://www.k-sport-uk.co.uk/media/catalog/product/cache/e967317ff985e8943029b7946527bfd4/k/-/k-sport-wall-mounted-pull-up-bar-1-2.jpg",
+        "CategoryId": 1
+    },
+    {
+
+        "Name": "Doorway Pull-Up Bar",
+        "Description": "Portable bar that fits most door frames.",
+        "Price": 39.99,
+        "ImageUrl": "https://www.fitnessavenue.ca/cdn/shop/products/CB016-AmStaff-Fitness-Foldable-Doorway-Pull-up-Bar__1.jpg?v=1676562396",
+        "CategoryId": 1
+    },
+    {
+
+        "Name": "Outdoor Pull-Up Station",
+        "Description": "Freestanding setup for outdoor workouts.",
+        "Price": 219.99,
+        "ImageUrl": "https://fitnesspush.co.uk/wp-content/uploads/2021/01/bodytrain-power-tower.png",
+        "CategoryId": 1
+    },
+
+    {
+
+        "Name": "Wooden Gymnastic Rings",
+        "Description": "High-grade birch with adjustable straps.",
+        "Price": 49.99,
+        "ImageUrl": "https://www.aerial-living.com/wp-content/uploads/2022/03/anillas.jpg",
+        "CategoryId": 2
+    },
+    {
+
+        "Name": "Plastic Gym Rings Set",
+        "Description": "Durable plastic rings for indoor use.",
+        "Price": 29.99,
+        "ImageUrl": "https://www.fitnessequipmentireland.ie/wp-content/uploads/2019/10/gymnastic-ring-set-made-of-abs-plastic-510x583.jpg",
+        "CategoryId": 2
+    },
+    {
+
+        "Name": "Pro Gym Rings Bundle",
+        "Description": "Includes anchor straps, grips and storage bag.",
+        "Price": 64.99,
+        "ImageUrl": "https://gripnatic.com/wp-content/uploads/2024/01/pro-climbing-gymnastic-rings-1.jpg",
+        "CategoryId": 2
+    },
+
+    {
+
+        "Name": "Mini Parallettes",
+        "Description": "Compact parallettes ideal for push-ups and L-sits.",
+        "Price": 39.99,
+        "ImageUrl": "https://www.prosportskw.com/cdn/shop/products/wooden-mini-parallettes-push-up-bar-equalizer-parallettes-5.jpg?v=1739869306&width=1067",
+        "CategoryId": 3
+    },
+    {
+
+        "Name": "Steel Parallette Bars",
+        "Description": "Stable, anti-slip base for advanced training.",
+        "Price": 59.99,
+        "ImageUrl": "https://www.fitron.eu/wp-content/uploads/2021/03/Paralety-STEEL-F01.jpg",
+        "CategoryId": 3
+    },
+    {
+
+        "Name": "Wooden Parallettes",
+        "Description": "Premium wood grips with ergonomic design.",
+        "Price": 54.99,
+        "ImageUrl": "https://therack.co/wp-content/uploads/2021/06/WEB-Wooden-Parallettes-Hero-Image.jpg",
+        "CategoryId": 3
+    },
+
+    {
+
+        "Name": "Resistance Band Set (5-Pack)",
+        "Description": "Different resistance levels, great for scaling.",
+        "Price": 29.99,
+        "ImageUrl": "https://m.media-amazon.com/images/I/713+d0l38zL._AC_UF1000,1000_QL80_.jpg",
+        "CategoryId": 4
+    },
+    {
+
+        "Name": "Heavy-Duty Resistance Band",
+        "Description": "Single thick band for strong assistance.",
+        "Price": 19.99,
+        "ImageUrl": "https://mightybuns.com/cdn/shop/products/W_3_282b748b-5146-4f61-a7da-ea73822baa0f.jpg?v=1572650862",
+        "CategoryId": 4
+    },
+    {
+
+        "Name": "Full Loop Band Set",
+        "Description": "Made for mobility and strength exercises.",
+        "Price": 24.99,
+        "ImageUrl": "https://maxfitsa.co.za/_next/image?url=http%3A%2F%2Fmaxfitsa.co.za%2Fmedia%2Fimages%2Fproducts%2F2025%2F03%2FUntitled_design_35.png&w=3840&q=75",
+        "CategoryId": 4
+    },
+
+    {
+
+        "Name": "Adjustable Weighted Vest (20kg)",
+        "Description": "Comfortable fit with removable weights.",
+        "Price": 74.99,
+        "ImageUrl": "https://www.physiosupplies.eu/media/catalog/product/cache/38ee34d0e962c235b438549682ce42fd/m/a/matchu_weight_vest_1.jpg",
+        "CategoryId": 5
+    },
+    {
+
+        "Name": "Slim Fit Weighted Vest (10kg)",
+        "Description": "Designed for endurance-focused workouts.",
+        "Price": 59.99,
+        "ImageUrl": "https://thornfit.pl/wp-content/uploads/2021/05/10_kg_bak_ekstra-1-jpg.webp",
+        "CategoryId": 5
+    },
+    {
+
+        "Name": "Tactical Weighted Vest",
+        "Description": "Military-grade material with adjustable straps.",
+        "Price": 94.99,
+        "ImageUrl": "https://assets.roguefitness.com/f_auto,q_auto,c_limit,w_1600,b_rgb:ffffff/catalog/Bodyweight%20and%20Gymnastics/Bodyweight%20/Weighted%20Vests/5-11-TACTICAL/511VESTKIT-Config-BLACK-H_nsuvc4.png",
+        "CategoryId": 5
+    },
+
+    {
+
+        "Name": "Grip Strength Trainer Set",
+        "Description": "Adjustable resistance, finger isolators included.",
+        "Price": 22.99,
+        "ImageUrl": "https://fitnessbenelux.nl/resize/virtufit-knijphalters-set-boven_2520011978083.jpg/0/1100/True/virtufit-grip-strength-trainer-pvc-set-black.jpg",
+        "CategoryId": 6
+    },
+    {
+        "Name": "Iron Crush Hand Gripper",
+        "Description": "Heavy resistance grip for serious athletes.",
+        "Price": 14.99,
+        "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/87/Captains_of_Crush.jpg",
+        "CategoryId": 6
+    },
+    {
+        "Name": "Grip Balls and Rings Set",
+        "Description": "For dynamic finger and palm strength.",
+        "Price": 17.99,
+        "ImageUrl": "https://img.kwcdn.com/product/fancy/ff033830-31b1-4f4e-b309-23109e427a41.jpg?imageView2/2/w/500/q/60/format/webp",
+        "CategoryId": 6
+    },
+
+    {
+        "Name": "Non-Slip Floor Mat",
+        "Description": "Protective mat with extra cushioning.",
+        "Price": 24.99,
+        "ImageUrl": "https://m.media-amazon.com/images/I/71iCXpDzcHL._AC_UF894,1000_QL80_.jpg",
+        "CategoryId": 7
+    },
+    {
+        "Name": "Foldable Yoga Mat",
+        "Description": "Lightweight, travel-friendly floor mat.",
+        "Price": 19.99,
+        "ImageUrl": "https://cdn11.bigcommerce.com/s-rhfqwx30x8/images/stencil/1280x1280/products/2016/6387/foldable-partial-fold-different-angle-large__60390.1621012395.jpg?c=2?imbypass=on",
+        "CategoryId": 7
+    },
+    {
+        "Name": "XL Training Mat",
+        "Description": "Oversized mat for full-body workouts.",
+        "Price": 34.99,
+        "ImageUrl": "https://resources.fitshop.com/bilder/taurus/zubehoer/asl029-6np/taurus-bodenmatte-gigant-01_1600.jpg",
+        "CategoryId": 7
+    },
+
+    {
+        "Name": "Wrist Wraps (Pair)",
+        "Description": "Supportive elastic with thumb loop.",
+        "Price": 14.99,
+        "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3uJ5Yp_KspDTvxLlxct9Rc8im6ZJ8tM9KrQ&s",
+        "CategoryId": 8
+    },
+    {
+        "Name": "Heavy Lifting Straps",
+        "Description": "Maximize pulling exercises without grip fatigue.",
+        "Price": 12.99,
+        "ImageUrl": "https://www.strengthshopusa.com/cdn/shop/files/SHOP_FIGURE8_1_clipped_rev_1.jpg?v=1747827965",
+        "CategoryId": 8
+    },
+    {
+        "Name": "Premium Wrist Support Bands",
+        "Description": "Extra padding for long sessions.",
+        "Price": 19.99,
+        "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJmObRdv79bqaX1ePXU5sAR5m9KLu4ubFyWw&s",
+        "CategoryId": 8
+    },
+
+    {
+        "Name": "Breathable Tank Top",
+        "Description": "Light, sweat-resistant, flexible fabric.",
+        "Price": 17.99,
+        "ImageUrl": "https://m.media-amazon.com/images/I/B14MqFUkUdL._CLa%7C2140%2C2000%7C51zhvuooKPL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UY1000_.png",
+        "CategoryId": 9
+    },
+    {
+        "Name": "ActionFit Training Shorts",
+        "Description": "Stretchy, above-the-knee fit.",
+        "Price": 24.99,
+        "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK_bB_1vSmvtvOiCwk3fXjVcuE39jXBPqq-w&s",
+        "CategoryId": 9
+    },
+    {
+        "Name": "Athletic Hoodie",
+        "Description": "Soft, breathable hoodie for cool weather training.",
+        "Price": 39.99,
+        "ImageUrl": "https://cdn11.bigcommerce.com/s-olgiytqqlr/images/stencil/1280x1280/products/8281/319523/Russell_Athletic_695HBM_Black_Side_High__91645.1554907029.jpg?c=2",
+        "CategoryId": 9
+    },
+
+    {
+        "Name": "Calisthenics for Beginners eBook",
+        "Description": "12-week intro plan with progressions.",
+        "Price": 9.99,
+        "ImageUrl": "https://m.media-amazon.com/images/I/71qRcQ5frOL._UF1000,1000_QL80_.jpg",
+        "CategoryId": 10
+    },
+    {
+        "Name": "Advanced Skill Training Guide",
+        "Description": "Learn front lever, muscle-up, and planche.",
+        "Price": 14.99,
+        "ImageUrl": "https://m.media-amazon.com/images/I/51gdS-NDLPL._AC_UF1000,1000_QL80_.jpg",
+        "CategoryId": 10
+    },
+    {
+        "Name": "Bodyweight Workout Deck",
+        "Description": "Deck of 50+ cards with creative calisthenics routines.",
+        "Price": 19.99,
+        "ImageUrl": "https://shopdoromania.com/cdn/shop/products/IMG_3150.jpg?v=1603688834",
+        "CategoryId": 10
+    }
+]
