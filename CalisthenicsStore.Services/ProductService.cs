@@ -94,7 +94,7 @@ namespace CalisthenicsStore.Services
                 Description = inputModel.Description,
                 Price = inputModel.Price,
                 StockQuantity = inputModel.StockQuantity,
-                ImageUrl = inputModel.ImageUrl,
+                ImageUrl = inputModel.ImageUrl ?? "/images/no-image.jpg",
                 CategoryId = inputModel.CategoryId,
             };
 

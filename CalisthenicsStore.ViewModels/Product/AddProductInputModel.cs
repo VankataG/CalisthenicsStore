@@ -14,7 +14,7 @@ namespace CalisthenicsStore.ViewModels.Product
 
         public int StockQuantity { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         public int CategoryId { get; set; }
 

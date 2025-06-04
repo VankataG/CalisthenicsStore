@@ -15,7 +15,7 @@ namespace CalisthenicsStore.Web.Controllers
             return View(products);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Category(int id)
         {
             var products = await service.GetByCategoryAsync(id);
@@ -23,6 +23,7 @@ namespace CalisthenicsStore.Web.Controllers
             return View("Index", products); // Reuse Index view
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var product = await service.GetByIdAsync(id);
@@ -33,6 +34,7 @@ namespace CalisthenicsStore.Web.Controllers
              
             return View(product);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Create()

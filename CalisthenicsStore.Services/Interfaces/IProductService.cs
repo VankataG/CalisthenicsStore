@@ -12,7 +12,7 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<ProductViewModel?> GetByIdAsync(int id);
 
 
-        //CREATE
+        //CREATE 
         Task<AddProductInputModel> GetProductInputModelAsync();
 
         Task AddProductAsync(AddProductInputModel inputModel);
