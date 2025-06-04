@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
+using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace CalisthenicsStore.Services
@@ -64,6 +66,40 @@ namespace CalisthenicsStore.Services
                     ImageUrl = p.ImageUrl
                 })
                 .FirstAsync();
+        }
+
+        public async Task<AddProductInputModel> GetProductInputModelAsync()
+        {
+            var categories = await context.Categories
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToListAsync();
+
+            AddProductInputModel model = new AddProductInputModel()
+            {
+                Categories = categories
+            };
+
+            return model;
+        }
+
+        public async Task AddProductAsync(AddProductInputModel inputModel)
+        {
+            Product newProduct = new Product
+            {
+                Name = inputModel.Name,
+                Description = inputModel.Description,
+                Price = inputModel.Price,
+                StockQuantity = inputModel.StockQuantity,
+                ImageUrl = inputModel.ImageUrl,
+                CategoryId = inputModel.CategoryId,
+            };
+
+            await context.Products.AddAsync(newProduct);
+            await context.SaveChangesAsync();
         }
     }
 }

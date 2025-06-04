@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using CalisthenicsStore.Services.Interfaces;
+using CalisthenicsStore.ViewModels.Product;
 
 namespace CalisthenicsStore.Web.Controllers
 {
     public class ProductController(IProductService service) : Controller
     {
-       
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = await service.GetAllAsync();
@@ -29,8 +30,29 @@ namespace CalisthenicsStore.Web.Controllers
             {
                 return NotFound();
             }
-
+             
             return View(product);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            AddProductInputModel model = await service.GetProductInputModelAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AddProductInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Categories = (await service.GetProductInputModelAsync()).Categories;
+                return View(model);
+            }
+
+            await service.AddProductAsync(model);
+            return RedirectToAction(nameof(Index));
         }
 
     }
