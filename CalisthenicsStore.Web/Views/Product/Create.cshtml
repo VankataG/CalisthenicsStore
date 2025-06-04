@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CalisthenicsStore.ViewModels.Product.AddProductInputModel
+
+<div class="max-w-xl mx-auto mt-10 p-8 bg-white shadow-xl rounded-2xl">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800 text-center">Add New Product</h2>
+
+    <form asp-controller="Product" asp-action="Create" method="post" class="space-y-5">
+        <div>
+            <label asp-for="Name" class="block text-sm font-medium text-gray-700">Product Name</label>
+            <input asp-for="Name" placeholder="Enter product name" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <span asp-validation-for="Name" class="text-danger text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="Description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea asp-for="Description" rows="3" placeholder="Enter product description" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            <span asp-validation-for="Description" class="text-danger text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="Price" class="block text-sm font-medium text-gray-700">Price (BGN)</label>
+            <input asp-for="Price" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <span asp-validation-for="Price" class="text-danger text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="StockQuantity" class="block text-sm font-medium text-gray-700">Stock Quantity</label>
+            <input asp-for="StockQuantity" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <span asp-validation-for="StockQuantity" class="text-danger text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="ImageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
+            <input asp-for="ImageUrl" placeholder="Put your image link here" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <span asp-validation-for="ImageUrl" class="text-danger text-sm"></span>
+        </div>
+
+        <div>
+            <label asp-for="CategoryId" class="block text-sm font-medium text-gray-700">Category</label>
+            <select asp-for="CategoryId" asp-items="Model.Categories" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger text-sm"></span>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-black font-semibold py-2 px-6 rounded-xl shadow transition duration-300">
+                Add Product
+            </button>
+        </div>
+    </form>
+</div>
