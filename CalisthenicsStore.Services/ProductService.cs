@@ -5,6 +5,7 @@ using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 
 namespace CalisthenicsStore.Services
@@ -100,6 +101,39 @@ namespace CalisthenicsStore.Services
 
             await context.Products.AddAsync(newProduct);
             await context.SaveChangesAsync();
+        }
+
+        public Task EditProductAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteProductAsync(int id)
+        {
+            try
+            {
+                Product? product = await context
+                    .Products
+                    .SingleOrDefaultAsync(p => p.Id == id);
+
+                if (product != null)
+                {
+                    context.Products.Remove(product);
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+                    //TODO: Add ILogger
+                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO: Add ILogger
+                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
+
+            }
+
         }
     }
 }

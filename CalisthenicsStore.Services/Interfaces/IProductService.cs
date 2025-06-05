@@ -16,5 +16,9 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<AddProductInputModel> GetProductInputModelAsync();
 
         Task AddProductAsync(AddProductInputModel inputModel);
+
+        Task EditProductAsync();
+
+        Task DeleteProductAsync(int id);
     }
 }

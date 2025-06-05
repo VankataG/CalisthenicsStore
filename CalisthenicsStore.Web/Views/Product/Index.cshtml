@@ -26,6 +26,11 @@
 								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
 									View Details
 								</a>
+								<form asp-controller="Product" asp-action="Remove" method="post" onsubmit="return confirm('Are you sure you want to remove this product forever?');">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="id" value="@product.Id"/>
+									<button type="submit" class="btn btn-danger w-100">Remove Product</button>
+								</form>
 							</div>
 
 

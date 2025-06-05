@@ -57,5 +57,13 @@ namespace CalisthenicsStore.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await service.DeleteProductAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
