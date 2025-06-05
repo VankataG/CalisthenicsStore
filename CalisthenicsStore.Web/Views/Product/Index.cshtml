@@ -1,10 +1,20 @@
-﻿@model IEnumerable<CalisthenicsStore.ViewModels.Product.ProductViewModel>
+﻿
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<CalisthenicsStore.ViewModels.Product.ProductViewModel>
+
+
+@inject SignInManager<IdentityUser> SignInManager
+
 @{
 	ViewData["Title"] = "Products";
 }
 <section class ="products-section">
 	<div class="container py-5">
-		<a asp-controller="Product" asp-action="Create" class="btn btn-secondary text-dark btn-lg">Add Product</a>
+		@if (SignInManager.IsSignedIn(User))
+		{
+			<a asp-controller="Product" asp-action="Create" class="btn btn-secondary text-dark btn-lg">Add Product</a>
+		}
 
 
 		<h1 class="text-center mb-4">Our Products</h1>
@@ -26,11 +36,14 @@
 								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
 									View Details
 								</a>
-								<form asp-controller="Product" asp-action="Remove" method="post" onsubmit="return confirm('Are you sure you want to remove this product forever?');">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="id" value="@product.Id"/>
-									<button type="submit" class="btn btn-danger w-100">Remove Product</button>
-								</form>
+								@if (SignInManager.IsSignedIn(User))
+								{
+									<form asp-controller="Product" asp-action="Remove" method="post" onsubmit="return confirm('Are you sure you want to remove this product forever?');">
+										@Html.AntiForgeryToken()
+										<input type="hidden" name="id" value="@product.Id"/>
+										<button type="submit" class="btn btn-danger w-100">Remove Product</button>
+									</form>
+								}
 							</div>
 
 
