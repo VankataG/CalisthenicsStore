@@ -19,6 +19,7 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: #c8c8c8
 }
 
 
@@ -45,7 +46,7 @@ body {
 }
 
 .products-section {
-    background: linear-gradient(to bottom, #ffffff)
+    background-color: #c8c8c8
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
