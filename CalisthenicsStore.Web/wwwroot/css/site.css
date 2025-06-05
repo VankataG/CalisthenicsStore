@@ -99,3 +99,27 @@ body {
         margin-left: 10px;
     }
 }
+
+/*Edit Button*/
+.edit-btn {
+    background-color: #f0ad4e; 
+    color: #fff;
+    
+}
+
+    .edit-btn:hover {
+        background-color: #ec971f;
+    }
+
+.btn {
+    margin-top: 0.2em;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover{
+    color: black;
+}
