@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Services.Interfaces;
 
 namespace CalisthenicsStore.Web.Controllers
 {
     [Authorize]
-    public class CartController : Controller
+    public class CartController/*(ICartService cartService)*/ : Controller
     {
         private readonly CalisthenicsStoreDbContext dbContext;
         public CartController(CalisthenicsStoreDbContext dbContext)
