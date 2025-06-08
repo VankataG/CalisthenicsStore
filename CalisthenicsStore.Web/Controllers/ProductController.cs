@@ -2,15 +2,16 @@
 
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CalisthenicsStore.Web.Controllers
 {
-    public class ProductController(IProductService service) : Controller
+    public class ProductController(IProductService productService) : Controller
     {
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var products = await service.GetAllAsync();
+            var products = await productService.GetAllAsync();
 
             return View(products);
         }
@@ -18,7 +19,7 @@ namespace CalisthenicsStore.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Category(int id)
         {
-            var products = await service.GetByCategoryAsync(id);
+            var products = await productService.GetByCategoryAsync(id);
 
             return View("Index", products); // Reuse Index view
         }
@@ -26,7 +27,7 @@ namespace CalisthenicsStore.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var product = await service.GetByIdAsync(id);
+            var product = await productService.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -37,33 +38,36 @@ namespace CalisthenicsStore.Web.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
-            ProductInputModel model = await service.GetProductInputModelAsync();
+            ProductInputModel model = await productService.GetProductInputModelAsync();
 
             return View(model);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(ProductInputModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = (await service.GetProductInputModelAsync()).Categories;
+                model.Categories = (await productService.GetProductInputModelAsync()).Categories;
                 return View(model);
             }
 
-            await service.AddProductAsync(model);
+            await productService.AddProductAsync(model);
             return RedirectToAction(nameof(Index));
         }
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             try
             {
-                ProductInputModel? editableProduct = await service.GetEditableProductAsync(id);
+                ProductInputModel? editableProduct = await productService.GetEditableProductAsync(id);
 
                 if (editableProduct == null)
                 {
@@ -89,6 +93,7 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(ProductInputModel model)
         {
 
@@ -96,16 +101,17 @@ namespace CalisthenicsStore.Web.Controllers
             {
                 return View(model);
             }
-            await service.EditProductAsync(model);
+            await productService.EditProductAsync(model);
 
             return RedirectToAction(nameof(Details), new { id = model.Id});
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Remove(int id)
         {
-            await service.DeleteProductAsync(id);
+            await productService.DeleteProductAsync(id);
 
             return RedirectToAction(nameof(Index));
         }
