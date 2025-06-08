@@ -108,7 +108,10 @@ namespace CalisthenicsStore.Services
         //EDIT
         public async Task<ProductInputModel?> GetEditableProductAsync(int id)
         {
-             ProductInputModel?  editableProduct = await context
+         
+
+
+            ProductInputModel?  editableProduct = await context
                 .Products
                 .Include(p => p.Category)
                 .AsNoTracking()
@@ -124,6 +127,19 @@ namespace CalisthenicsStore.Services
                     CategoryId = p.CategoryId
                 })
                 .SingleOrDefaultAsync();
+
+            if (editableProduct != null)
+            {
+                var categories = await context.Categories
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToListAsync();
+
+                editableProduct.Categories = categories;
+            }
 
             return editableProduct;
         }
@@ -141,7 +157,7 @@ namespace CalisthenicsStore.Services
                 editableProduct.Description = model.Description;
                 editableProduct.Price = model.Price;
                 editableProduct.StockQuantity = model.StockQuantity;
-                editableProduct.ImageUrl = model.ImageUrl;
+                editableProduct.ImageUrl = model.ImageUrl ?? "/images/no-image.jpg";
                 editableProduct.CategoryId = model.CategoryId;
 
                 await context.SaveChangesAsync();

@@ -4,52 +4,131 @@
 @{
     ViewData["Title"] = "Edit Product";
 }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #1f1f1f, #4f4f4f);
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
 
-<h2>Edit Product</h2>
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+    }
 
-<form asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
+        .form-container h2 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 25px;
+        }
 
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px 14px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
 
-    <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
+    textarea {
+        resize: vertical;
+    }
 
-    <div class="form-group">
-        <label asp-for="StockQuantity" class="control-label"></label>
-        <input asp-for="StockQuantity" class="form-control" />
-        <span asp-validation-for="StockQuantity" class="text-danger"></span>
-    </div>
+    .text-danger {
+        color: red;
+        font-size: 13px;
+    }
 
-    <div class="form-group">
-        <label asp-for="ImageUrl" class="control-label"></label>
-        <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
-    </div>
+    .form-actions {
+        text-align: right;
+    }
 
-    <div class="form-group">
-        <label asp-for="CategoryId" class="control-label"></label>
-        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control"></select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
+        .form-actions button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+            .form-actions button:hover {
+                background-color: #000;
+            }
+
+    option {
+        background: white;
+        color: black;
+    }
+</style>
+
+<div class="form-container">
+	<h2>Edit Product</h2>
+
+	<form asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input type="hidden" asp-for="Id" />
+
+		<div class="form-group">
+			<label asp-for="Name" class="control-label">Product Name</label>
+			<input asp-for="Name" class="form-control" />
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="Description" class="control-label">Description</label>
+			<textarea asp-for="Description" class="form-control"></textarea>
+			<span asp-validation-for="Description" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="Price" class="control-label">Price (BGN)</label>
+			<input asp-for="Price" class="form-control" />
+			<span asp-validation-for="Price" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="StockQuantity" class="control-label">Stock Quantity</label>
+			<input asp-for="StockQuantity" class="form-control" />
+			<span asp-validation-for="StockQuantity" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="ImageUrl" class="control-label">Image URL</label>
+			<input asp-for="ImageUrl" class="form-control" />
+			<span asp-validation-for="ImageUrl" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="CategoryId" class="control-label">Category</label>
+			<select asp-for="CategoryId" asp-items="@Model.Categories" class="form-control"></select>
+			<span asp-validation-for="CategoryId" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Save Changes</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
 
 @section Scripts {
     @{
