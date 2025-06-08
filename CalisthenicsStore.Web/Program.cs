@@ -39,8 +39,10 @@ builder.Services
 builder.Services.AddScoped<IValidator, EntityValidator>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 //Adding sessions for the Cart
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
