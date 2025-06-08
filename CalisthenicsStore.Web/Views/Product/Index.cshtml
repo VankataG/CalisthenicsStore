@@ -38,10 +38,9 @@
 								</a>
 								@if (SignInManager.IsSignedIn(User))
 								{
-									<form asp-controller="Product" asp-action="Edit">
-										<input type="hidden" name="id" value="@product.Id"/>
-										<button type="submit" class="btn edit-btn w-100">Edit Product</button>
-									</form>
+									<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn edit-btn w-100">
+										Edit Product
+									</a>
 								}
 
 								@if (SignInManager.IsSignedIn(User))

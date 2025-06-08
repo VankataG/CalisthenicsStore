@@ -24,4 +24,8 @@
     <ProjectReference Include="..\CalisthenicsStore.ViewModels\CalisthenicsStore.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+  </ItemGroup>
+
 </Project>

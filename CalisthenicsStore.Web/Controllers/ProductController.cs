@@ -39,13 +39,13 @@ namespace CalisthenicsStore.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            AddProductInputModel model = await service.GetProductInputModelAsync();
+            ProductInputModel model = await service.GetProductInputModelAsync();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddProductInputModel model)
+        public async Task<IActionResult> Create(ProductInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -55,6 +55,50 @@ namespace CalisthenicsStore.Web.Controllers
 
             await service.AddProductAsync(model);
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                ProductInputModel? editableProduct = await service.GetEditableProductAsync(id);
+
+                if (editableProduct == null)
+                {
+                    //TODO: Add ILogger
+                    //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+
+
+                    return View(editableProduct);
+                }
+            }
+            catch (Exception e)
+            {
+                //TODO: Add ILogger
+                //logger.LogError(ex, "Error occurred while trying to edit product with ID {ProductId}", id);
+
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductInputModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            await service.EditProductAsync(model);
+
+            return RedirectToAction(nameof(Details), new { id = model.Id});
         }
 
         [HttpPost]

@@ -15,6 +15,8 @@ namespace CalisthenicsStore.ViewModels.Product
 
         public decimal Price { get; set; }
 
+        //public int StockQuantity { get; set; }
+
         public string ImageUrl { get; set; } = string.Empty;
 
         public string CategoryName { get; set; } = string.Empty;

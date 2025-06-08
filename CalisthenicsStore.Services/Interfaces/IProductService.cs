@@ -1,4 +1,5 @@
-﻿using CalisthenicsStore.ViewModels.Product;
+﻿
+using CalisthenicsStore.ViewModels.Product;
 
 namespace CalisthenicsStore.Services.Interfaces
 {
@@ -13,12 +14,16 @@ namespace CalisthenicsStore.Services.Interfaces
 
 
         //CREATE 
-        Task<AddProductInputModel> GetProductInputModelAsync();
+        Task<ProductInputModel> GetProductInputModelAsync();
 
-        Task AddProductAsync(AddProductInputModel inputModel);
+        Task AddProductAsync(ProductInputModel inputModel);
 
-        Task EditProductAsync();
+        //EDIT
+        Task<ProductInputModel?> GetEditableProductAsync(int id);
 
+        Task EditProductAsync(ProductInputModel model);
+
+        //DELETE
         Task DeleteProductAsync(int id);
     }
 }

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CalisthenicsStore.Data
 {
-    public class CalisthenicsStoreDbContext : IdentityDbContext
+    public class CalisthenicsStoreDbContext : IdentityDbContext<IdentityUser>
     {
         public CalisthenicsStoreDbContext(DbContextOptions<CalisthenicsStoreDbContext> options)
                 : base(options)

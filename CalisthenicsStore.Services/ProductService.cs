@@ -69,7 +69,9 @@ namespace CalisthenicsStore.Services
                 .FirstAsync();
         }
 
-        public async Task<AddProductInputModel> GetProductInputModelAsync()
+
+        //CREATE
+        public async Task<ProductInputModel> GetProductInputModelAsync()
         {
             var categories = await context.Categories
                 .Select(c => new SelectListItem
@@ -79,7 +81,7 @@ namespace CalisthenicsStore.Services
                 })
                 .ToListAsync();
 
-            AddProductInputModel model = new AddProductInputModel()
+            ProductInputModel model = new ProductInputModel()
             {
                 Categories = categories
             };
@@ -87,7 +89,7 @@ namespace CalisthenicsStore.Services
             return model;
         }
 
-        public async Task AddProductAsync(AddProductInputModel inputModel)
+        public async Task AddProductAsync(ProductInputModel inputModel)
         {
             Product newProduct = new Product
             {
@@ -103,11 +105,53 @@ namespace CalisthenicsStore.Services
             await context.SaveChangesAsync();
         }
 
-        public Task EditProductAsync()
+        //EDIT
+        public async Task<ProductInputModel?> GetEditableProductAsync(int id)
         {
-            throw new NotImplementedException();
+             ProductInputModel?  editableProduct = await context
+                .Products
+                .Include(p => p.Category)
+                .AsNoTracking()
+                .Where(p => p.Id == id)
+                .Select(p => new ProductInputModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    StockQuantity = p.StockQuantity,
+                    ImageUrl = p.ImageUrl,
+                    CategoryId = p.CategoryId
+                })
+                .SingleOrDefaultAsync();
+
+            return editableProduct;
         }
 
+        public async Task EditProductAsync(ProductInputModel model)
+        {
+            Product? editableProduct = await context
+                .Products
+                .Include(p => p.Category)
+                .SingleOrDefaultAsync(p => p.Id == model.Id);
+
+            if (editableProduct != null)
+            {
+                editableProduct.Name = model.Name;
+                editableProduct.Description = model.Description;
+                editableProduct.Price = model.Price;
+                editableProduct.StockQuantity = model.StockQuantity;
+                editableProduct.ImageUrl = model.ImageUrl;
+                editableProduct.CategoryId = model.CategoryId;
+
+                await context.SaveChangesAsync();
+
+            }
+                
+        }
+
+
+        //DELETE
         public async Task DeleteProductAsync(int id)
         {
             try

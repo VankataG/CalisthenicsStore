@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CalisthenicsStore.ViewModels.Product
 {
-    public class AddProductInputModel
+    public class ProductInputModel
     {
+        public int? Id { get; set; }
         public string Name { get; set; } = null!;
 
         public string? Description { get; set; }

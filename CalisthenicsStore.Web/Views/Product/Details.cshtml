@@ -11,10 +11,7 @@
 
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                <form asp-controller="Product" asp-action="Edit">
-                    <input type="hidden" name="id" value="@Model.Id" />
-                    <button type="submit" class="btn edit-btn w-90 mb-2">Edit Product</button>
-                </form>
+                <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn edit-btn w-90 mb-2">Edit Product</a>
 
                 <form asp-controller="Product" asp-action="Remove" method="post" onsubmit="return confirm('Are you sure you want to remove this product forever?');">
                     @Html.AntiForgeryToken()
