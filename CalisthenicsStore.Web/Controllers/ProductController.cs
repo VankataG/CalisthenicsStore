@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CalisthenicsStore.Web.Controllers
 {
-    public class ProductController(IProductService productService) : Controller
+    public class ProductController(IProductService productService) : BaseController
     {
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var products = await productService.GetAllAsync();
@@ -17,6 +18,7 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Category(int id)
         {
             var products = await productService.GetByCategoryAsync(id);
@@ -25,6 +27,7 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var product = await productService.GetByIdAsync(id);
@@ -38,7 +41,6 @@ namespace CalisthenicsStore.Web.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Create()
         {
             ProductInputModel model = await productService.GetProductInputModelAsync();
@@ -47,7 +49,6 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create(ProductInputModel model)
         {
             if (!ModelState.IsValid)
@@ -62,7 +63,6 @@ namespace CalisthenicsStore.Web.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -93,7 +93,6 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Edit(ProductInputModel model)
         {
 
@@ -107,7 +106,6 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Remove(int id)
         {

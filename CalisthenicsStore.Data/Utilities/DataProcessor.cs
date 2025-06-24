@@ -28,7 +28,7 @@ namespace CalisthenicsStore.Data.Utilities
                     .Select(p => p.Id)
                     .ToList();
 
-                if (await dbContext.Products.AnyAsync(p => productsIds.Contains(p.Id)) == false)
+                if (!await dbContext.Products.AnyAsync(p => productsIds.Contains(p.Id)))
                 {
                     await dbContext.Products.AddRangeAsync(products);
                     await dbContext.SaveChangesAsync();

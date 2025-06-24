@@ -9,8 +9,7 @@ using CalisthenicsStore.Services.Interfaces;
 
 namespace CalisthenicsStore.Web.Controllers
 {
-    [Authorize]
-    public class CartController(ICartService cartService) : Controller
+    public class CartController(ICartService cartService) : BaseController
     {
        
         public IActionResult Index()
