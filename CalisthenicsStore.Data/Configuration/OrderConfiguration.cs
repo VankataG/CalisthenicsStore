@@ -18,8 +18,19 @@ namespace CalisthenicsStore.Data.Configuration
                 .HasMaxLength(100);
 
             entity
+                .Property(o => o.Address)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity
+                .Property(o => o.City)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity
                 .Property(o => o.Email)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(320);
 
             entity
                 .Property(o => o.OrderDate)
