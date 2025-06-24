@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CalisthenicsStore.Data\CalisthenicsStore.Data.csproj" />
+  </ItemGroup>
+
 </Project>
