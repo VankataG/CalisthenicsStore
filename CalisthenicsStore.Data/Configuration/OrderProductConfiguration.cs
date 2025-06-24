@@ -10,26 +10,26 @@ namespace CalisthenicsStore.Data.Configuration
         public void Configure(EntityTypeBuilder<OrderProduct> entity)
         {
             entity
-                .HasKey(oi => oi.Id);
+                .HasKey(op => new{ op.OrderId, op.ProductId});
 
             entity
-                .Property(oi => oi.Quantity)
+                .Property(op => op.Quantity)
                 .IsRequired();
 
             entity
-                .Property(oi => oi.UnitPrice)
+                .Property(op => op.UnitPrice)
                 .IsRequired();
 
             entity
-                .HasOne(oi => oi.Product)
+                .HasOne(op => op.Product)
                 .WithMany()
-                .HasForeignKey(oi => oi.ProductId)
+                .HasForeignKey(op => op.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity
-                .HasOne(oi => oi.Order)
+                .HasOne(op => op.Order)
                 .WithMany(o => o.Products)
-                .HasForeignKey(oi => oi.OrderId)
+                .HasForeignKey(op => op.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
