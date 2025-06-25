@@ -1,4 +1,5 @@
-﻿using CalisthenicsStore.Services.Interfaces;
+﻿using System.Security.Claims;
+using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Order;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +16,20 @@ namespace CalisthenicsStore.Web.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Checkout", model);
+            }
 
-        //}
+            string email = User.FindFirstValue(ClaimTypes.Email);
+
+            int orderId = await orderService.PlaceOrderAsync(model, email);
+
+            return RedirectToAction("Confirmation", new { id = orderId });
+        }
 
     }
 }

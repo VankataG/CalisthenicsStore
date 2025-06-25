@@ -1,4 +1,7 @@
 ﻿using System.Security.Claims;
+
+using Microsoft.Identity.Client;
+
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Interfaces;
@@ -26,6 +29,7 @@ namespace CalisthenicsStore.Services
 
             var model = new CheckoutViewModel
             {
+                //TODO: Fix(I have to include the Product somehow, maybe fix the CartItem Model)
                 CartItems = cartItems.Select(ci => new CartItemViewModel
                 {
                     ProductName = ci.Product.Name,
@@ -42,7 +46,7 @@ namespace CalisthenicsStore.Services
             return model;
         }
 
-        public Task<int> PlaceOrderAsync(CheckoutViewModel model)
+        public async Task<int> PlaceOrderAsync(CheckoutViewModel model, string email)
         {
             IEnumerable<CartItem> cartItems = cartService.GetCart();
 
@@ -57,9 +61,40 @@ namespace CalisthenicsStore.Services
                 Address = model.Address,
                 City = model.City,
                 OrderDate = DateTime.Now,
-                Email = ,
+                Email = email,
+                Status = "Pending",
                 Products = new List<OrderProduct>()
+            };
+
+            foreach (CartItem cartItem in cartItems)
+            {
+                Product? product = await context
+                    .Products
+                    .FindAsync(cartItem.Product.Id);
+
+                if (product != null)
+                {
+
+                    OrderProduct orderProduct = new OrderProduct()
+                    {
+                        ProductId = product.Id,
+                        Quantity = cartItem.Quantity,
+                        UnitPrice = product.Price
+                    };
+
+                    order.Products.Add(orderProduct);
+
+                }
+
             }
+
+            await context.Orders.AddAsync(order);
+            await context.SaveChangesAsync();
+
+            //TODO: ADD Method to clear the cart!!!
+
+
+            return order.Id;
         }
     }
 }
