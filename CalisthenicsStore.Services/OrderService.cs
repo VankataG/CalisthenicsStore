@@ -23,21 +23,16 @@ namespace CalisthenicsStore.Services
         }
 
 
-        public CheckoutViewModel CheckoutCartItems()
+        public async Task<CheckoutViewModel> CheckoutCartItemsAsync()
         {
-            var cartItems = cartService.GetCart();
+            var cartItems = await cartService.GetCartProductsDataAsync();
+   
 
             var model = new CheckoutViewModel
             {
-                //TODO: Fix(I have to include the Product somehow, maybe fix the CartItem Model)
-                CartItems = cartItems.Select(ci => new CartItemViewModel
-                {
-                    ProductName = ci.Product.Name,
-                    Quantity = ci.Quantity,
-                    Price = ci.Product.Price
-                }),
-                TotalPrice = cartItems.Sum(ci => ci.Product.Price * ci.Quantity),
-
+                
+                CartItems = cartItems,
+                TotalPrice = cartItems.Sum(ci => ci.Price * ci.Quantity),
                 CustomerName = "",
                 Address = "",
                 City = ""
@@ -70,7 +65,7 @@ namespace CalisthenicsStore.Services
             {
                 Product? product = await context
                     .Products
-                    .FindAsync(cartItem.Product.Id);
+                    .FindAsync(cartItem.ProductId);
 
                 if (product != null)
                 {
@@ -91,7 +86,7 @@ namespace CalisthenicsStore.Services
             await context.Orders.AddAsync(order);
             await context.SaveChangesAsync();
 
-            //TODO: ADD Method to clear the cart!!!
+            cartService.ClearCart();
 
 
             return order.Id;

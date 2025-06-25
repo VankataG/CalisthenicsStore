@@ -5,7 +5,7 @@ namespace CalisthenicsStore.Services.Interfaces
 {
     public interface IOrderService
     {
-        CheckoutViewModel CheckoutCartItems();
+        Task<CheckoutViewModel> CheckoutCartItemsAsync();
 
         Task<int> PlaceOrderAsync(CheckoutViewModel model, string email);
     }

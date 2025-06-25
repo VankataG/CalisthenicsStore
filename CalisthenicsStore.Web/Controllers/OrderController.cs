@@ -8,9 +8,9 @@ namespace CalisthenicsStore.Web.Controllers
     public class OrderController(IOrderService orderService) : BaseController
     {
         [HttpGet]
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
-            CheckoutViewModel model = orderService.CheckoutCartItems();
+            CheckoutViewModel model = await orderService.CheckoutCartItemsAsync();
            
 
             return View(model);
