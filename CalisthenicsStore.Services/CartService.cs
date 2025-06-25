@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Interfaces;
+using CalisthenicsStore.ViewModels.CartItem;
 
 namespace CalisthenicsStore.Services
 {
@@ -31,6 +32,30 @@ namespace CalisthenicsStore.Services
                 : JsonSerializer.Deserialize<List<CartItem>>(cartJson)!;
         }
 
+        public async Task<IEnumerable<CartItemViewModel>> GetCartProductsDataAsync()
+        {
+            List<CartItem> cartItems = this.GetCart();
+            List<int> productIds = cartItems.Select(ci => ci.ProductId).ToList();
+
+            Dictionary<int, Product> products = await context
+                .Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id);
+
+            IEnumerable<CartItemViewModel> model = cartItems.Select(ci => new CartItemViewModel()
+                {
+                    ProductId = ci.ProductId,
+                    ProductName = products[ci.ProductId].Name,
+                    ImageUrl = products[ci.ProductId].ImageUrl,
+                    Price = products[ci.ProductId].Price,
+                    Quantity = ci.Quantity
+                })
+                .ToList();
+
+            return model;
+
+        }
+
         public void SaveCart(List<CartItem> cart)
         {
             var session = httpContextAccessor.HttpContext!.Session;
@@ -45,7 +70,7 @@ namespace CalisthenicsStore.Services
 
             var cart = GetCart();
 
-            var existingItem = cart.FirstOrDefault(c => c.Product.Id == productId);
+            var existingItem = cart.FirstOrDefault(c => c.ProductId == productId);
             if (existingItem != null)
             {
                 existingItem.Quantity++;
@@ -54,7 +79,7 @@ namespace CalisthenicsStore.Services
             {
                 cart.Add(new CartItem
                 {
-                    Product = product,
+                    ProductId = product.Id,
                     Quantity = 1
                 });
             }
@@ -65,7 +90,7 @@ namespace CalisthenicsStore.Services
         public void RemoveFromCart(int productId)
         {
             var cart = GetCart();
-            var itemToRemove = cart.FirstOrDefault(c => c.Product.Id == productId);
+            var itemToRemove = cart.FirstOrDefault(c => c.ProductId == productId);
             if (itemToRemove != null)
             {
                 cart.Remove(itemToRemove);

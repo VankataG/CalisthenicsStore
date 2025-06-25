@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.ViewModels.CartItem;
 
 namespace CalisthenicsStore.Services.Interfaces
 {
@@ -8,10 +9,14 @@ namespace CalisthenicsStore.Services.Interfaces
     {
         List<CartItem> GetCart();
 
+        Task<IEnumerable<CartItemViewModel>> GetCartProductsDataAsync();
+
         void SaveCart(List<CartItem> cart);
 
         Task AddToCartAsync(int productId);
 
         void RemoveFromCart(int productId);
+
+        void ClearCart();
     }
 }

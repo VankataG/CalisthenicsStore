@@ -6,16 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Interfaces;
+using CalisthenicsStore.ViewModels.CartItem;
 
 namespace CalisthenicsStore.Web.Controllers
 {
     public class CartController(ICartService cartService) : BaseController
     {
        
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var cart = cartService.GetCart();
-            return View(cart);
+            
+            IEnumerable<CartItemViewModel> model = await cartService.GetCartProductsDataAsync();
+
+            return View(model);
         }
 
         [HttpPost]
