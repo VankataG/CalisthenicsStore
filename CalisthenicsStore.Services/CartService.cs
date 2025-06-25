@@ -73,5 +73,12 @@ namespace CalisthenicsStore.Services
             }
         }
 
+
+        public void ClearCart()
+        {
+            var session = httpContextAccessor.HttpContext!.Session;
+            session.Remove("Cart");
+        }
+
     }
 }
