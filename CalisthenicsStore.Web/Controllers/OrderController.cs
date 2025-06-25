@@ -31,5 +31,9 @@ namespace CalisthenicsStore.Web.Controllers
             return RedirectToAction("Confirmation", new { id = orderId });
         }
 
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
     }
 }
