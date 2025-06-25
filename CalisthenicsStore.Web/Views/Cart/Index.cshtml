@@ -1,8 +1,8 @@
-﻿@model IEnumerable<CalisthenicsStore.Data.Models.CartItem>
+﻿@model IEnumerable<CalisthenicsStore.ViewModels.CartItem.CartItemViewModel>
 
 @{
     ViewData["Title"] = "Your Cart";
-    decimal total = Model.Sum(item => item.Product.Price * item.Quantity);
+    decimal total = Model.Sum(item => item.Price * item.Quantity);
 }
 
 <section class="container py-5">
@@ -32,16 +32,16 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" width="60" class="rounded shadow-sm" />
-                                <span>@item.Product.Name</span>
+                                <img src="@item.ImageUrl" alt="@item.ProductName" width="60" class="rounded shadow-sm" />
+                                <span>@item.ProductName</span>
                             </div>
                         </td>
-                        <td>@item.Product.Price.ToString("F2")</td>
+                        <td>@item.Price.ToString("F2")</td>
                         <td>@item.Quantity</td>
-                        <td>@((item.Product.Price * item.Quantity).ToString("F2"))</td>
+                        <td>@((item.Price * item.Quantity).ToString("F2"))</td>
                         <td>
                             <form asp-controller="Cart" asp-action="Remove" method="post">
-                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <input type="hidden" name="productId" value="@item.ProductId" />
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i> Remove
                                 </button>
