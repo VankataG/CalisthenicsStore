@@ -22,6 +22,8 @@ namespace CalisthenicsStore.Data
 
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
 
+        public virtual DbSet<Exercise> Exercises { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
