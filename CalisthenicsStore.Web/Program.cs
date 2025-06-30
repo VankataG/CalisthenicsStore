@@ -41,6 +41,7 @@ builder.Services.AddScoped<IValidator, EntityValidator>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 //Adding sessions for the Cart
 builder.Services.AddHttpContextAccessor();
