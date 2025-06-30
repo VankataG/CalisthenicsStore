@@ -1,0 +1,111 @@
+﻿
+@model IEnumerable<CalisthenicsStore.ViewModels.Exercise.ExerciseViewModel>
+
+
+@{
+	ViewData["Title"] = "Exercises";
+}
+
+
+<style>
+    
+    .exercise-gallery-section {
+        padding: 3rem 2rem;
+        background: linear-gradient(to bottom, #1f1f1f, #3a3a3a);
+        color: #fff;
+    }
+
+    .exercise-gallery-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        letter-spacing: 1px;
+    }
+
+    .exercise-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+    }
+
+    .exercise-card {
+        background: #2a2a2a;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+        }
+
+    .exercise-image-container {
+        overflow: hidden;
+    }
+
+    .exercise-image {
+        width: 100%;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+   
+    .exercise-card:hover .exercise-image {
+        transform: scale(1.08);
+    }
+
+   
+    .exercise-card-content {
+        padding: 1rem;
+    }
+
+    
+    .exercise-name {
+        margin: 0;
+        font-size: 1.3rem;
+    }
+
+    
+    .exercise-level {
+        margin-top: 0.3rem;
+        font-size: 0.9rem;
+        color: #bbb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+  
+    .exercise-description {
+        margin-top: 0.75rem;
+        font-size: 0.95rem;
+        color: #ddd;
+    }
+
+</style>
+
+
+<section class="exercise-gallery-section">
+	<h1 class="exercise-gallery-title">Exercise Library</h1>
+
+	<div class="exercise-gallery-grid">
+		@foreach (var exercise in Model)
+		{
+			<div class="exercise-card">
+				<div class="exercise-image-container">
+					<img src="@exercise.ImageUrl" alt="@exercise.Name" class="exercise-image" />
+				</div>
+				<div class="exercise-card-content">
+					<h2 class="exercise-name">@exercise.Name</h2>
+					<p class="exercise-level">@exercise.Level</p>
+					@if (!string.IsNullOrWhiteSpace(exercise.Description))
+					{
+						<p class="exercise-description">@exercise.Description</p>
+					}
+				</div>
+			</div>
+		}
+	</div>
+</section>
