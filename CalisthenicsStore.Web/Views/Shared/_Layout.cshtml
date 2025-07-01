@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CalisthenicsStore.Web.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
     
@@ -43,31 +44,31 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="/Product" id="productsDropdown" role="button">
-                                <i class="bi bi-grid me-1"></i> Products
-                            </a>
-                            <ul class="dropdown-menu shadow border-0 rounded-3 p-2" aria-labelledby="productsDropdown">
-                                @foreach (var category in categories)
-                                {
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2"
-                                           asp-controller="Product" asp-action="Category" asp-route-id="@category.Id">
-                                            <i class="bi bi-tag-fill text-primary"></i>
-                                            @category.Name
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-	                        <li class="nav-item">
-		                        <a class="nav-link text-white bg-dark rounded px-3" asp-controller="Cart" asp-action="Index">
-			                        <i class="bi bi-cart-fill me-1"></i> Cart
-		                        </a>
-	                        </li>
-                        }
+	                    <li class="nav-item dropdown">
+		                    <a class="nav-link dropdown-toggle text-white" href="/Product" id="productsDropdown" role="button">
+			                    <i class="bi bi-grid me-1"></i> Products
+		                    </a>
+		                    <ul class="dropdown-menu shadow border-0 rounded-3 p-2" aria-labelledby="productsDropdown">
+			                    @foreach (var category in categories)
+			                    {
+				                    <li>
+					                    <a class="dropdown-item d-flex align-items-center gap-2"
+					                       asp-controller="Product" asp-action="Category" asp-route-id="@category.Id">
+						                    <i class="bi bi-tag-fill text-primary"></i>
+						                    @category.Name
+					                    </a>
+				                    </li>
+			                    }
+		                    </ul>
+	                    </li>
+						
+	                    <li class="nav-item">
+		                    <a class="nav-link text-white bg-dark rounded px-3" asp-controller="Exercise" asp-action="Index">
+								<i class="fa-solid fa-dumbbell"></i> Exercises
+		                    </a>
+	                    </li>
+
+	                    
                     </ul>
                     <div class="d-flex align-items-center bg-black px-3 py-1 rounded">
                         <partial name="_LoginPartial" />

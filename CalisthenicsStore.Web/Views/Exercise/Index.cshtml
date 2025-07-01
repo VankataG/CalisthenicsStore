@@ -13,6 +13,7 @@
         padding: 3rem 2rem;
         background: linear-gradient(to bottom, #1f1f1f, #3a3a3a);
         color: #fff;
+        border-radius: 0.3em;
     }
 
     .exercise-gallery-title {
@@ -84,8 +85,24 @@
         color: #ddd;
     }
 
+    .nav-levels{
+        display: flex;
+        
+
+        a{
+            text-decoration: none;
+        }
+    }
 </style>
 
+<aside>
+	<ul class="nav-levels">
+		<li><a href="">Beginner</a></li>
+		<li><a href="">Intermediate</a></li>
+		<li><a href="">Advanced</a></li>
+		<li><a href="">Insane</a></li>
+	</ul>
+</aside>
 
 <section class="exercise-gallery-section">
 	<h1 class="exercise-gallery-title">Exercise Library</h1>
@@ -100,10 +117,6 @@
 				<div class="exercise-card-content">
 					<h2 class="exercise-name">@exercise.Name</h2>
 					<p class="exercise-level">@exercise.Level</p>
-					@if (!string.IsNullOrWhiteSpace(exercise.Description))
-					{
-						<p class="exercise-description">@exercise.Description</p>
-					}
 				</div>
 			</div>
 		}
