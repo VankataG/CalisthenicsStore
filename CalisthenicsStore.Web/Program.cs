@@ -35,9 +35,8 @@ builder.Services
     })
     .AddEntityFrameworkStores<CalisthenicsStoreDbContext>();
 
-//Register service that every time return EntityValidator when creating IValidator
+//Register personal services
 builder.Services.AddScoped<IValidator, EntityValidator>();
-
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
