@@ -1,28 +1,54 @@
+
+
 # 🏋️‍♂️ CalisthenicsStore
 
-**CalisthenicsStore** is a full-stack ASP.NET Core MVC web application that offers a modern and user-friendly online store for calisthenics equipment and accessories. The project is designed to showcase both programming skills and practical e-commerce functionality with a focus on performance, clean architecture, and user experience.
+**CalisthenicsStore** is a full-stack ASP.NET Core MVC web application that provides a modern, user-friendly online store for calisthenics equipment and accessories. The project demonstrates solid programming skills, clean architecture, and practical e-commerce functionality.
 
 ---
 
 ## ✨ Features
 
-- 🛒 Product catalog with categories
-- 🔍 Search and filter functionality
-- 📦 Product detail pages
-- 🧺 Shopping cart using session state
-- 🧾 Order summary and checkout (in development)
-- 🛠️ Admin panel for product management (planned)
-- 📷 Image support for products
-- 📁 JSON and database integration for repair orders (if applicable)
+- 🛒 **Product Catalog**
+  - Browse products organized by categories
+  - View detailed descriptions, prices, and images
+- 🔍 **Search & Filter**
+  - Search products by keyword
+  - Filter by category
+- 🧺 **Shopping Cart**
+  - Add, remove, and update items in the cart
+  - Session-based cart persistence
+- 🧾 **Order Processing**
+  - Checkout page with order summary
+  - Collect customer information during checkout
+  - Order confirmation page *(in development)*
+- 🛠️ **Admin Panel** *(planned)*
+  - Manage products (create, edit, delete)
+  - View and manage orders
+- 📷 **Product Images**
+  - Upload and display product images
+- 🧩 **ViewModels**
+  - Strongly-typed ViewModels for cleaner separation of concerns
 
 ---
 
 ## 💻 Technologies Used
 
-- **Backend**: ASP.NET Core MVC (.NET 8)
-- **Frontend**: Razor Views, HTML5, CSS3, Bootstrap 5
-- **Data**: Entity Framework Core, SQL Server / InMemory Database (dev)
-- **Session Management**: ASP.NET Core Sessions
-- **Design Pattern**: MVC, ViewModels
+- **Backend:** ASP.NET Core MVC (.NET 8)
+- **Frontend:** Razor Views, HTML5, CSS3, Bootstrap 5
+- **Data Access:** Entity Framework Core (SQL Server, InMemory for development)
+- **State Management:** ASP.NET Core Sessions
+- **Design Patterns:** MVC, ViewModels
+- **Other:** LINQ, JSON Data Handling, Validation Attributes
 
 ---
+
+## 🏗️ Planned Enhancements
+
+- Complete the **Admin Panel** for managing products and orders
+- Implement **order history** for customers
+- Add **email notifications** upon order completion
+- Refine **frontend styling** and mobile responsiveness
+- Improve **validation and error handling**
+
+---
+
