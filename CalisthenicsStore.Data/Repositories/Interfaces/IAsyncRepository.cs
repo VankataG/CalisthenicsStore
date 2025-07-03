@@ -4,11 +4,11 @@ namespace CalisthenicsStore.Data.Repositories.Interfaces
 {
     public interface IAsyncRepository<TEntity, TKey>
     {
-        Task<TEntity> GetByIdAsync(TKey id);
+        Task<TEntity?> GetByIdAsync(TKey id);
 
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TKey, bool>> predicate);
+        Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<TEntity> FirstOrDefault(Expression<Func<TKey, bool>> predicate);
+        Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 

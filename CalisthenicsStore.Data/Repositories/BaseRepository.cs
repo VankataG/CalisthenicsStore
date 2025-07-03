@@ -1,37 +1,80 @@
 ﻿using System.Linq.Expressions;
 using CalisthenicsStore.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace CalisthenicsStore.Data.Repositories
 {
-    public class BaseRepository<TEntity, TKey> : IRepository<TEntity, TKey>, IAsyncRepository<TEntity, TKey>
+    public class BaseRepository<TEntity, TKey> 
+        : IRepository<TEntity, TKey>, IAsyncRepository<TEntity, TKey> 
+        where TEntity : class
     {
-        public TEntity GetById(TKey id)
+
+        private readonly CalisthenicsStoreDbContext dbContext;
+        private readonly DbSet<TEntity> dbSet;
+
+        public BaseRepository(CalisthenicsStoreDbContext dbContext)
         {
-            throw new NotImplementedException();
+            this.dbContext = dbContext;
+            this.dbSet = this.dbContext.Set<TEntity>();
         }
 
-        public TEntity SingleOrDefault(Func<TKey, bool> predicate)
+
+        public TEntity? GetById(TKey id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
+        }
+        public async Task<TEntity?> GetByIdAsync(TKey id)
+        {
+            return await dbSet
+                .FindAsync(id);
         }
 
-        public TEntity FirstOrDefault(Func<TKey, bool> predicate)
+        public TEntity? SingleOrDefault(Func<TEntity, bool> predicate)
         {
-            throw new NotImplementedException();
+            return dbSet
+                .SingleOrDefault(predicate);
+        }
+        public Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return dbSet
+                .SingleOrDefaultAsync(predicate);
+        }
+
+        public TEntity? FirstOrDefault(Func<TEntity, bool> predicate)
+        {
+            return dbSet
+                .FirstOrDefault(predicate);
+        }
+
+        public Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return dbSet
+                .FirstOrDefaultAsync(predicate);
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            throw new NotImplementedException();
+            return dbSet
+                .ToList();
+        }
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await dbSet
+                .ToListAsync();
         }
 
         public IQueryable<TEntity> GetAllAttacked()
         {
-            throw new NotImplementedException();
+            return dbSet
+                .AsQueryable();
         }
 
         public void Add(TEntity item)
+        {
+            throw new NotImplementedException();
+        }
+        public Task AddAsync(TEntity item)
         {
             throw new NotImplementedException();
         }
@@ -40,8 +83,16 @@ namespace CalisthenicsStore.Data.Repositories
         {
             throw new NotImplementedException();
         }
+        public Task AddRangeAsync(IEnumerable<TEntity> items)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool Delete(TEntity item)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> DeleteAsync(TEntity item)
         {
             throw new NotImplementedException();
         }
@@ -50,8 +101,16 @@ namespace CalisthenicsStore.Data.Repositories
         {
             throw new NotImplementedException();
         }
+        public Task<bool> UpdateAsync(TEntity item)
+        {
+            throw new NotImplementedException();
+        }
 
         public int Count(TEntity item)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> CountAsync(TEntity item)
         {
             throw new NotImplementedException();
         }
@@ -61,54 +120,10 @@ namespace CalisthenicsStore.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync(TKey id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TEntity> SingleOrDefaultAsync(Expression<Func<TKey, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TEntity> FirstOrDefault(Expression<Func<TKey, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AddAsync(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AddRangeAsync(IEnumerable<TEntity> items)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateAsync(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> CountAsync(TEntity item)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task SaveChangesAsync()
         {
             throw new NotImplementedException();
         }
+        
     }
 }

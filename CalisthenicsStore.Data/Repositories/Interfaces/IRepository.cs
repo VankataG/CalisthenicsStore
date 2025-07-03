@@ -2,11 +2,11 @@
 {
     public interface IRepository<TEntity, TKey>
     {
-        TEntity GetById(TKey id);
+        TEntity? GetById(TKey id);
 
-        TEntity SingleOrDefault(Func<TKey, bool> predicate);
+        TEntity? SingleOrDefault(Func<TEntity, bool> predicate);
 
-        TEntity FirstOrDefault(Func<TKey, bool> predicate);
+        TEntity? FirstOrDefault(Func<TEntity, bool> predicate);
 
         IEnumerable<TEntity> GetAll();
 
