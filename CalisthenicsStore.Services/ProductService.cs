@@ -14,12 +14,12 @@ namespace CalisthenicsStore.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository repository;
-        private readonly CalisthenicsStoreDbContext context;
+        private readonly ICategoryRepository categoryRepository;
 
-        public ProductService(IProductRepository repository, CalisthenicsStoreDbContext context)
+        public ProductService(IProductRepository repository, ICategoryRepository categoryRepository)
         {
             this.repository = repository;
-            this.context = context;
+            this.categoryRepository = categoryRepository;
         }
 
         public async Task<IEnumerable<ProductViewModel>> GetAllAsync()
@@ -80,7 +80,8 @@ namespace CalisthenicsStore.Services
         //CREATE
         public async Task<ProductInputModel> GetProductInputModelAsync()
         {
-            var categories = await context.Categories
+            var categories = await categoryRepository
+                .GetAllAttacked()
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -135,7 +136,8 @@ namespace CalisthenicsStore.Services
 
             if (editableProduct != null)
             {
-                var categories = await context.Categories
+                var categories = await categoryRepository
+                    .GetAllAttacked()
                     .Select(c => new SelectListItem
                     {
                         Value = c.Id.ToString(),
@@ -164,7 +166,7 @@ namespace CalisthenicsStore.Services
                 editableProduct.ImageUrl = model.ImageUrl ?? "/images/no-image.jpg";
                 editableProduct.CategoryId = model.CategoryId;
 
-                await context.SaveChangesAsync();
+                await repository.UpdateAsync(editableProduct);
 
             }
                 
@@ -172,6 +174,10 @@ namespace CalisthenicsStore.Services
 
 
         //DELETE
+        public async Task DeleteProductAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
         public async Task HardDeleteProductAsync(int id)
         {
             try

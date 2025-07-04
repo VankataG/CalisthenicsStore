@@ -24,6 +24,7 @@ namespace CalisthenicsStore.Services.Interfaces
         Task EditProductAsync(ProductInputModel model);
 
         //DELETE
+        Task DeleteProductAsync(int id);
         Task HardDeleteProductAsync(int id);
     }
 }
