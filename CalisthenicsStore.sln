@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalisthenicsStore.Services"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalisthenicsStore.ViewModels", "CalisthenicsStore.ViewModels\CalisthenicsStore.ViewModels.csproj", "{C1C6970D-4599-4CA9-B460-8D0A2A0FBBA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalisthenicsStore.Web.Api", "CalisthenicsStore.Web.Api\CalisthenicsStore.Web.Api.csproj", "{BABAA67D-98E4-4C61-8CFC-9AEED66C48E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C1C6970D-4599-4CA9-B460-8D0A2A0FBBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1C6970D-4599-4CA9-B460-8D0A2A0FBBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1C6970D-4599-4CA9-B460-8D0A2A0FBBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BABAA67D-98E4-4C61-8CFC-9AEED66C48E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABAA67D-98E4-4C61-8CFC-9AEED66C48E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABAA67D-98E4-4C61-8CFC-9AEED66C48E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABAA67D-98E4-4C61-8CFC-9AEED66C48E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

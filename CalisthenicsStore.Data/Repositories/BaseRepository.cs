@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 namespace CalisthenicsStore.Data.Repositories
@@ -72,20 +73,20 @@ namespace CalisthenicsStore.Data.Repositories
 
         public void Add(TEntity item)
         {
-            throw new NotImplementedException();
+            dbSet.Add(item);
         }
-        public Task AddAsync(TEntity item)
+        public async Task AddAsync(TEntity item)
         {
-            throw new NotImplementedException();
+            await dbSet.AddAsync(item);
         }
 
         public void AddRange(IEnumerable<TEntity> items)
         {
-            throw new NotImplementedException();
+            dbSet.AddRange(items);
         }
-        public Task AddRangeAsync(IEnumerable<TEntity> items)
+        public async Task AddRangeAsync(IEnumerable<TEntity> items)
         {
-            throw new NotImplementedException();
+            await dbSet.AddRangeAsync(items);
         }
 
         public bool Delete(TEntity item)
@@ -97,32 +98,70 @@ namespace CalisthenicsStore.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public bool Update(TEntity item)
+        public bool HardDelete(TEntity item)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(item);
+
+            int updateCount = dbContext.SaveChanges();
+
+            return updateCount > 0;
         }
-        public Task<bool> UpdateAsync(TEntity item)
+        public async Task<bool> HardDeleteAsync(TEntity item)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(item);
+            int updateCount = await dbContext.SaveChangesAsync();
+
+            return updateCount > 0;
         }
 
-        public int Count(TEntity item)
+        public bool Update(TEntity item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dbSet.Attach(item);
+                dbSet.Entry(item).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception )
+            {
+                return false;
+            }
         }
-        public Task<int> CountAsync(TEntity item)
+        public async Task<bool> UpdateAsync(TEntity item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dbSet.Attach(item);
+                dbSet.Entry(item).State = EntityState.Modified;
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public int Count()
+        {
+            return dbSet.Count();
+        }
+        public Task<int> CountAsync()
+        {
+            return dbSet.CountAsync();
         }
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+           return dbContext.SaveChangesAsync();
         }
         
     }

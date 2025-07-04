@@ -18,9 +18,11 @@
 
         bool Delete(TEntity item);
 
+        bool HardDelete(TEntity item);
+
         bool Update(TEntity item);
 
-        int Count(TEntity item);
+        int Count();
 
         void SaveChanges();
     }

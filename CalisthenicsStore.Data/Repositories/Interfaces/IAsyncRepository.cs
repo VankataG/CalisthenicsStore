@@ -18,9 +18,11 @@ namespace CalisthenicsStore.Data.Repositories.Interfaces
 
         Task<bool> DeleteAsync(TEntity item);
 
+        Task<bool> HardDeleteAsync(TEntity item);
+
         Task<bool> UpdateAsync(TEntity item);
 
-        Task<int> CountAsync(TEntity item);
+        Task<int> CountAsync();
 
         Task SaveChangesAsync();
     }
