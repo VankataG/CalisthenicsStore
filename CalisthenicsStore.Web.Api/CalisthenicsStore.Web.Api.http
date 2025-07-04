@@ -1,0 +1,6 @@
+@CalisthenicsStore.Web.Api_HostAddress = http://localhost:5124
+
+GET {{CalisthenicsStore.Web.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
