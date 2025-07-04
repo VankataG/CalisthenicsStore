@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.CartItem;
 
@@ -11,13 +12,12 @@ namespace CalisthenicsStore.Services
 {
     public class CartService : ICartService
     {
-        private readonly CalisthenicsStoreDbContext context;
-
+        private readonly IProductRepository productRepository;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CartService(CalisthenicsStoreDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CartService(IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
         {
-            this.context = context;
+            this.productRepository = productRepository;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -37,8 +37,8 @@ namespace CalisthenicsStore.Services
             List<CartItem> cartItems = this.GetCart();
             List<int> productIds = cartItems.Select(ci => ci.ProductId).ToList();
 
-            Dictionary<int, Product> products = await context
-                .Products
+            Dictionary<int, Product> products = await productRepository
+                .GetAllAttacked()
                 .Where(p => productIds.Contains(p.Id))
                 .ToDictionaryAsync(p => p.Id);
 
@@ -65,7 +65,8 @@ namespace CalisthenicsStore.Services
 
         public async Task AddToCartAsync(int productId)
         {
-            var product = await context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await productRepository
+                .FirstOrDefaultAsync(p => p.Id == productId);
             if (product == null) return;
 
             var cart = GetCart();
