@@ -1,20 +1,19 @@
 ﻿using System.Linq.Expressions;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 namespace CalisthenicsStore.Data.Repositories
 {
-    public class BaseRepository<TEntity, TKey> 
+    public abstract class BaseRepository<TEntity, TKey> 
         : IRepository<TEntity, TKey>, IAsyncRepository<TEntity, TKey> 
         where TEntity : class
     {
 
-        private readonly CalisthenicsStoreDbContext dbContext;
-        private readonly DbSet<TEntity> dbSet;
+        protected readonly CalisthenicsStoreDbContext dbContext;
+        protected readonly DbSet<TEntity> dbSet;
 
-        public BaseRepository(CalisthenicsStoreDbContext dbContext)
+        protected BaseRepository(CalisthenicsStoreDbContext dbContext)
         {
             this.dbContext = dbContext;
             this.dbSet = this.dbContext.Set<TEntity>();
@@ -74,19 +73,23 @@ namespace CalisthenicsStore.Data.Repositories
         public void Add(TEntity item)
         {
             dbSet.Add(item);
+            dbContext.SaveChanges();
         }
         public async Task AddAsync(TEntity item)
         {
             await dbSet.AddAsync(item);
+            await dbContext.SaveChangesAsync();
         }
 
         public void AddRange(IEnumerable<TEntity> items)
         {
             dbSet.AddRange(items);
+            dbContext.SaveChanges();
         }
         public async Task AddRangeAsync(IEnumerable<TEntity> items)
         {
             await dbSet.AddRangeAsync(items);
+            await dbContext.SaveChangesAsync();
         }
 
         public bool Delete(TEntity item)

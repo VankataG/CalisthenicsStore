@@ -109,7 +109,7 @@ namespace CalisthenicsStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Remove(int id)
         {
-            await productService.DeleteProductAsync(id);
+            await productService.HardDeleteProductAsync(id);
 
             return RedirectToAction(nameof(Index));
         }

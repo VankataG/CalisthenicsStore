@@ -2,6 +2,7 @@
 
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,13 +11,21 @@ using Microsoft.Extensions.Logging;
 
 namespace CalisthenicsStore.Services
 {
-    public class ProductService(CalisthenicsStoreDbContext context) : IProductService
+    public class ProductService : IProductService
     {
+        private readonly IProductRepository repository;
+        private readonly CalisthenicsStoreDbContext context;
+
+        public ProductService(IProductRepository repository, CalisthenicsStoreDbContext context)
+        {
+            this.repository = repository;
+            this.context = context;
+        }
+
         public async Task<IEnumerable<ProductViewModel>> GetAllAsync()
         { 
-            return await context
-                .Products
-                .Include(p => p.Category)
+            return await repository
+                .GetAllAttackedWithCategory()
                 .AsNoTracking()
                 .Select(p => new ProductViewModel
                 {
@@ -33,9 +42,8 @@ namespace CalisthenicsStore.Services
 
         public async Task<IEnumerable<ProductViewModel>> GetByCategoryAsync(int categoryId)
         {
-            return await context
-                .Products
-                .Include(p => p.Category)
+            return await repository
+                .GetAllAttackedWithCategory()
                 .AsNoTracking()
                 .Where(p => p.Category.Id == categoryId)
                 .Select(p => new ProductViewModel
@@ -52,9 +60,8 @@ namespace CalisthenicsStore.Services
 
         public async Task<ProductViewModel?> GetByIdAsync(int id)
         {
-            return await context
-                .Products
-                .Include(p => p.Category)
+            return await repository
+                .GetAllAttackedWithCategory()
                 .AsNoTracking()
                 .Where(p => p.Id == id)
                 .Select(p => new ProductViewModel
@@ -101,8 +108,7 @@ namespace CalisthenicsStore.Services
                 CategoryId = inputModel.CategoryId,
             };
 
-            await context.Products.AddAsync(newProduct);
-            await context.SaveChangesAsync();
+            await repository.AddAsync(newProduct);
         }
 
         //EDIT
@@ -111,9 +117,8 @@ namespace CalisthenicsStore.Services
          
 
 
-            ProductInputModel?  editableProduct = await context
-                .Products
-                .Include(p => p.Category)
+            ProductInputModel?  editableProduct = await repository
+                .GetAllAttackedWithCategory()
                 .AsNoTracking()
                 .Where(p => p.Id == id)
                 .Select(p => new ProductInputModel()
@@ -146,9 +151,8 @@ namespace CalisthenicsStore.Services
 
         public async Task EditProductAsync(ProductInputModel model)
         {
-            Product? editableProduct = await context
-                .Products
-                .Include(p => p.Category)
+            Product? editableProduct = await repository
+                .GetAllAttackedWithCategory()
                 .SingleOrDefaultAsync(p => p.Id == model.Id);
 
             if (editableProduct != null)
@@ -168,18 +172,16 @@ namespace CalisthenicsStore.Services
 
 
         //DELETE
-        public async Task DeleteProductAsync(int id)
+        public async Task HardDeleteProductAsync(int id)
         {
             try
             {
-                Product? product = await context
-                    .Products
+                Product? product = await repository
                     .SingleOrDefaultAsync(p => p.Id == id);
 
                 if (product != null)
                 {
-                    context.Products.Remove(product);
-                    await context.SaveChangesAsync();
+                    await repository.HardDeleteAsync(product);
                 }
                 else
                 {

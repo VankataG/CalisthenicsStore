@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
+using CalisthenicsStore.Data.Repositories;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services;
@@ -41,6 +43,9 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+
+//Register repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 //Adding sessions for the Cart
 builder.Services.AddHttpContextAccessor();
