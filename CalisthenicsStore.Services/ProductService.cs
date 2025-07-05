@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
-using CalisthenicsStore.Data;
+
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
+
+
 
 
 namespace CalisthenicsStore.Services
@@ -176,7 +177,27 @@ namespace CalisthenicsStore.Services
         //DELETE
         public async Task DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Product? product = await repository
+                    .SingleOrDefaultAsync(p => p.Id == id);
+
+                if (product != null)
+                {
+                    await repository.DeleteAsync(product);
+                }
+                else
+                {
+                    //TODO: Add ILogger
+                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO: Add ILogger
+                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
+
+            }
         }
         public async Task HardDeleteProductAsync(int id)
         {
