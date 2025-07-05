@@ -1,4 +1,5 @@
 ﻿using CalisthenicsStore.Common.Enums;
+using CalisthenicsStore.Services;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Exercise;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,19 @@ namespace CalisthenicsStore.Web.Controllers
             var exercises = await exerciseService.GetExercisesByLevelAsync(level);
 
             return View("Index", exercises);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
+        {
+            ExerciseViewModel? exercise = await exerciseService.GetExerciseDetailsAsync(id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            return View(exercise);
         }
     }
 }

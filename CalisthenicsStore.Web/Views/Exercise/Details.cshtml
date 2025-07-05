@@ -1,0 +1,144 @@
+﻿@model CalisthenicsStore.ViewModels.Exercise.ExerciseViewModel;
+
+@{
+	ViewData["Title"] = Model.Name;
+}
+
+<style>
+    .exercise-details-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 1rem;
+        min-height: 80vh;
+        background: linear-gradient(to bottom, #1f1f1f, #4f4f4f);
+    }
+
+    
+    .exercise-card {
+        background-color: rgba(30, 30, 30, 0.95);
+        border-radius: 1rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+        max-width: 800px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    
+    @@keyframes fadeInUp {
+        0%
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    
+    .exercise-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        max-height: 400px;
+    }
+
+    .exercise-image {
+        width: 100%;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .exercise-image-wrapper:hover .exercise-image {
+        transform: scale(1.05);
+    }
+
+    
+    .exercise-content {
+        padding: 2rem;
+        color: #e0e0e0;
+    }
+
+    .exercise-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #ffffff;
+    }
+
+    .exercise-description {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .exercise-info {
+        margin-bottom: 2rem;
+        font-size: 1rem;
+        color: #cccccc;
+    }
+
+    .exercise-level strong {
+        color: #ffffff;
+    }
+
+    
+    .btn-back {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(to right, #444, #222);
+        border-radius: 0.5rem;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(to right, #666, #333);
+            transform: translateY(-2px);
+        }
+
+    
+    @@media (max-width: 768px) {
+        .exercise-card
+
+    {
+        flex-direction: column;
+    }
+
+    .exercise-content {
+        padding: 1.5rem;
+    }
+
+    .exercise-title {
+        font-size: 1.5rem;
+    }
+
+    }
+</style>
+
+
+<div class="exercise-details-container">
+	<div class="exercise-card animate-fade-in">
+		<div class="exercise-image-wrapper">
+			<img src="@Model.ImageUrl" alt="@Model.Name" class="exercise-image" />
+		</div>
+		<div class="exercise-content">
+			<h1 class="exercise-title">@Model.Name</h1>
+			<p class="exercise-description">@Model.Description</p>
+			<div class="exercise-info">
+				<span class="exercise-level">Difficulty: <strong>@Model.Level</strong></span>
+			</div>
+			<a href="@Url.Action("Index", "Exercise")" class="btn-back">
+				← Back to Exercises
+			</a>
+		</div>
+	</div>
+</div>
+

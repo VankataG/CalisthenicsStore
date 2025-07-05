@@ -48,6 +48,7 @@ builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //Adding sessions for the Cart
 builder.Services.AddHttpContextAccessor();

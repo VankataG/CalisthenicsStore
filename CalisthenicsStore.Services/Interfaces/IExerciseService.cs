@@ -8,5 +8,7 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<IEnumerable<ExerciseViewModel>> GetAllExercisesAsync();
 
         Task<IEnumerable<ExerciseViewModel>> GetExercisesByLevelAsync(DifficultyLevel level);
+
+        Task<ExerciseViewModel?> GetExerciseDetailsAsync(int id);
     }
 }

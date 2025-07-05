@@ -109,6 +109,12 @@
             box-shadow: rgb(38, 57, 77) 0px 20px 30px -5px;
         }
     }
+
+    .exercise-card-li{
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
 </style>
 
 <aside>
@@ -126,15 +132,17 @@
 	<div class="exercise-gallery-grid">
 		@foreach (var exercise in Model)
 		{
-			<div class="exercise-card">
-				<div class="exercise-image-container">
-					<img src="@exercise.ImageUrl" alt="@exercise.Name" class="exercise-image" />
+			<a href="@Url.Action("Details", "Exercise", new {id = exercise.Id})" class="exercise-card-li">
+				<div class="exercise-card">
+					<div class="exercise-image-container">
+						<img src="@exercise.ImageUrl" alt="@exercise.Name" class="exercise-image" />
+					</div>
+					<div class="exercise-card-content">
+						<h2 class="exercise-name">@exercise.Name</h2>
+						<p class="exercise-level">@exercise.Level</p>
+					</div>
 				</div>
-				<div class="exercise-card-content">
-					<h2 class="exercise-name">@exercise.Name</h2>
-					<p class="exercise-level">@exercise.Level</p>
-				</div>
-			</div>
+			</a>
 		}
 	</div>
 </section>
