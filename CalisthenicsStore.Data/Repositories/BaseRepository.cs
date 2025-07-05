@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,11 +95,15 @@ namespace CalisthenicsStore.Data.Repositories
 
         public bool Delete(TEntity item)
         {
-            throw new NotImplementedException();
+            this.PerformSoftDelete(item);
+
+            return this.Update(item);
         }
         public Task<bool> DeleteAsync(TEntity item)
         {
-            throw new NotImplementedException();
+            this.PerformSoftDelete(item);
+
+            return this.UpdateAsync(item);
         }
 
         public bool HardDelete(TEntity item)
@@ -166,6 +171,23 @@ namespace CalisthenicsStore.Data.Repositories
         {
            return dbContext.SaveChangesAsync();
         }
-        
+
+        private void PerformSoftDelete(TEntity item)
+        {
+            PropertyInfo? isDeletedProperty = GetIsDeletedProperty(item);
+
+            if (isDeletedProperty == null)
+            {
+                throw new InvalidOperationException();  //TODO: Add ExceptionMessages consts
+            }
+
+            isDeletedProperty.SetValue(item, true);
+        }
+        private PropertyInfo? GetIsDeletedProperty(TEntity item)
+        {
+            return typeof(TEntity)
+                .GetProperties()
+                .FirstOrDefault(pi => pi.Name == "IsDeleted" && pi.PropertyType == typeof(bool));
+        }
     }
 }
