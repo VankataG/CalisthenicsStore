@@ -4,6 +4,7 @@ using Microsoft.Identity.Client;
 
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.CartItem;
 using CalisthenicsStore.ViewModels.Order;
@@ -12,13 +13,15 @@ namespace CalisthenicsStore.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly CalisthenicsStoreDbContext context;
+        private readonly IProductRepository productRepository;
+        private readonly IOrderRepository repository;
 
         private readonly ICartService cartService;
 
-        public OrderService(CalisthenicsStoreDbContext context, ICartService cartService)
+        public OrderService(IProductRepository productRepository, IOrderRepository repository, ICartService cartService)
         {
-            this.context = context;
+            this.productRepository = productRepository;
+            this.repository = repository;
             this.cartService = cartService;
         }
 
@@ -63,9 +66,8 @@ namespace CalisthenicsStore.Services
 
             foreach (CartItem cartItem in cartItems)
             {
-                Product? product = await context
-                    .Products
-                    .FindAsync(cartItem.ProductId);
+                Product? product = await productRepository
+                    .GetByIdAsync(cartItem.ProductId);
 
                 if (product != null)
                 {
@@ -83,8 +85,7 @@ namespace CalisthenicsStore.Services
 
             }
 
-            await context.Orders.AddAsync(order);
-            await context.SaveChangesAsync();
+            await repository.AddAsync(order);
 
             cartService.ClearCart();
 
