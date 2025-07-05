@@ -51,4 +51,6 @@
 - Improve **validation and error handling**
 
 ---
+![Screenshot 2025-07-02 190948](https://github.com/user-attachments/assets/80403669-4490-4cf2-9533-3c3900d8669f)
+
 
