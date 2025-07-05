@@ -1,7 +1,10 @@
-﻿using CalisthenicsStore.Common.Enums;
-using CalisthenicsStore.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using CalisthenicsStore.Common.Enums;
+using CalisthenicsStore.Data.Models;
+using static CalisthenicsStore.Common.Constants.Exercise;
+
 
 namespace CalisthenicsStore.Data.Configuration
 {
@@ -15,18 +18,25 @@ namespace CalisthenicsStore.Data.Configuration
             entity
                 .Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(NameMaxLength);
 
             entity
                 .Property(e => e.Description)
-                .HasMaxLength(500);
+                .HasMaxLength(DescriptionMaxLength);
 
             entity
                 .Property(e => e.ImageUrl)
-                .HasMaxLength(500);
+                .HasMaxLength(ImageUrlMaxLength);
+
+            entity
+                .Property(e => e.IsDeleted)
+                .HasDefaultValue(false);
 
             entity
                 .HasData(this.SeedExercises());
+
+            entity
+                .HasQueryFilter(e => e.IsDeleted == false);
         }
 
         private List<Exercise> SeedExercises()
@@ -38,7 +48,7 @@ namespace CalisthenicsStore.Data.Configuration
                     Id = 1,
                     Name = "Push-up",
                     Description = "A push-up is a common calisthenics exercise that involves lowering the body by bending the arms and then pushing back up to the starting position, primarily working the chest, shoulders, and triceps. It's a full-body exercise that can be modified to suit different fitness levels.",
-                    ImageUrl = "https://static.wikia.nocookie.net/parkour/images/e/e0/Push_Up.jpg/revision/latest/scale-to-width-down/483?cb=20141122161108",
+                    ImageUrl = "https://hips.hearstapps.com/hmg-prod/images/press-up-1583236041.jpg",
                     Level = DifficultyLevel.Beginner
                 },
                 new Exercise()
@@ -70,7 +80,7 @@ namespace CalisthenicsStore.Data.Configuration
                     Id = 5,
                     Name = "Planche",
                     Description = "The planche is an advanced bodyweight exercise, primarily used in gymnastics and calisthenics, where the body is held parallel to the ground, supported only by straight arms. It requires significant strength, particularly in the shoulders, biceps, and core, as well as excellent balance. The planche is an isometric hold, meaning the body remains stationary while under tension.",
-                    ImageUrl = "https://static.wikia.nocookie.net/street-workout/images/5/56/Leeplanche.jpg/revision/latest?cb=20221209193627",
+                    ImageUrl = "https://cdn.shopify.com/s/files/1/0568/6280/2107/files/full_planche_1.jpg",
                     Level = DifficultyLevel.Insane
                 },
 

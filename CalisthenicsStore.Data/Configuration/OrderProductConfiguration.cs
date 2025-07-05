@@ -18,7 +18,15 @@ namespace CalisthenicsStore.Data.Configuration
 
             entity
                 .Property(op => op.UnitPrice)
+                .HasPrecision(18,2)
                 .IsRequired();
+
+            entity
+                .Property(op => op.IsDeleted)
+                .HasDefaultValue(false);
+
+            entity
+                .HasQueryFilter(op => op.IsDeleted == false);
 
             entity
                 .HasOne(op => op.Product)

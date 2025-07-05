@@ -14,5 +14,7 @@ namespace CalisthenicsStore.Data.Models
         public string? ImageUrl { get; set; }
 
         public DifficultyLevel Level { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

@@ -16,6 +16,8 @@
 
         public string Status { get; set; } = null!;
 
+        public bool IsDeleted { get; set; }
+
         public virtual ICollection<OrderProduct> Products { get; set; } 
             = new HashSet<OrderProduct>();
     }

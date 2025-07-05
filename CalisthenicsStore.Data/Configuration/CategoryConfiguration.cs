@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using CalisthenicsStore.Data.Models;
+using static CalisthenicsStore.Common.Constants.Category;
 
 namespace CalisthenicsStore.Data.Configuration
 {
@@ -16,7 +17,14 @@ namespace CalisthenicsStore.Data.Configuration
             entity
                 .Property(c => c.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(NameMaxLength);
+
+            entity
+                .Property(c => c.IsDeleted)
+                .HasDefaultValue(false);
+
+            entity
+                .HasQueryFilter(c => c.IsDeleted == false);
 
             entity
                 .HasData(this.SeedCategories());

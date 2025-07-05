@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using CalisthenicsStore.Data.Models;
+using static CalisthenicsStore.Common.Constants.Product;
 
 namespace CalisthenicsStore.Data.Configuration
 {
@@ -15,17 +16,33 @@ namespace CalisthenicsStore.Data.Configuration
             entity
                 .Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(NameMaxLength);
 
             entity
                 .Property(p => p.Description)
-                .HasMaxLength(500);
+                .HasMaxLength(DescriptionMaxLength);
+
+            entity
+                .Property(p => p.Price)
+                .HasPrecision(18, 2)
+                .IsRequired();
+
+            entity
+                .Property(p => p.ImageUrl)
+                .HasMaxLength(ImageUrlMaxLength);
+
+            entity
+                .Property(p => p.IsDeleted)
+                .HasDefaultValue(false);
 
             entity
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            entity
+                .HasQueryFilter(p => p.IsDeleted == false);
         }
     }
 }

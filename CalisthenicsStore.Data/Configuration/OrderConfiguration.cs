@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using CalisthenicsStore.Data.Models;
+using static CalisthenicsStore.Common.Constants.Order;
 
 namespace CalisthenicsStore.Data.Configuration
 {
@@ -15,22 +16,22 @@ namespace CalisthenicsStore.Data.Configuration
             entity
                 .Property(o => o.CustomerName)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(CustomerNameMaxLength);
 
             entity
                 .Property(o => o.Address)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(AddressMaxLength);
 
             entity
                 .Property(o => o.City)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(CityMaxLength);
 
             entity
                 .Property(o => o.Email)
                 .IsRequired()
-                .HasMaxLength(320);
+                .HasMaxLength(EmailMaxLength);
 
             entity
                 .Property(o => o.OrderDate)
@@ -39,7 +40,14 @@ namespace CalisthenicsStore.Data.Configuration
             entity
                 .Property(o => o.Status)
                 .IsRequired()
-                .HasMaxLength(30);
+                .HasMaxLength(StatusMaxLength);
+
+            entity
+                .Property(o => o.IsDeleted)
+                .HasDefaultValue(false);
+
+            entity
+                .HasQueryFilter(o => o.IsDeleted == false);
 
         }
     }
