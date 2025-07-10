@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,7 @@ using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services;
 using CalisthenicsStore.Services.Interfaces;
-
+using CalisthenicsStore.Web.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,10 +40,7 @@ builder.Services
 
 //Register personal services
 builder.Services.AddScoped<IValidator, EntityValidator>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
 
 //Register repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
