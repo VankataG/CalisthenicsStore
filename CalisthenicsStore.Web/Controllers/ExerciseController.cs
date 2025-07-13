@@ -1,9 +1,10 @@
-﻿using CalisthenicsStore.Common.Enums;
-using CalisthenicsStore.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using CalisthenicsStore.Common.Enums;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Exercise;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace CalisthenicsStore.Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace CalisthenicsStore.Web.Controllers
         public async Task<IActionResult> Level(DifficultyLevel level)
         {
             var exercises = await exerciseService.GetExercisesByLevelAsync(level);
-
+            
             return View("Index", exercises);
         }
 
