@@ -38,15 +38,11 @@ builder.Services
     })
     .AddEntityFrameworkStores<CalisthenicsStoreDbContext>();
 
-//Register personal services
+
 builder.Services.AddScoped<IValidator, EntityValidator>();
 builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
+builder.Services.AddRepositories(typeof(IProductRepository).Assembly);
 
-//Register repositories
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //Adding sessions for the Cart
 builder.Services.AddHttpContextAccessor();

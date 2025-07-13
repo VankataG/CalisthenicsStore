@@ -31,5 +31,32 @@ namespace CalisthenicsStore.Web.Extensions
 
             return serviceCollection;
         }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection serviceCollection, Assembly repositoryAssembly)
+        {
+            Type[] repositoryClasses = repositoryAssembly
+                .GetTypes()
+                .Where(t => t.Name.EndsWith("Repository") &&
+                            !t.IsInterface &&
+                            !t.IsAbstract)
+                .ToArray();
+
+            foreach (Type repositoryClass in repositoryClasses)
+            {
+                Type[] repositoryInterfaces = repositoryClass
+                    .GetInterfaces();
+
+                Type? repositoryInterface = repositoryInterfaces
+                    .FirstOrDefault(i => i.Name == $"I{repositoryClass.Name}");
+
+                if (repositoryInterface != null)
+                {
+                    serviceCollection.AddScoped(repositoryInterface, repositoryClass);
+                }
+
+            }
+
+            return serviceCollection;
+        }
     }
 }
