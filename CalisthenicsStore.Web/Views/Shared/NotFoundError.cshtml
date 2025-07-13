@@ -1,0 +1,81 @@
+﻿@{
+	Layout = null;
+	ViewData["Title"] = "Page Not Found";
+}
+
+<div class="container">
+    <img src="/images/ErrorImages/NotFoundError.jpg" class="error-image">
+
+	<div class="error-code">404</div>
+	<div class="message">Page Not Found</div>
+	<div class="details">The page you are looking for might have been removed or doesn’t exist.</div>
+	<a href="/" class="btn">Return to Home</a>
+</div>
+
+
+
+<style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #000000, #4f4f4f);
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: red; 
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #d1d1d1;
+        }
+
+        .error-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            background-color: #2c2c2c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
