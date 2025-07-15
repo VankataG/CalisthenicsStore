@@ -7,9 +7,6 @@ using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
 
-
-
-
 namespace CalisthenicsStore.Services
 {
     public class ProductService : IProductService

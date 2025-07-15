@@ -1,13 +1,10 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
-using CalisthenicsStore.Data.Repositories;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
-using CalisthenicsStore.Services;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
 

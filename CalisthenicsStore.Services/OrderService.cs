@@ -1,12 +1,7 @@
-﻿using System.Security.Claims;
-
-using Microsoft.Identity.Client;
-
-using CalisthenicsStore.Data;
+﻿
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
-using CalisthenicsStore.ViewModels.CartItem;
 using CalisthenicsStore.ViewModels.Order;
 
 namespace CalisthenicsStore.Services

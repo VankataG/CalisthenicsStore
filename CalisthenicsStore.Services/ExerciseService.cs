@@ -1,10 +1,8 @@
 ﻿using CalisthenicsStore.Common.Enums;
-using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Exercise;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Services
