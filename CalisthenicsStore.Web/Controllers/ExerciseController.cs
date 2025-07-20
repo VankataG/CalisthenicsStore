@@ -31,7 +31,7 @@ namespace CalisthenicsStore.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
             ExerciseViewModel? exercise = await exerciseService.GetExerciseDetailsAsync(id);
             if (exercise == null)

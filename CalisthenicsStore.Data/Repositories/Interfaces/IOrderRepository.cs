@@ -3,7 +3,7 @@
 namespace CalisthenicsStore.Data.Repositories.Interfaces
 {
     public interface IOrderRepository 
-        : IRepository<Order, int>, IAsyncRepository<Order, int>
+        : IRepository<Order, Guid>, IAsyncRepository<Order, Guid>
     {
 
     }

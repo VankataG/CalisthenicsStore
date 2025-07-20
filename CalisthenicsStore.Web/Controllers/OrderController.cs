@@ -26,7 +26,7 @@ namespace CalisthenicsStore.Web.Controllers
 
             string email = User.FindFirstValue(ClaimTypes.Email);
 
-            int orderId = await orderService.PlaceOrderAsync(model, email);
+            Guid orderId = await orderService.PlaceOrderAsync(model, email);
 
             return RedirectToAction("Confirmation", new { id = orderId });
         }

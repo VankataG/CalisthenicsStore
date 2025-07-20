@@ -4,7 +4,7 @@ namespace CalisthenicsStore.ViewModels.Product
 {
     public class ProductViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Field {0} is required")]
         [Display(Name = "Product Name")]

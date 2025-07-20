@@ -7,6 +7,6 @@ namespace CalisthenicsStore.Services.Interfaces
     {
         Task<CheckoutViewModel> CheckoutCartItemsAsync();
 
-        Task<int> PlaceOrderAsync(CheckoutViewModel model, string email);
+        Task<Guid> PlaceOrderAsync(CheckoutViewModel model, string email);
     }
 }

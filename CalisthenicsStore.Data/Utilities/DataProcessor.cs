@@ -24,7 +24,7 @@ namespace CalisthenicsStore.Data.Utilities
 
             if (products != null && products.Count > 0)
             {
-                List<int> productsIds = products
+                List<Guid> productsIds = products
                     .Select(p => p.Id)
                     .ToList();
 

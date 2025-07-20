@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Data.Repositories
 {
-    public class ProductRepository : BaseRepository<Product, int>, IProductRepository
+    public class ProductRepository : BaseRepository<Product, Guid>, IProductRepository
     {
         public ProductRepository(CalisthenicsStoreDbContext dbContext) : base(dbContext)
         {

@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        public int Id;
+        public Guid Id;
 
         public string CustomerName { get; set; } = null!;
 

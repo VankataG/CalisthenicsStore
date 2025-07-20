@@ -7,7 +7,7 @@ using CalisthenicsStore.Data.Models;
 
 namespace CalisthenicsStore.Data.Repositories.Interfaces
 {
-    public interface ICategoryRepository : IRepository<Category, int>, IAsyncRepository<Category, int>
+    public interface ICategoryRepository : IRepository<Category, Guid>, IAsyncRepository<Category, Guid>
     {
 
     }

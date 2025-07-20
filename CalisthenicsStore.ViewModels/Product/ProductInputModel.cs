@@ -6,7 +6,7 @@ namespace CalisthenicsStore.ViewModels.Product
 {
     public class ProductInputModel
     {
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
         public string Name { get; set; } = null!;
 
         public string? Description { get; set; }
@@ -17,7 +17,7 @@ namespace CalisthenicsStore.ViewModels.Product
 
         public string? ImageUrl { get; set; }
 
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
     }

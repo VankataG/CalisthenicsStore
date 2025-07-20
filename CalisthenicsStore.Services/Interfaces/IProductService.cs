@@ -8,9 +8,9 @@ namespace CalisthenicsStore.Services.Interfaces
         //READ
         Task<IEnumerable<ProductViewModel>> GetAllAsync();
 
-        Task<IEnumerable<ProductViewModel>> GetByCategoryAsync(int categoryId);
+        Task<IEnumerable<ProductViewModel>> GetByCategoryAsync(Guid categoryId);
 
-        Task<ProductViewModel?> GetByIdAsync(int id);
+        Task<ProductViewModel?> GetByIdAsync(Guid id);
 
 
         //CREATE 
@@ -19,12 +19,12 @@ namespace CalisthenicsStore.Services.Interfaces
         Task AddProductAsync(ProductInputModel inputModel);
 
         //EDIT
-        Task<ProductInputModel?> GetEditableProductAsync(int id);
+        Task<ProductInputModel?> GetEditableProductAsync(Guid id);
 
         Task EditProductAsync(ProductInputModel model);
 
         //DELETE
-        Task DeleteProductAsync(int id);
-        Task HardDeleteProductAsync(int id);
+        Task DeleteProductAsync(Guid id);
+        Task HardDeleteProductAsync(Guid id);
     }
 }

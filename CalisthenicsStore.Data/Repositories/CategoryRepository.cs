@@ -3,7 +3,7 @@ using CalisthenicsStore.Data.Repositories.Interfaces;
 
 namespace CalisthenicsStore.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository<Category, int>, ICategoryRepository
+    public class CategoryRepository : BaseRepository<Category, Guid>, ICategoryRepository
     {
         public CategoryRepository(CalisthenicsStoreDbContext dbContext) : base(dbContext)
         {

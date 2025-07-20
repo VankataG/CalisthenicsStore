@@ -39,7 +39,7 @@ namespace CalisthenicsStore.Services
             return model;
         }
 
-        public async Task<int> PlaceOrderAsync(CheckoutViewModel model, string email)
+        public async Task<Guid> PlaceOrderAsync(CheckoutViewModel model, string email)
         {
             IEnumerable<CartItem> cartItems = cartService.GetCart();
 
