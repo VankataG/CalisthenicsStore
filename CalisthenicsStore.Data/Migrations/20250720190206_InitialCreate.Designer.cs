@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalisthenicsStore.Data.Migrations
 {
     [DbContext(typeof(CalisthenicsStoreDbContext))]
-    [Migration("20250624185158_Order-City-Add")]
-    partial class OrderCityAdd
+    [Migration("20250720190206_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,14 @@ namespace CalisthenicsStore.Data.Migrations
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -45,63 +48,150 @@ namespace CalisthenicsStore.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("5a5e8602-4521-4a8a-b0c6-9b1180a6bafc"),
+                            IsDeleted = false,
                             Name = "Bars"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("26a82284-2ce9-40b1-a92a-1ed2f744f2b5"),
+                            IsDeleted = false,
                             Name = "Rings"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("e8e47bf6-78e7-4fee-b9d5-d21cb551e0c8"),
+                            IsDeleted = false,
                             Name = "Parallettes"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("7722f1a4-07c5-4385-a868-4592c2235928"),
+                            IsDeleted = false,
                             Name = "Resistance Bands"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("fe94fada-1ab8-4892-83a3-216639c03579"),
+                            IsDeleted = false,
                             Name = "Weighted Vests"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = new Guid("c82d3fda-b115-4c76-91da-7f7bc722eb1c"),
+                            IsDeleted = false,
                             Name = "Grip Trainers"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = new Guid("a74a64ea-32ab-48b0-a915-a363ca3c6dbd"),
+                            IsDeleted = false,
                             Name = "Floor Mats"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = new Guid("529d56fc-1398-4cb3-8890-1e56209f951f"),
+                            IsDeleted = false,
                             Name = "Wrist & Lifting Wraps"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = new Guid("95fa052b-0876-4e21-b1c6-669de1fddcea"),
+                            IsDeleted = false,
                             Name = "Training Apparel"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = new Guid("435dd8b6-28b5-48e9-b3b5-5bea8c19a4e4"),
+                            IsDeleted = false,
                             Name = "Books & Training Guides"
+                        });
+                });
+
+            modelBuilder.Entity("CalisthenicsStore.Data.Models.Exercise", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(2050)
+                        .HasColumnType("nvarchar(2050)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exercises");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0054cf79-6cd5-4ab0-906e-d11ea3402132"),
+                            Description = "A push-up is a common calisthenics exercise that involves lowering the body by bending the arms and then pushing back up to the starting position, primarily working the chest, shoulders, and triceps. It's a full-body exercise that can be modified to suit different fitness levels.",
+                            ImageUrl = "https://hips.hearstapps.com/hmg-prod/images/press-up-1583236041.jpg",
+                            IsDeleted = false,
+                            Level = 0,
+                            Name = "Push-up"
+                        },
+                        new
+                        {
+                            Id = new Guid("a4185043-766c-4fdb-9e75-e322bb0a3d9f"),
+                            Description = "Pull-up (exercise): This is a strength training exercise where you lift your body weight by pulling yourself upwards against gravity, typically using a bar. It primarily works the muscles in your back, arms, and core.",
+                            ImageUrl = "https://mikereinold.com/wp-content/uploads/rookie-mistakes-the-pullup-main.jpg",
+                            IsDeleted = false,
+                            Level = 0,
+                            Name = "Pull-up"
+                        },
+                        new
+                        {
+                            Id = new Guid("3d93b8cf-b4db-4552-8115-6215017233e5"),
+                            Description = "A muscle-up is an advanced calisthenics exercise that combines a pull-up and a dip, requiring both pulling and pushing movements of the upper body. It involves transitioning from a hanging position below a bar or rings to a position above, with arms extended. Muscle-ups are known for building upper body strength and are considered a critical survival skill by some.",
+                            ImageUrl = "https://i0.wp.com/workoutlabs.com/wp-content/uploads/watermarked/Muscle_Up.png?w=1360",
+                            IsDeleted = false,
+                            Level = 1,
+                            Name = "Muscle-up"
+                        },
+                        new
+                        {
+                            Id = new Guid("6da06bea-1789-491f-9f9b-b23594fbe8af"),
+                            Description = "The front lever is a challenging calisthenics exercise where the body is held in a horizontal, straight-arm position, parallel to the ground, with the front of the body facing upwards. It requires immense strength, particularly in the core, back, and shoulders, as well as full-body tension and control.",
+                            ImageUrl = "https://calisthenics.com/wp-content/uploads/2025/01/full-front-lever.jpg",
+                            IsDeleted = false,
+                            Level = 2,
+                            Name = "Front Lever"
+                        },
+                        new
+                        {
+                            Id = new Guid("26750cad-5c9c-4f6a-b0d5-148b878c599e"),
+                            Description = "The planche is an advanced bodyweight exercise, primarily used in gymnastics and calisthenics, where the body is held parallel to the ground, supported only by straight arms. It requires significant strength, particularly in the shoulders, biceps, and core, as well as excellent balance. The planche is an isometric hold, meaning the body remains stationary while under tension.",
+                            ImageUrl = "https://cdn.shopify.com/s/files/1/0568/6280/2107/files/full_planche_1.jpg",
+                            IsDeleted = false,
+                            Level = 3,
+                            Name = "Planche"
                         });
                 });
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -110,8 +200,8 @@ namespace CalisthenicsStore.Data.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -120,8 +210,13 @@ namespace CalisthenicsStore.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(320)
-                        .HasColumnType("nvarchar(320)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -138,16 +233,22 @@ namespace CalisthenicsStore.Data.Migrations
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.OrderProduct", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId", "ProductId");
@@ -159,22 +260,25 @@ namespace CalisthenicsStore.Data.Migrations
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2050)
+                        .HasColumnType("nvarchar(2050)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -182,6 +286,7 @@ namespace CalisthenicsStore.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StockQuantity")
