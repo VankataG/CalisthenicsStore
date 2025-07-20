@@ -18,14 +18,14 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId)
+        public async Task<IActionResult> AddToCart(Guid productId)
         {
             await cartService.AddToCartAsync(productId);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Remove(int productId)
+        public IActionResult Remove(Guid productId)
         {
             cartService.RemoveFromCart(productId);
             return RedirectToAction("Index");

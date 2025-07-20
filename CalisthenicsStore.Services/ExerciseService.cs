@@ -50,7 +50,7 @@ namespace CalisthenicsStore.Services
                 .ToListAsync();
         }
 
-        public async Task<ExerciseViewModel?> GetExerciseDetailsAsync(int id)
+        public async Task<ExerciseViewModel?> GetExerciseDetailsAsync(Guid id)
         {
             Exercise? exercise = await repository.GetByIdAsync(id);
 

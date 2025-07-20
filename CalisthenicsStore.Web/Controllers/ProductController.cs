@@ -19,7 +19,7 @@ namespace CalisthenicsStore.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Category(int id)
+        public async Task<IActionResult> Category(Guid id)
         {
             var products = await productService.GetByCategoryAsync(id);
 
@@ -28,7 +28,7 @@ namespace CalisthenicsStore.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
             var product = await productService.GetByIdAsync(id);
             if (product == null)
@@ -63,7 +63,7 @@ namespace CalisthenicsStore.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace CalisthenicsStore.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(Guid id)
         {
             await productService.DeleteProductAsync(id);
 

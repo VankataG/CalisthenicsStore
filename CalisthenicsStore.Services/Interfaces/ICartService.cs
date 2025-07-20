@@ -13,9 +13,9 @@ namespace CalisthenicsStore.Services.Interfaces
 
         void SaveCart(List<CartItem> cart);
 
-        Task AddToCartAsync(int productId);
+        Task AddToCartAsync(Guid productId);
 
-        void RemoveFromCart(int productId);
+        void RemoveFromCart(Guid productId);
 
         void ClearCart();
     }

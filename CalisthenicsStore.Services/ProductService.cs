@@ -38,7 +38,7 @@ namespace CalisthenicsStore.Services
 
         }
 
-        public async Task<IEnumerable<ProductViewModel>> GetByCategoryAsync(int categoryId)
+        public async Task<IEnumerable<ProductViewModel>> GetByCategoryAsync(Guid categoryId)
         {
             return await repository
                 .GetAllAttackedWithCategory()
@@ -56,7 +56,7 @@ namespace CalisthenicsStore.Services
                 .ToListAsync();
         }
 
-        public async Task<ProductViewModel?> GetByIdAsync(int id)
+        public async Task<ProductViewModel?> GetByIdAsync(Guid id)
         {
             return await repository
                 .GetAllAttackedWithCategory()
@@ -111,7 +111,7 @@ namespace CalisthenicsStore.Services
         }
 
         //EDIT
-        public async Task<ProductInputModel?> GetEditableProductAsync(int id)
+        public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)
         {
          
 
@@ -172,7 +172,7 @@ namespace CalisthenicsStore.Services
 
 
         //DELETE
-        public async Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(Guid id)
         {
             try
             {
@@ -196,7 +196,7 @@ namespace CalisthenicsStore.Services
 
             }
         }
-        public async Task HardDeleteProductAsync(int id)
+        public async Task HardDeleteProductAsync(Guid id)
         {
             try
             {

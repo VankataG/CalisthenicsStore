@@ -3,7 +3,7 @@
 namespace CalisthenicsStore.Data.Repositories.Interfaces
 {
     public interface IExerciseRepository 
-        : IRepository<Exercise, int>, IAsyncRepository<Exercise, int>
+        : IRepository<Exercise, Guid>, IAsyncRepository<Exercise, Guid>
     {
 
     }

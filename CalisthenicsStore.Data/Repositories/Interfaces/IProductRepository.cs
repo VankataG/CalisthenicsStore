@@ -2,7 +2,7 @@
 
 namespace CalisthenicsStore.Data.Repositories.Interfaces
 {
-    public interface IProductRepository : IRepository<Product, int>, IAsyncRepository<Product, int>
+    public interface IProductRepository : IRepository<Product, Guid>, IAsyncRepository<Product, Guid>
     {
         IQueryable<Product> GetAllAttackedWithCategory();
     }

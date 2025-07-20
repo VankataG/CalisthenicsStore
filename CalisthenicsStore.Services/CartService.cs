@@ -34,9 +34,9 @@ namespace CalisthenicsStore.Services
         public async Task<IEnumerable<CartItemViewModel>> GetCartProductsDataAsync()
         {
             List<CartItem> cartItems = this.GetCart();
-            List<int> productIds = cartItems.Select(ci => ci.ProductId).ToList();
+            List<Guid> productIds = cartItems.Select(ci => ci.ProductId).ToList();
 
-            Dictionary<int, Product> products = await productRepository
+            Dictionary<Guid, Product> products = await productRepository
                 .GetAllAttacked()
                 .Where(p => productIds.Contains(p.Id))
                 .ToDictionaryAsync(p => p.Id);
@@ -62,7 +62,7 @@ namespace CalisthenicsStore.Services
             session.SetString("Cart", cartJson);
         }
 
-        public async Task AddToCartAsync(int productId)
+        public async Task AddToCartAsync(Guid productId)
         {
             var product = await productRepository
                 .FirstOrDefaultAsync(p => p.Id == productId);
@@ -87,7 +87,7 @@ namespace CalisthenicsStore.Services
             SaveCart(cart);
         }
 
-        public void RemoveFromCart(int productId)
+        public void RemoveFromCart(Guid productId)
         {
             var cart = GetCart();
             var itemToRemove = cart.FirstOrDefault(c => c.ProductId == productId);
