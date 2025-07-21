@@ -14,7 +14,12 @@ namespace CalisthenicsStore.Services.Interfaces
 
 
         //Create
-
         Task AddExerciseAsync(ExerciseInputModel inputModel);
+
+        //Edit
+        Task<ExerciseInputModel?> GetEditableExerciseAsync(Guid id);
+
+        Task EditExerciseAsync(ExerciseInputModel model);
+
     }
 }

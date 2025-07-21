@@ -79,7 +79,7 @@ namespace CalisthenicsStore.Services
         public async Task<ProductInputModel> GetProductInputModelAsync()
         {
             var categories = await categoryRepository
-                .GetAllAttacked()
+                .GetAllAttached()
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -113,9 +113,6 @@ namespace CalisthenicsStore.Services
         //EDIT
         public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)
         {
-         
-
-
             ProductInputModel?  editableProduct = await repository
                 .GetAllAttackedWithCategory()
                 .AsNoTracking()
@@ -135,7 +132,7 @@ namespace CalisthenicsStore.Services
             if (editableProduct != null)
             {
                 var categories = await categoryRepository
-                    .GetAllAttacked()
+                    .GetAllAttached()
                     .Select(c => new SelectListItem
                     {
                         Value = c.Id.ToString(),

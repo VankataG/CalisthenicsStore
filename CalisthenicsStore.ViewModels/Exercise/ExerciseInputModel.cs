@@ -8,6 +8,8 @@ namespace CalisthenicsStore.ViewModels.Exercise
 {
     public class ExerciseInputModel
     {
+        public Guid? Id { get; set; }
+
         [Required(ErrorMessage = NameRequiredError)]
         [MaxLength(NameMaxLength, ErrorMessage = NameMaxLengthError)]
         public string Name { get; set; } = null!;

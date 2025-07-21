@@ -37,7 +37,7 @@ namespace CalisthenicsStore.Services
             List<Guid> productIds = cartItems.Select(ci => ci.ProductId).ToList();
 
             Dictionary<Guid, Product> products = await productRepository
-                .GetAllAttacked()
+                .GetAllAttached()
                 .Where(p => productIds.Contains(p.Id))
                 .ToDictionaryAsync(p => p.Id);
 

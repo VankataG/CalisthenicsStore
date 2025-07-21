@@ -18,7 +18,7 @@ namespace CalisthenicsStore.Services
         public async Task<IEnumerable<ExerciseViewModel>> GetAllExercisesAsync()
         {
             return await repository
-                .GetAllAttacked()
+                .GetAllAttached()
                 .AsNoTracking()
                 .Select(e => new ExerciseViewModel()
                 {
@@ -35,7 +35,7 @@ namespace CalisthenicsStore.Services
         public async Task<IEnumerable<ExerciseViewModel>> GetExercisesByLevelAsync(DifficultyLevel level)
         {
             return await repository
-                .GetAllAttacked()
+                .GetAllAttached()
                 .AsNoTracking()
                 .Where(e => e.Level == level)
                 .Select(e => new ExerciseViewModel()
@@ -84,5 +84,45 @@ namespace CalisthenicsStore.Services
 
             await repository.AddAsync(newExercise);
         }
+
+        //Edit
+        public async Task<ExerciseInputModel?> GetEditableExerciseAsync(Guid id)
+        {
+            ExerciseInputModel? editableExercise = await this.repository
+                .GetAllAttached()
+                .AsNoTracking()
+                .Where(e => e.Id == id)
+                .Select(e => new ExerciseInputModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+                    ImageUrl = e.ImageUrl,
+                    Level = e.Level
+                })
+                .SingleOrDefaultAsync();
+
+            return editableExercise;
+        }
+
+        public async Task EditExerciseAsync(ExerciseInputModel model)
+        {
+            Exercise? editableExercise = await this.repository
+                .GetAllAttached()
+                .SingleOrDefaultAsync(e => e.Id == model.Id);
+
+            if (editableExercise != null)
+            {
+                editableExercise.Name = model.Name;
+                editableExercise.Description = model.Description;
+                editableExercise.ImageUrl = model.ImageUrl;
+                editableExercise.Level = model.Level;
+
+                await this.repository.UpdateAsync(editableExercise);
+            }
+        }
+
+        
+
     }
 }
