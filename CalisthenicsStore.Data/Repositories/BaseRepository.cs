@@ -65,7 +65,7 @@ namespace CalisthenicsStore.Data.Repositories
                 .ToListAsync();
         }
 
-        public IQueryable<TEntity> GetAllAttacked()
+        public IQueryable<TEntity> GetAllAttached()
         {
             return dbSet
                 .AsQueryable();

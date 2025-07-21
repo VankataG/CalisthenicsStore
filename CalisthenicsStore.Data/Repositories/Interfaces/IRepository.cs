@@ -10,7 +10,7 @@
 
         IEnumerable<TEntity> GetAll();
 
-        IQueryable<TEntity> GetAllAttacked();
+        IQueryable<TEntity> GetAllAttached();
 
         void Add(TEntity item);
 
