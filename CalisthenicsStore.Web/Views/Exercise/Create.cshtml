@@ -1,0 +1,137 @@
+﻿@using CalisthenicsStore.Common.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CalisthenicsStore.ViewModels.Exercise.ExerciseInputModel
+
+@{
+	ViewData["Title"] = "Add New Exercise";
+}
+
+<h2 class="page-title">Add New Exercise</h2>
+
+<form asp-action="Create" method="post" class="form-container">
+	<div class="form-group">
+		<label asp-for="Name" class="form-label">Exercise Name</label>
+		<input asp-for="Name" class="form-input" />
+		<span asp-validation-for="Name" class="form-error"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Description" class="form-label">Description</label>
+		<textarea asp-for="Description" class="form-input" rows="4"></textarea>
+		<span asp-validation-for="Description" class="form-error"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="ImageUrl" class="form-label">Image URL</label>
+		<input asp-for="ImageUrl" class="form-input" />
+		<span asp-validation-for="ImageUrl" class="form-error"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Level" class="form-label">Difficulty Level</label>
+		<select asp-for="Level" asp-items="Html.GetEnumSelectList<DifficultyLevel>()" class="form-input">
+			<option value="">-- Select Level --</option>
+		</select>
+		<span asp-validation-for="Level" class="form-error"></span>
+	</div>
+
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">Create</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        background: linear-gradient(to bottom, #1f1f1f, #4f4f4f);
+        color: #f0f0f0;
+        font-family: sans-serif;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #2a2a2a;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #f0f0f0;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.6rem;
+        background-color: #3a3a3a;
+        border: 1px solid #555;
+        border-radius: 6px;
+        color: #f0f0f0;
+    }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00bcd4;
+            background-color: #444;
+        }
+
+    .form-error {
+        color: #ff6b6b;
+        font-size: 0.875rem;
+    }
+
+    .form-actions {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #00bcd4;
+        color: black;
+    }
+
+        .btn-primary:hover {
+            background-color: #00acc1;
+        }
+
+    .btn-secondary {
+        background-color: #666;
+        color: #f0f0f0;
+        margin-left: 1rem;
+    }
+
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+
+    .page-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: #ffffff;
+    }
+
+</style>

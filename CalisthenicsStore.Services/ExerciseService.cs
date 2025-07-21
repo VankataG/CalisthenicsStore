@@ -70,5 +70,19 @@ namespace CalisthenicsStore.Services
             return model;
 
         }
+
+        //Create
+        public async Task AddExerciseAsync(ExerciseInputModel model)
+        {
+            Exercise newExercise = new Exercise()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl ?? "/images/no-image.jpg",
+                Level = model.Level
+            };
+
+            await repository.AddAsync(newExercise);
+        }
     }
 }
