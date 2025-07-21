@@ -135,8 +135,11 @@
 			<div class="exercise-info">
 				<span class="exercise-level">Difficulty: <strong>@Model.Level</strong></span>
 			</div>
-			<a href="@Url.Action("Index", "Exercise")" class="btn-back">
+			<a asp-controller="Exercise" asp-action="Index" class="btn-back">
 				← Back to Exercises
+			</a>
+			<a asp-controller="Exercise" asp-action="Edit" asp-route-id="@Model.Id" class="btn-back">
+				Edit Exercise
 			</a>
 		</div>
 	</div>
