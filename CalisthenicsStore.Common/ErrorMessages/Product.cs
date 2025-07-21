@@ -1,12 +1,8 @@
-﻿
-using static CalisthenicsStore.Common.Constants.Exercise;
-
-
-namespace CalisthenicsStore.Common.ErrorMessages
+﻿namespace CalisthenicsStore.Common.ErrorMessages
 {
-    public static class Exercise
+    public static class Product
     {
-        public const string NameRequiredError = "Exercise name is required.";
+        public const string NameRequiredError = "Product name is required.";
 
         public const string NameMaxLengthError = "Name is too long.";
 
@@ -15,7 +11,5 @@ namespace CalisthenicsStore.Common.ErrorMessages
         public const string ImageUrlInvalidError = "Please enter a valid URL.";
 
         public const string ImageUrlMaxLengthError = "URL is too long.";
-
-        public const string LevelRequiredError = "Please select a difficulty level.";
     }
 }
