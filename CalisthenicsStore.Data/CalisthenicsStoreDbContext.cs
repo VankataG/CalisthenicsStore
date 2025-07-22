@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CalisthenicsStore.Data
 {
-    public class CalisthenicsStoreDbContext : IdentityDbContext<IdentityUser>
+    public class CalisthenicsStoreDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public CalisthenicsStoreDbContext(DbContextOptions<CalisthenicsStoreDbContext> options)
                 : base(options)
@@ -23,6 +23,8 @@ namespace CalisthenicsStore.Data
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
 
         public virtual DbSet<Exercise> Exercises { get; set; }
+
+        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

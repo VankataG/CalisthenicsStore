@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data;
+using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
@@ -21,7 +22,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
-    .AddDefaultIdentity<IdentityUser>(options =>
+    .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
         options.SignIn.RequireConfirmedEmail = false;
@@ -34,7 +35,7 @@ builder.Services
 
     })
     .AddEntityFrameworkStores<CalisthenicsStoreDbContext>();
-
+builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IValidator, EntityValidator>();
 builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
