@@ -17,7 +17,7 @@ namespace CalisthenicsStore.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -31,7 +31,9 @@ namespace CalisthenicsStore.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -82,30 +84,12 @@ namespace CalisthenicsStore.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -126,7 +110,7 @@ namespace CalisthenicsStore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -148,7 +132,7 @@ namespace CalisthenicsStore.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,8 +149,8 @@ namespace CalisthenicsStore.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,7 +173,7 @@ namespace CalisthenicsStore.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -203,6 +187,28 @@ namespace CalisthenicsStore.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -277,11 +283,11 @@ namespace CalisthenicsStore.Data.Migrations
                 columns: new[] { "Id", "Description", "ImageUrl", "Level", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0054cf79-6cd5-4ab0-906e-d11ea3402132"), "A push-up is a common calisthenics exercise that involves lowering the body by bending the arms and then pushing back up to the starting position, primarily working the chest, shoulders, and triceps. It's a full-body exercise that can be modified to suit different fitness levels.", "https://hips.hearstapps.com/hmg-prod/images/press-up-1583236041.jpg", 0, "Push-up" },
-                    { new Guid("26750cad-5c9c-4f6a-b0d5-148b878c599e"), "The planche is an advanced bodyweight exercise, primarily used in gymnastics and calisthenics, where the body is held parallel to the ground, supported only by straight arms. It requires significant strength, particularly in the shoulders, biceps, and core, as well as excellent balance. The planche is an isometric hold, meaning the body remains stationary while under tension.", "https://cdn.shopify.com/s/files/1/0568/6280/2107/files/full_planche_1.jpg", 3, "Planche" },
-                    { new Guid("3d93b8cf-b4db-4552-8115-6215017233e5"), "A muscle-up is an advanced calisthenics exercise that combines a pull-up and a dip, requiring both pulling and pushing movements of the upper body. It involves transitioning from a hanging position below a bar or rings to a position above, with arms extended. Muscle-ups are known for building upper body strength and are considered a critical survival skill by some.", "https://i0.wp.com/workoutlabs.com/wp-content/uploads/watermarked/Muscle_Up.png?w=1360", 1, "Muscle-up" },
-                    { new Guid("6da06bea-1789-491f-9f9b-b23594fbe8af"), "The front lever is a challenging calisthenics exercise where the body is held in a horizontal, straight-arm position, parallel to the ground, with the front of the body facing upwards. It requires immense strength, particularly in the core, back, and shoulders, as well as full-body tension and control.", "https://calisthenics.com/wp-content/uploads/2025/01/full-front-lever.jpg", 2, "Front Lever" },
-                    { new Guid("a4185043-766c-4fdb-9e75-e322bb0a3d9f"), "Pull-up (exercise): This is a strength training exercise where you lift your body weight by pulling yourself upwards against gravity, typically using a bar. It primarily works the muscles in your back, arms, and core.", "https://mikereinold.com/wp-content/uploads/rookie-mistakes-the-pullup-main.jpg", 0, "Pull-up" }
+                    { new Guid("4476e4c9-345d-4a05-bfc8-4c4fa27f8ec1"), "Pull-up (exercise): This is a strength training exercise where you lift your body weight by pulling yourself upwards against gravity, typically using a bar. It primarily works the muscles in your back, arms, and core.", "https://mikereinold.com/wp-content/uploads/rookie-mistakes-the-pullup-main.jpg", 0, "Pull-up" },
+                    { new Guid("44dbd4d1-8143-4299-bab2-8961bb3bf626"), "The planche is an advanced bodyweight exercise, primarily used in gymnastics and calisthenics, where the body is held parallel to the ground, supported only by straight arms. It requires significant strength, particularly in the shoulders, biceps, and core, as well as excellent balance. The planche is an isometric hold, meaning the body remains stationary while under tension.", "https://cdn.shopify.com/s/files/1/0568/6280/2107/files/full_planche_1.jpg", 3, "Planche" },
+                    { new Guid("91bd6845-f2f3-401b-b1e9-6e6d62da974b"), "A muscle-up is an advanced calisthenics exercise that combines a pull-up and a dip, requiring both pulling and pushing movements of the upper body. It involves transitioning from a hanging position below a bar or rings to a position above, with arms extended. Muscle-ups are known for building upper body strength and are considered a critical survival skill by some.", "https://i0.wp.com/workoutlabs.com/wp-content/uploads/watermarked/Muscle_Up.png?w=1360", 1, "Muscle-up" },
+                    { new Guid("a88a67dd-7643-4a88-a5c2-5c3833194365"), "A push-up is a common calisthenics exercise that involves lowering the body by bending the arms and then pushing back up to the starting position, primarily working the chest, shoulders, and triceps. It's a full-body exercise that can be modified to suit different fitness levels.", "https://hips.hearstapps.com/hmg-prod/images/press-up-1583236041.jpg", 0, "Push-up" },
+                    { new Guid("be70b797-cd08-4650-acdb-d1c266ae4599"), "The front lever is a challenging calisthenics exercise where the body is held in a horizontal, straight-arm position, parallel to the ground, with the front of the body facing upwards. It requires immense strength, particularly in the core, back, and shoulders, as well as full-body tension and control.", "https://calisthenics.com/wp-content/uploads/2025/01/full-front-lever.jpg", 2, "Front Lever" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -329,6 +335,11 @@ namespace CalisthenicsStore.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_ApplicationUserId",
+                table: "Orders",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
@@ -362,13 +373,13 @@ namespace CalisthenicsStore.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");
