@@ -1,10 +1,11 @@
 ﻿
+@using CalisthenicsStore.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<CalisthenicsStore.ViewModels.Product.ProductViewModel>
 
 
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
 	ViewData["Title"] = "Products";
