@@ -4,13 +4,13 @@
     {
         public Guid Id;
 
-        public string CustomerName { get; set; } = null!;
+        public Guid ApplicationUserId { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
 
         public string City { get; set; } = null!;
 
         public string Address { get; set; } = null!;
-
-        public string Email { get; set; } = null!;
 
         public DateTime OrderDate { get; set; } 
 

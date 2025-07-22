@@ -31,7 +31,6 @@ namespace CalisthenicsStore.Services
                 
                 CartItems = cartItems,
                 TotalPrice = cartItems.Sum(ci => ci.Price * ci.Quantity),
-                CustomerName = "",
                 Address = "",
                 City = ""
             };
@@ -50,11 +49,9 @@ namespace CalisthenicsStore.Services
 
             Order order = new Order()
             {
-                CustomerName = model.CustomerName,
                 Address = model.Address,
                 City = model.City,
                 OrderDate = DateTime.Now,
-                Email = email,
                 Status = "Pending",
                 Products = new List<OrderProduct>()
             };

@@ -14,9 +14,14 @@ namespace CalisthenicsStore.Data.Configuration
                 .HasKey(o => o.Id);
 
             entity
-                .Property(o => o.CustomerName)
-                .IsRequired()
-                .HasMaxLength(CustomerNameMaxLength);
+                .Property(o => o.ApplicationUserId)
+                .IsRequired();
+
+            entity
+                .HasOne(o => o.ApplicationUser)
+                .WithMany(au => au.Orders)
+                .HasForeignKey(o => o.ApplicationUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             entity
                 .Property(o => o.Address)
@@ -28,10 +33,6 @@ namespace CalisthenicsStore.Data.Configuration
                 .IsRequired()
                 .HasMaxLength(CityMaxLength);
 
-            entity
-                .Property(o => o.Email)
-                .IsRequired()
-                .HasMaxLength(EmailMaxLength);
 
             entity
                 .Property(o => o.OrderDate)
