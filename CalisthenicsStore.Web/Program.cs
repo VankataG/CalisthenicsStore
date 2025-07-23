@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
+using CalisthenicsStore.Data.Seeding;
+using CalisthenicsStore.Data.Seeding.Interfaces;
 using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
@@ -35,11 +37,14 @@ builder.Services
 
     })
     .AddEntityFrameworkStores<CalisthenicsStoreDbContext>();
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IValidator, EntityValidator>();
+
 builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
 builder.Services.AddRepositories(typeof(IProductRepository).Assembly);
+builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
 
 
 //Adding sessions for the Cart
@@ -71,6 +76,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.SeedDefaultIdentity();
 
 app.UseAuthentication();
 app.UseAuthorization();
