@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CalisthenicsStore.ViewModels.Admin.UserManagement.UserManagementIndexViewModel>
+
+@{
+	ViewData["Title"] = "User Management";
+}
+
+<link rel="stylesheet" href="~/css/user-management.css" />
+
+<div class="user-management-container">
+	<h1 class="title">User Management</h1>
+
+	<table class="user-table">
+		<thead>
+		<tr>
+			<th>#</th>
+			<th>Full Name</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Change Role</th>
+			<th>Orders</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var user in Model.Select((value, index) => new { value, index }))
+		{
+			<tr>
+				<td>@(user.index + 1)</td>
+				<td>@user.value.FullName</td>
+				<td>@user.value.Email</td>
+				<td class="current-role">@user.value.Role</td>
+				<td>
+					<form method="post" asp-action="ChangeUserRole" asp-route-id="@user.value.Id">
+						<select name="newRole" class="role-dropdown">
+							<option value="User" selected="@("User" == user.value.Role)">User</option>
+							<option value="Admin" selected="@("Admin" == user.value.Role)">Admin</option>
+						</select>
+						<button type="submit" class="btn yellow-btn">Apply</button>
+					</form>
+				</td>
+				<td>
+					<a asp-action="UserOrders" asp-route-id="@user.value.Id" class="btn blue-btn">View Orders</a>
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+</div>
