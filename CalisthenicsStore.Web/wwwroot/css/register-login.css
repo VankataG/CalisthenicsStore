@@ -98,3 +98,13 @@ body {
     .btn-register:hover {
         background-color: #e03b3b;
     }
+
+@media (max-width: 480px) {
+    .register-form-box {
+        padding: 30px 20px;
+    }
+
+    .register-heading {
+        font-size: 24px;
+    }
+}
