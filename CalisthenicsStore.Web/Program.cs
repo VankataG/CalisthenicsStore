@@ -85,6 +85,9 @@ app.UseAuthorization();
 app.UseSession(); //Here we use the session needed for the Cart
 
 app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

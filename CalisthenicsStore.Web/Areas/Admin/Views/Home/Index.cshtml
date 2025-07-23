@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/css/admin-home.css" />
+
+<div class="admin-container">
+	<h1 class="dashboard-title">Welcome to the Admin Dashboard</h1>
+    
+	<div class="dashboard-cards">
+		<div class="dashboard-card">
+			<div class="icon yellow"><i class="fas fa-users"></i></div>
+			<h3>Manage Users</h3>
+			<p>Add, remove or modify users and assign roles.</p>
+			<a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="btn yellow-btn"><i class="fas fa-user-cog"></i> Go to Users</a>
+		</div>
+
+		<div class="dashboard-card">
+			<div class="icon green"><i class="fas fa-dumbbell"></i></div>
+			<h3>Manage Exercises</h3>
+			<p>Create, update, or delete exercises.</p>
+			<a asp-area="Admin" asp-controller="ExerciseManagement" asp-action="Index" class="btn green-btn"><i class="fas fa-edit"></i> Go to Exercises</a>
+		</div>
+
+		<div class="dashboard-card">
+			<div class="icon blue"><i class="fas fa-box-open"></i></div>
+			<h3>Manage Products</h3>
+			<p>Add or update products in the store.</p>
+			<a asp-area="Admin" asp-controller="ProductManagement" asp-action="Index" class="btn blue-btn"><i class="fas fa-store"></i> Go to Products</a>
+		</div>
+
+		<div class="dashboard-card">
+			<div class="icon red"><i class="fas fa-receipt"></i></div>
+			<h3>Manage Orders</h3>
+			<p>View and process customer orders.</p>
+			<a asp-area="Admin" asp-controller="OrderManagement" asp-action="Index" class="btn red-btn"><i class="fas fa-clipboard-list"></i> Go to Orders</a>
+		</div>
+	</div>
+</div>
+
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

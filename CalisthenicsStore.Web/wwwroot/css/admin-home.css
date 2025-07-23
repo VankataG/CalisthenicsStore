@@ -1,0 +1,115 @@
+﻿body {
+    background: linear-gradient(to bottom, #121212, #1f1f1f);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-container {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.dashboard-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #f8d33a;
+    margin-bottom: 40px;
+    text-shadow: 0 0 8px #f8d33a44;
+}
+
+.dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.dashboard-card {
+    background-color: #2a2a2a;
+    border-radius: 15px;
+    padding: 30px;
+    width: 280px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+    }
+
+.icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+    .icon.yellow {
+        color: #f8d33a;
+    }
+
+    .icon.red {
+        color: #e74c3c;
+    }
+
+    .icon.blue {
+        color: #3498db;
+    }
+
+    .icon.green {
+        color: #2ecc71;
+    }
+
+.dashboard-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.dashboard-card p {
+    color: #ccc;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.yellow-btn {
+    background-color: #f8d33a;
+    color: #1f1f1f;
+}
+
+    .yellow-btn:hover {
+        background-color: #e6be28;
+    }
+
+.red-btn {
+    background-color: #e74c3c;
+}
+
+    .red-btn:hover {
+        background-color: #c0392b;
+    }
+
+.blue-btn {
+    background-color: #3498db;
+}
+
+    .blue-btn:hover {
+        background-color: #2980b9;
+    }
+
+.green-btn {
+    background-color: #2ecc71;
+}
+
+    .green-btn:hover {
+        background-color: #27ae60;
+    }
