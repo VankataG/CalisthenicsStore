@@ -82,6 +82,7 @@ app.SeedDefaultIdentity();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseAdminRedirection();
 app.UseSession(); //Here we use the session needed for the Cart
 
 app.MapControllerRoute(

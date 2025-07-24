@@ -1,4 +1,5 @@
 ﻿using CalisthenicsStore.Data.Seeding.Interfaces;
+using CalisthenicsStore.Web.Middlewares;
 
 namespace CalisthenicsStore.Web.Extensions
 {
@@ -15,6 +16,13 @@ namespace CalisthenicsStore.Web.Extensions
                 .SeedIdentityAsync()
                 .GetAwaiter()
                 .GetResult();
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseAdminRedirection(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<AdminRedirectionMiddleware>();
 
             return app;
         }
