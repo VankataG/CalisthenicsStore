@@ -17,19 +17,31 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         {
             this.userManager = userManager;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<ApplicationUser> users = await userManager.Users.ToListAsync();
-
-            var model = users.Select(u => new UserManagementIndexViewModel()
-            {
-                Id = u.Id.ToString(),
-                FullName = $"{u.FirstName} {u.LastName}",
-                Email = u.Email,
-                Role = userManager.GetRolesAsync(u).Result.FirstOrDefault() ?? UserRoleName
-            });
+            IEnumerable<UserManagementIndexViewModel> model = await userManager
+                .Users
+                .Where(u => u.Id.ToString().ToLower() != this.GetUserId().ToLower())
+                .Select(u => new UserManagementIndexViewModel()
+                {
+                    Id = u.Id.ToString(),
+                    FullName = $"{u.FirstName} {u.LastName}",
+                    Email = u.Email,
+                    Role = userManager.GetRolesAsync(u).
+                    GetAwaiter()
+                    .GetResult()
+                    .FirstOrDefault() ?? UserRoleName
+                })
+                .ToArrayAsync();
 
             return View(model);
+        }
+
+        public IActionResult ChangeUserRole()
+        {
+            throw new NotImplementedException();
         }
     }
 }
