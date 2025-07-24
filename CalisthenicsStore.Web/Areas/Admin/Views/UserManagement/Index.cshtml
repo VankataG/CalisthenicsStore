@@ -1,4 +1,9 @@
-﻿@model IEnumerable<CalisthenicsStore.ViewModels.Admin.UserManagement.UserManagementIndexViewModel>
+﻿@using CalisthenicsStore.ViewModels.Admin.UserManagement
+@using Microsoft.AspNetCore.Identity
+
+@model IEnumerable<UserManagementIndexViewModel>
+
+@inject RoleManager<IdentityRole<Guid>> roleManager;
 
 @{
 	ViewData["Title"] = "User Management";
@@ -31,8 +36,10 @@
 				<td>
 					<form method="post" asp-action="ChangeUserRole" asp-route-id="@user.value.Id">
 						<select name="newRole" class="role-dropdown">
-							<option value="User" selected="@("User" == user.value.Role)">User</option>
-							<option value="Admin" selected="@("Admin" == user.value.Role)">Admin</option>
+							@foreach (IdentityRole<Guid> role in roleManager.Roles.ToList())
+							{
+									<option value=@role.Name selected="@(user.value.Role.Contains(role.Name) ? "selected" : null)">@role.Name</option>
+							}
 						</select>
 						<button type="submit" class="btn yellow-btn">Apply</button>
 					</form>

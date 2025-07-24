@@ -9,11 +9,11 @@ using static CalisthenicsStore.Common.RolesConstants;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
-    public class UserManagement : BaseAdminController
+    public class UserManagementController : BaseAdminController
     {
         private readonly UserManager<ApplicationUser> userManager;
 
-        public UserManagement(UserManager<ApplicationUser> userManager)
+        public UserManagementController(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }

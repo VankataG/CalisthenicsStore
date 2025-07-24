@@ -12,6 +12,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
     {
         protected string GetUserId()
         {
+            
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             return userId;
