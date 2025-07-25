@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
 using static CalisthenicsStore.Common.RolesConstants;
 
@@ -11,32 +12,20 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
     public class UserManagementController : BaseAdminController
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserService userService;
 
-        public UserManagementController(UserManager<ApplicationUser> userManager)
+        public UserManagementController(IUserService userService)
         {
-            this.userManager = userManager;
+            this.userService = userService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<UserManagementIndexViewModel> model = await userManager
-                .Users
-                .Where(u => u.Id.ToString().ToLower() != this.GetUserId().ToLower())
-                .Select(u => new UserManagementIndexViewModel()
-                {
-                    Id = u.Id.ToString(),
-                    FullName = $"{u.FirstName} {u.LastName}",
-                    Email = u.Email,
-                    Role = userManager.GetRolesAsync(u).
-                    GetAwaiter()
-                    .GetResult()
-                    .FirstOrDefault() ?? UserRoleName
-                })
-                .ToArrayAsync();
+            IEnumerable<UserManagementIndexViewModel> allUsers
+                = await this.userService.GetUsersBoardDataAsync(this.GetUserId().ToLower());
 
-            return View(model);
+            return View(allUsers);
         }
 
         public IActionResult ChangeUserRole()
