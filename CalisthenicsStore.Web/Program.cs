@@ -10,6 +10,7 @@ using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+    
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
