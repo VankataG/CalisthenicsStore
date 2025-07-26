@@ -1,12 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
-using static CalisthenicsStore.Common.RolesConstants;
+
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {

@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using CalisthenicsStore.ViewModels.Admin.ExerciseManagement;
+@model IEnumerable<ExerciseManagementIndexViewModel>
+
+@{
+    ViewData["Title"] = "Exercise Management";
+}
+
+<link rel="stylesheet" href="~/css/exercise-management.css" />
+
+<div class="exercise-management-container">
+    <h1 class="title">Exercise Management</h1>
+
+    <table class="exercise-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Is Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var exercise in Model)
+            {
+	            <tr>
+                    <td>@exercise.Name</td>
+                    <td>@exercise.Level</td>
+                    <td>
+                        @if (exercise.IsDeleted)
+                        {
+                            <span class="badge deleted">Deleted</span>
+                        }
+                        else
+                        {
+                            <span class="badge active">Active</span>
+                        }
+                    </td>
+                    <td class="action-buttons">
+                        <a asp-action="Edit" asp-route-id="@exercise.Id" class="btn yellow-btn">Edit</a>
+
+                        @if (exercise.IsDeleted)
+                        {
+                            <form asp-action="Restore" method="post" asp-route-id="@exercise.Id" class="inline-form">
+                                <button type="submit" class="btn green-btn">Restore</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Delete" method="post" asp-route-id="@exercise.Id" class="inline-form">
+                                <button type="submit" class="btn red-btn">Delete</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
