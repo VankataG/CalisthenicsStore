@@ -2,6 +2,7 @@
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ExerciseManagement;
+using CalisthenicsStore.ViewModels.Exercise;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Services.Admin
@@ -30,6 +31,19 @@ namespace CalisthenicsStore.Services.Admin
                 .ToArrayAsync();
 
             return allExercises;
+        }
+
+        public async Task AddExerciseAsync(ExerciseCreateViewModel model)
+        {
+            Exercise newExercise = new Exercise()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl ?? "/images/no-image.jpg",
+                Level = model.Level
+            };
+
+            await exerciseRepository.AddAsync(newExercise);
         }
     }
 }

@@ -6,5 +6,7 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
     {
 
         Task<IEnumerable<ExerciseManagementIndexViewModel>> GetExerciseBoardDataAsync();
+
+        Task AddExerciseAsync(ExerciseCreateViewModel model);
     }
 }
