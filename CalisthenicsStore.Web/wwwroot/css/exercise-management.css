@@ -100,3 +100,29 @@
     .green-btn:hover {
         background-color: #388e3c;
     }
+
+
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    display: inherit;
+    background-color: #ff4b4b;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+    .add-btn:hover {
+        background-color: #e63939;
+        color: black;
+    }
+
