@@ -45,5 +45,41 @@ namespace CalisthenicsStore.Services.Admin
 
             await exerciseRepository.AddAsync(newExercise);
         }
+
+        public async Task<ExerciseCreateViewModel?> GetEditableExerciseAsync(Guid id)
+        {
+            ExerciseCreateViewModel? editableExercise = await this.exerciseRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .Where(e => e.Id == id)
+                .Select(e => new ExerciseCreateViewModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+                    ImageUrl = e.ImageUrl,
+                    Level = e.Level
+                })
+                .SingleOrDefaultAsync();
+
+            return editableExercise;
+        }
+
+        public async Task EditExerciseAsync(ExerciseCreateViewModel model)
+        {
+            Exercise? editableExercise = await this.exerciseRepository
+                .GetAllAttached()
+                .SingleOrDefaultAsync(e => e.Id == model.Id);
+
+            if (editableExercise != null)
+            {
+                editableExercise.Name = model.Name;
+                editableExercise.Description = model.Description;
+                editableExercise.ImageUrl = model.ImageUrl;
+                editableExercise.Level = model.Level;
+
+                await this.exerciseRepository.UpdateAsync(editableExercise);
+            }
+        }
     }
 }

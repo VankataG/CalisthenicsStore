@@ -40,7 +40,7 @@
                         }
                     </td>
                     <td class="action-buttons">
-                        <a asp-action="Edit" asp-route-id="@exercise.Id" class="btn yellow-btn">Edit</a>
+                        <a asp-area="Admin" asp-action="Edit" asp-route-id="@exercise.Id" class="btn yellow-btn">Edit</a>
 
                         @if (exercise.IsDeleted)
                         {
