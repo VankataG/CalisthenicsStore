@@ -71,58 +71,6 @@ namespace CalisthenicsStore.Services
 
         }
 
-        //Create
-        public async Task AddExerciseAsync(ExerciseInputModel model)
-        {
-            Exercise newExercise = new Exercise()
-            {
-                Name = model.Name,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl ?? "/images/no-image.jpg",
-                Level = model.Level
-            };
-
-            await repository.AddAsync(newExercise);
-        }
-
-        //Edit
-        public async Task<ExerciseInputModel?> GetEditableExerciseAsync(Guid id)
-        {
-            ExerciseInputModel? editableExercise = await this.repository
-                .GetAllAttached()
-                .AsNoTracking()
-                .Where(e => e.Id == id)
-                .Select(e => new ExerciseInputModel()
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Description = e.Description,
-                    ImageUrl = e.ImageUrl,
-                    Level = e.Level
-                })
-                .SingleOrDefaultAsync();
-
-            return editableExercise;
-        }
-
-        public async Task EditExerciseAsync(ExerciseInputModel model)
-        {
-            Exercise? editableExercise = await this.repository
-                .GetAllAttached()
-                .SingleOrDefaultAsync(e => e.Id == model.Id);
-
-            if (editableExercise != null)
-            {
-                editableExercise.Name = model.Name;
-                editableExercise.Description = model.Description;
-                editableExercise.ImageUrl = model.ImageUrl;
-                editableExercise.Level = model.Level;
-
-                await this.repository.UpdateAsync(editableExercise);
-            }
-        }
-
-        
 
     }
 }

@@ -13,13 +13,5 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<ExerciseViewModel?> GetExerciseDetailsAsync(Guid id);
 
 
-        //Create
-        Task AddExerciseAsync(ExerciseInputModel inputModel);
-
-        //Edit
-        Task<ExerciseInputModel?> GetEditableExerciseAsync(Guid id);
-
-        Task EditExerciseAsync(ExerciseInputModel model);
-
     }
 }
