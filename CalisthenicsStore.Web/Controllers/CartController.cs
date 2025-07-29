@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.CartItem;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Controllers
 {
@@ -20,15 +21,34 @@ namespace CalisthenicsStore.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(Guid productId)
         {
-            await cartService.AddToCartAsync(productId);
-            return RedirectToAction("Index");
+            try
+            {
+                await cartService.AddToCartAsync(productId);
+                TempData[SuccessMessageKey] = "Successfully added to cart!";
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = "Failed adding to cart!";
+            }
+            
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public IActionResult Remove(Guid productId)
         {
-            cartService.RemoveFromCart(productId);
-            return RedirectToAction("Index");
+            try
+            {
+                cartService.RemoveFromCart(productId);
+                TempData[SuccessMessageKey] = "Successfully removed from cart!";
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = "Failed to remove from cart!";
+            }
+
+
+            return RedirectToAction(nameof(Index));
         }
 
     }
