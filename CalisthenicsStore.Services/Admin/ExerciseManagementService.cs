@@ -33,7 +33,7 @@ namespace CalisthenicsStore.Services.Admin
             return allExercises;
         }
 
-        public async Task AddExerciseAsync(ExerciseCreateViewModel model)
+        public async Task<bool> AddExerciseAsync(ExerciseCreateViewModel model)
         {
             Exercise newExercise = new Exercise()
             {
@@ -43,7 +43,7 @@ namespace CalisthenicsStore.Services.Admin
                 Level = model.Level
             };
 
-            await exerciseRepository.AddAsync(newExercise);
+            return await exerciseRepository.AddAsync(newExercise);
         }
 
         public async Task<ExerciseCreateViewModel?> GetEditableExerciseAsync(Guid id)
@@ -65,8 +65,10 @@ namespace CalisthenicsStore.Services.Admin
             return editableExercise;
         }
 
-        public async Task EditExerciseAsync(ExerciseCreateViewModel model)
+        public async Task<bool> EditExerciseAsync(ExerciseCreateViewModel model)
         {
+            bool result = false;
+
             Exercise? editableExercise = await this.exerciseRepository
                 .GetAllAttached()
                 .SingleOrDefaultAsync(e => e.Id == model.Id);
@@ -78,8 +80,10 @@ namespace CalisthenicsStore.Services.Admin
                 editableExercise.ImageUrl = model.ImageUrl;
                 editableExercise.Level = model.Level;
 
-                await this.exerciseRepository.UpdateAsync(editableExercise);
+                result = await this.exerciseRepository.UpdateAsync(editableExercise);
             }
+
+            return result;
         }
     }
 }

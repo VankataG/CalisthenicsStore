@@ -1,8 +1,8 @@
-﻿using CalisthenicsStore.Services.Admin.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ExerciseManagement;
-using CalisthenicsStore.ViewModels.Exercise;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -40,7 +40,25 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await exerciseService.AddExerciseAsync(model);
+            try
+            {
+                bool isSuccess = await exerciseService.AddExerciseAsync(model);
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = "Error occurred while adding the exercise!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = "Exercise added successfully!";
+                }
+            }
+            catch (Exception e)
+            {
+                TempData[ErrorMessageKey] =
+                    "Unexpected error occured while adding the exercise! Please contact the developer team.";
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -56,14 +74,13 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                     //TODO: Add ILogger
                     //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
 
+                    TempData[ErrorMessageKey] = "Exercise does not exist!";
+
                     return RedirectToAction(nameof(Index));
                 }
-                else
-                {
 
+                return View(model);
 
-                    return View(model);
-                }
             }
             catch (Exception e)
             {
@@ -82,8 +99,28 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await exerciseService.EditExerciseAsync(model);
-            return RedirectToAction(nameof(Index), new { id = model.Id });
+            try
+            {
+                bool isSuccess = await exerciseService.EditExerciseAsync(model);
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = "Error occured while editing the exercise!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = "Exercise updated successfully!";
+                }
+
+            }
+            catch (Exception e)
+            {
+                TempData[ErrorMessageKey] = "Unexpected error occured while editing the exercise! Please contact the developer team.";
+            }
+
+
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

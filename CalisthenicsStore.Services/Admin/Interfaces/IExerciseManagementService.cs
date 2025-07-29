@@ -7,11 +7,11 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
 
         Task<IEnumerable<ExerciseManagementIndexViewModel>> GetExerciseBoardDataAsync();
 
-        Task AddExerciseAsync(ExerciseCreateViewModel model);
+        Task<bool> AddExerciseAsync(ExerciseCreateViewModel model);
 
         //Edit
         Task<ExerciseCreateViewModel?> GetEditableExerciseAsync(Guid id);
 
-        Task EditExerciseAsync(ExerciseCreateViewModel model);
+        Task<bool> EditExerciseAsync(ExerciseCreateViewModel model);
     }
 }
