@@ -77,3 +77,14 @@
     .blue-btn:hover {
         background-color: #2980b9;
     }
+
+.gray-btn {
+    background-color: darkgrey;
+    margin: 2em;
+    padding: 0.5em 1em;
+   
+}
+
+    .gray-btn:hover {
+        background-color: dimgray;
+    }

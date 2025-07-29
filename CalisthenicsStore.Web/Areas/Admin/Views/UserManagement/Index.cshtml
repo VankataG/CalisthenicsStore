@@ -38,7 +38,7 @@
 						<select name="newRole" class="role-dropdown">
 							@foreach (IdentityRole<Guid> role in roleManager.Roles.ToList())
 							{
-									<option value=@role.Name selected="@(user.value.Role.Contains(role.Name) ? "selected" : null)">@role.Name</option>
+								<option value=@role.Name selected="@(user.value.Role.Contains(role.Name) ? "selected" : null)">@role.Name</option>
 							}
 						</select>
 						<button type="submit" class="btn yellow-btn">Apply</button>
@@ -52,4 +52,6 @@
 		}
 		</tbody>
 	</table>
+	
+	<a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn gray-btn">Go Back</a>
 </div>
