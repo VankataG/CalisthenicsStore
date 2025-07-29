@@ -12,7 +12,7 @@
 
         IQueryable<TEntity> GetAllAttached();
 
-        void Add(TEntity item);
+        bool Add(TEntity item);
 
         void AddRange(IEnumerable<TEntity> items);
 

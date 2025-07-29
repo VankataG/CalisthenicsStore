@@ -71,15 +71,33 @@ namespace CalisthenicsStore.Data.Repositories
                 .AsQueryable();
         }
 
-        public void Add(TEntity item)
+        public bool Add(TEntity item)
         {
-            dbSet.Add(item);
-            dbContext.SaveChanges();
+            try
+            {
+                dbSet.Add(item);
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
-        public async Task AddAsync(TEntity item)
+        public async Task<bool> AddAsync(TEntity item)
         {
-            await dbSet.AddAsync(item);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbSet.AddAsync(item);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         public void AddRange(IEnumerable<TEntity> items)

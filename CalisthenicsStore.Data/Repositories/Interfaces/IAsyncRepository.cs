@@ -12,7 +12,7 @@ namespace CalisthenicsStore.Data.Repositories.Interfaces
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task AddAsync(TEntity item);
+        Task<bool> AddAsync(TEntity item);
 
         Task AddRangeAsync(IEnumerable<TEntity> items);
 
