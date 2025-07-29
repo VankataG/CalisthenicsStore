@@ -13,5 +13,8 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
         Task<ExerciseCreateViewModel?> GetEditableExerciseAsync(Guid id);
 
         Task<bool> EditExerciseAsync(ExerciseCreateViewModel model);
+
+        //Delete
+        Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id);
     }
 }

@@ -3,6 +3,7 @@
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ExerciseManagement;
 using static CalisthenicsStore.Common.Constants.Notifications;
+using System;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -118,7 +119,33 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                 TempData[ErrorMessageKey] = "Unexpected error occured while editing the exercise! Please contact the developer team.";
             }
 
+            return RedirectToAction(nameof(Index));
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrRestoreAsync(Guid id)
+        {
+            try
+            {
+                Tuple<bool,string> results = await exerciseService.DeleteOrRestoreAsync(id);
+
+                bool isSuccess = results.Item1;
+                string action = results.Item2;
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = $"Error occured while trying to {action} exercise!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = $"The {action} was successful!";
+                }
+
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = $"Unexpected error occured!";
+            }
 
             return RedirectToAction(nameof(Index));
         }

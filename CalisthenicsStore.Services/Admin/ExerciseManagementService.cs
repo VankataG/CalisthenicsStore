@@ -85,5 +85,26 @@ namespace CalisthenicsStore.Services.Admin
 
             return result;
         }
+
+        public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)
+        {
+            bool result = false;
+            string action = string.Empty;
+            Exercise? exercise = await exerciseRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .SingleOrDefaultAsync(e => e.Id == id);
+
+            if (exercise != null)
+            {
+                action = exercise.IsDeleted ? "restore" : "delete";
+
+                exercise.IsDeleted = !exercise.IsDeleted;
+                await exerciseRepository.SaveChangesAsync();
+                result = true;
+            }
+
+            return new Tuple<bool, string>(result, action);
+        }
     }
 }
