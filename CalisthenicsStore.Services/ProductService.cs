@@ -6,6 +6,7 @@ using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
+using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 
 namespace CalisthenicsStore.Services
 {
@@ -74,41 +75,6 @@ namespace CalisthenicsStore.Services
                 .FirstAsync();
         }
 
-
-        //CREATE
-        public async Task<ProductInputModel> GetProductInputModelAsync()
-        {
-            var categories = await categoryRepository
-                .GetAllAttached()
-                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                })
-                .ToListAsync();
-
-            ProductInputModel model = new ProductInputModel()
-            {
-                Categories = categories
-            };
-
-            return model;
-        }
-
-        public async Task AddProductAsync(ProductInputModel inputModel)
-        {
-            Product newProduct = new Product
-            {
-                Name = inputModel.Name,
-                Description = inputModel.Description,
-                Price = inputModel.Price,
-                StockQuantity = inputModel.StockQuantity,
-                ImageUrl = inputModel.ImageUrl ?? "/images/no-image.jpg",
-                CategoryId = inputModel.CategoryId,
-            };
-
-            await repository.AddAsync(newProduct);
-        }
 
         //EDIT
         public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)

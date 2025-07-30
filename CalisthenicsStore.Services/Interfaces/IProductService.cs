@@ -1,4 +1,5 @@
 ﻿
+using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 using CalisthenicsStore.ViewModels.Product;
 
 namespace CalisthenicsStore.Services.Interfaces
@@ -12,11 +13,6 @@ namespace CalisthenicsStore.Services.Interfaces
 
         Task<ProductViewModel?> GetByIdAsync(Guid id);
 
-
-        //CREATE 
-        Task<ProductInputModel> GetProductInputModelAsync();
-
-        Task AddProductAsync(ProductInputModel inputModel);
 
         //EDIT
         Task<ProductInputModel?> GetEditableProductAsync(Guid id);

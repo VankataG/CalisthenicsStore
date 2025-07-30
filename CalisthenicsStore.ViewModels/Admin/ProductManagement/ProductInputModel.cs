@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using static CalisthenicsStore.Common.Constants.Product;
 using static CalisthenicsStore.Common.ErrorMessages.Product;
 
-namespace CalisthenicsStore.ViewModels.Product
+namespace CalisthenicsStore.ViewModels.Admin.ProductManagement
 {
     public class ProductInputModel
     {

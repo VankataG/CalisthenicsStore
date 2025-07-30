@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using CalisthenicsStore.Services.Interfaces;
-using CalisthenicsStore.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
+using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 
 namespace CalisthenicsStore.Web.Controllers
 {
@@ -37,28 +37,6 @@ namespace CalisthenicsStore.Web.Controllers
             }
              
             return View(product);
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            ProductInputModel model = await productService.GetProductInputModelAsync();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(ProductInputModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.Categories = (await productService.GetProductInputModelAsync()).Categories;
-                return View(model);
-            }
-
-            await productService.AddProductAsync(model);
-            return RedirectToAction(nameof(Index));
         }
 
 
