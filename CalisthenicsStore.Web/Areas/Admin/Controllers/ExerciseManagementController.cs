@@ -114,7 +114,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 TempData[ErrorMessageKey] = "Unexpected error occured while editing the exercise! Please contact the developer team.";
             }

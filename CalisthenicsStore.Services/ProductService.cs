@@ -76,64 +76,6 @@ namespace CalisthenicsStore.Services
         }
 
 
-        //EDIT
-        public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)
-        {
-            ProductInputModel?  editableProduct = await repository
-                .GetAllAttackedWithCategory()
-                .AsNoTracking()
-                .Where(p => p.Id == id)
-                .Select(p => new ProductInputModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    Price = p.Price,
-                    StockQuantity = p.StockQuantity,
-                    ImageUrl = p.ImageUrl,
-                    CategoryId = p.CategoryId
-                })
-                .SingleOrDefaultAsync();
-
-            if (editableProduct != null)
-            {
-                var categories = await categoryRepository
-                    .GetAllAttached()
-                    .Select(c => new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Name
-                    })
-                    .ToListAsync();
-
-                editableProduct.Categories = categories;
-            }
-
-            return editableProduct;
-        }
-
-        public async Task EditProductAsync(ProductInputModel model)
-        {
-            Product? editableProduct = await repository
-                .GetAllAttackedWithCategory()
-                .SingleOrDefaultAsync(p => p.Id == model.Id);
-
-            if (editableProduct != null)
-            {
-                editableProduct.Name = model.Name;
-                editableProduct.Description = model.Description;
-                editableProduct.Price = model.Price;
-                editableProduct.StockQuantity = model.StockQuantity;
-                editableProduct.ImageUrl = model.ImageUrl ?? "/images/no-image.jpg";
-                editableProduct.CategoryId = model.CategoryId;
-
-                await repository.UpdateAsync(editableProduct);
-
-            }
-                
-        }
-
-
         //DELETE
         public async Task DeleteProductAsync(Guid id)
         {

@@ -40,48 +40,6 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
-        {
-            try
-            {
-                ProductInputModel? editableProduct = await productService.GetEditableProductAsync(id);
-
-                if (editableProduct == null)
-                {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
-
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-
-
-                    return View(editableProduct);
-                }
-            }
-            catch (Exception e)
-            {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to edit product with ID {ProductId}", id);
-
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(ProductInputModel model)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            await productService.EditProductAsync(model);
-
-            return RedirectToAction(nameof(Details), new { id = model.Id});
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

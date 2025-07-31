@@ -3,6 +3,7 @@
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 using static CalisthenicsStore.Common.Constants.Notifications;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -61,6 +62,68 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 
             
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            try
+            {
+                ProductInputModel? editableProduct = await productService.GetEditableProductAsync(id);
+
+                if (editableProduct == null)
+                {
+                    //TODO: Add ILogger
+                    //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
+
+                    TempData[ErrorMessageKey] = "Product was not found!";
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View(editableProduct);
+                }
+            }
+            catch (Exception e)
+            {
+                //TODO: Add ILogger
+                //logger.LogError(ex, "Error occurred while trying to edit product with ID {ProductId}", id);
+                TempData[ErrorMessageKey] = "Unexpected error occured while trying to edit the product!";
+
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductInputModel model)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+            try
+            {
+                bool isSuccess = await productService.EditProductAsync(model);
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = "Error occured while editing the product!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = "Product updated successfully!";
+                }
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = "Unexpected error occured while editing the exercise! Please contact the developer team.";
+            }
+
+            return RedirectToAction(nameof(Index), new { id = model.Id });
         }
     }
 }

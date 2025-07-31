@@ -14,11 +14,6 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<ProductViewModel?> GetByIdAsync(Guid id);
 
 
-        //EDIT
-        Task<ProductInputModel?> GetEditableProductAsync(Guid id);
-
-        Task EditProductAsync(ProductInputModel model);
-
         //DELETE
         Task DeleteProductAsync(Guid id);
         Task HardDeleteProductAsync(Guid id);
