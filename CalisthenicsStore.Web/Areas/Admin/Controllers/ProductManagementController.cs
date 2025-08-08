@@ -4,6 +4,7 @@ using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 using static CalisthenicsStore.Common.Constants.Notifications;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using CalisthenicsStore.Services;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -124,6 +125,35 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(Index), new { id = model.Id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrRestore(Guid id)
+        {
+            try
+            {
+                Tuple<bool, string> results = await productService.DeleteOrRestoreAsync(id);
+
+                bool isSuccess = results.Item1;
+                string action = results.Item2;
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = $"Error occured while trying to {action} product!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = $"The {action} was successful!";
+                }
+
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = $"Unexpected error occured!";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

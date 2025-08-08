@@ -13,9 +13,5 @@ namespace CalisthenicsStore.Services.Interfaces
 
         Task<ProductViewModel?> GetByIdAsync(Guid id);
 
-
-        //DELETE
-        Task DeleteProductAsync(Guid id);
-        Task HardDeleteProductAsync(Guid id);
     }
 }

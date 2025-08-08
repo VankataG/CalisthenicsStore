@@ -131,5 +131,51 @@ namespace CalisthenicsStore.Services.Admin
 
             return result;
         }
+
+        public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)
+        {
+            bool result = false;
+            string action = string.Empty;
+            Product? product = await productRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (product != null)
+            {
+                action = product.IsDeleted ? "restore" : "delete";
+
+                product.IsDeleted = !product.IsDeleted;
+                await productRepository.SaveChangesAsync();
+                result = true;
+            }
+
+            return new Tuple<bool, string>(result, action);
+        }
+        public async Task HardDeleteProductAsync(Guid id)
+        {
+            try
+            {
+                Product? product = await productRepository
+                    .SingleOrDefaultAsync(p => p.Id == id);
+
+                if (product != null)
+                {
+                    await productRepository.HardDeleteAsync(product);
+                }
+                else
+                {
+                    //TODO: Add ILogger
+                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO: Add ILogger
+                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
+
+            }
+
+        }
     }
 }

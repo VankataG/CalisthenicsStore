@@ -13,5 +13,8 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
         Task<ProductInputModel?> GetEditableProductAsync(Guid id);
 
         Task<bool> EditProductAsync(ProductInputModel model);
+
+        Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id);
+        Task HardDeleteProductAsync(Guid id);
     }
 }

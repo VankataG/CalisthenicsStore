@@ -49,13 +49,13 @@
 
 						@if (product.IsDeleted)
 						{
-							<form asp-area="Admin" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
+							<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
 								<button type="submit" class="btn green-btn">Restore</button>
 							</form>
 						}
 						else
 						{
-							<form asp-area="Admin" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
+							<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
 								<button type="submit" class="btn red-btn">Delete</button>
 							</form>
 						}

@@ -77,54 +77,6 @@ namespace CalisthenicsStore.Services
 
 
         //DELETE
-        public async Task DeleteProductAsync(Guid id)
-        {
-            try
-            {
-                Product? product = await repository
-                    .SingleOrDefaultAsync(p => p.Id == id);
-
-                if (product != null)
-                {
-                    await repository.DeleteAsync(product);
-                }
-                else
-                {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
-                }
-            }
-            catch (Exception ex)
-            {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
-
-            }
-        }
-        public async Task HardDeleteProductAsync(Guid id)
-        {
-            try
-            {
-                Product? product = await repository
-                    .SingleOrDefaultAsync(p => p.Id == id);
-
-                if (product != null)
-                {
-                    await repository.HardDeleteAsync(product);
-                }
-                else
-                {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
-                }
-            }
-            catch (Exception ex)
-            {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
-
-            }
-
-        }
+        
     }
 }
