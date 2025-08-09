@@ -42,13 +42,13 @@ namespace CalisthenicsStore.Services
                 .ToDictionaryAsync(p => p.Id);
 
             IEnumerable<CartItemViewModel> model = cartItems.Select(ci => new CartItemViewModel()
-                {
-                    ProductId = ci.ProductId,
-                    ProductName = products[ci.ProductId].Name,
-                    ImageUrl = products[ci.ProductId].ImageUrl,
-                    Price = products[ci.ProductId].Price,
-                    Quantity = ci.Quantity
-                })
+            {
+                ProductId = ci.ProductId,
+                ProductName = products[ci.ProductId].Name,
+                ImageUrl = products[ci.ProductId].ImageUrl,
+                Price = products[ci.ProductId].Price,
+                Quantity = ci.Quantity
+            })
                 .ToList();
 
             return model;
@@ -98,26 +98,17 @@ namespace CalisthenicsStore.Services
                 .FirstOrDefaultAsync(p => p.Id == productId);
             if (itemToRemove != null && product != null)
             {
-                
-
-                try
-                {
-                    product.StockQuantity += itemToRemove.Quantity;
-                    await productRepository.SaveChangesAsync();
 
 
-                    cart.Remove(itemToRemove);
-                    SaveCart(cart);
-                }
-                catch (Exception ex)
-                {
-                    
-                    Console.WriteLine("SaveChangesAsync error: " + ex.Message);
-                    throw;
-                }
+
+                product.StockQuantity += itemToRemove.Quantity;
+                await productRepository.SaveChangesAsync();
 
 
-                //TODO: FIX REMOVE METHOD IN CART
+                cart.Remove(itemToRemove);
+                SaveCart(cart);
+
+
             }
         }
 
