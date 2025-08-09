@@ -67,6 +67,7 @@ namespace CalisthenicsStore.Services
             var product = await productRepository
                 .FirstOrDefaultAsync(p => p.Id == productId);
             if (product == null) return;
+            if (product.StockQuantity <= 0) throw new Exception();
 
             var cart = GetCart();
 
@@ -83,18 +84,40 @@ namespace CalisthenicsStore.Services
                     Quantity = 1
                 });
             }
+            product.StockQuantity--;
+            await productRepository.SaveChangesAsync();
 
             SaveCart(cart);
         }
 
-        public void RemoveFromCart(Guid productId)
+        public async Task RemoveFromCart(Guid productId)
         {
             var cart = GetCart();
-            var itemToRemove = cart.FirstOrDefault(c => c.ProductId == productId);
-            if (itemToRemove != null)
+            CartItem? itemToRemove = cart.FirstOrDefault(c => c.ProductId == productId);
+            Product? product = await productRepository
+                .FirstOrDefaultAsync(p => p.Id == productId);
+            if (itemToRemove != null && product != null)
             {
-                cart.Remove(itemToRemove);
-                SaveCart(cart);
+                
+
+                try
+                {
+                    product.StockQuantity += itemToRemove.Quantity;
+                    await productRepository.SaveChangesAsync();
+
+
+                    cart.Remove(itemToRemove);
+                    SaveCart(cart);
+                }
+                catch (Exception ex)
+                {
+                    
+                    Console.WriteLine("SaveChangesAsync error: " + ex.Message);
+                    throw;
+                }
+
+
+                //TODO: FIX REMOVE METHOD IN CART
             }
         }
 

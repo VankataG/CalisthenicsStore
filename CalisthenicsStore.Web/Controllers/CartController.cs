@@ -31,15 +31,15 @@ namespace CalisthenicsStore.Web.Controllers
                 TempData[ErrorMessageKey] = "Failed adding to cart!";
             }
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Product", new { id = productId});
         }
 
         [HttpPost]
-        public IActionResult Remove(Guid productId)
+        public async Task<IActionResult> Remove(Guid productId)
         {
             try
             {
-                cartService.RemoveFromCart(productId);
+                await cartService.RemoveFromCart(productId);
                 TempData[SuccessMessageKey] = "Successfully removed from cart!";
             }
             catch (Exception)

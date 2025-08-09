@@ -15,7 +15,7 @@ namespace CalisthenicsStore.Services.Interfaces
 
         Task AddToCartAsync(Guid productId);
 
-        void RemoveFromCart(Guid productId);
+        Task RemoveFromCart(Guid productId);
 
         void ClearCart();
     }
