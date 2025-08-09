@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using CalisthenicsStore.ViewModels.Admin.OrderManagement
+@model IEnumerable<OrderManagementIndexViewModel>
+
+@{
+    ViewData["Title"] = "Order Management";
+}
+
+<link rel="stylesheet" href="~/css/exercise-management.css" />
+
+<div class="exercise-management-container">
+    <div class="exercise-header">
+        <h1 class="title">Order Management</h1>
+    </div>
+
+    <table class="exercise-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>City</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Is Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                    <tr>
+                        <td>@order.Id.ToString().Substring(0, 8)</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.City</td>
+                        <td>@order.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@order.Status</td>
+
+                        <td>
+                        @if (order.IsDeleted)
+                        {
+                                    <span class="badge deleted">Deleted</span>
+                        }
+                        else
+                        {
+                                    <span class="badge active">Active</span>
+                        }
+                        </td>
+                        <td class="action-buttons">
+                            <a asp-area="Admin" asp-action="Details" asp-route-id="@order.Id" class="btn blue-btn">View</a>
+                            <a asp-area="Admin" asp-action="Edit" asp-route-id="@order.Id" class="btn yellow-btn">Edit</a>
+
+                        @if (order.IsDeleted)
+                        {
+                                    <form asp-area="Admin" asp-controller="OrderManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@order.Id" class="inline-form">
+                                        <button type="submit" class="btn green-btn">Restore</button>
+                                    </form>
+                        }
+                        else
+                        {
+                                    <form asp-area="Admin" asp-controller="OrderManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@order.Id" class="inline-form">
+                                        <button type="submit" class="btn red-btn">Delete</button>
+                                    </form>
+                        }
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn gray-btn">Go Back</a>
+</div>
