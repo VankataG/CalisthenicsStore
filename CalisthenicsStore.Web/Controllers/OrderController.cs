@@ -24,11 +24,11 @@ namespace CalisthenicsStore.Web.Controllers
                 return View("Checkout", model);
             }
 
-            string email = User.FindFirstValue(ClaimTypes.Email);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Guid orderId = await orderService.PlaceOrderAsync(model, email);
+            Guid orderId = await orderService.PlaceOrderAsync(model, userId);
 
-            return RedirectToAction("Confirmation", new { id = orderId });
+            return RedirectToAction(nameof(ThankYou));
         }
 
         public IActionResult ThankYou()

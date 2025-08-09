@@ -16,52 +16,52 @@
 
 	<table class="exercise-table">
 		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Price</th>
-				<th>Quantity</th>
-				<th>Category</th>
-				<th>Is Deleted</th>
-				<th>Actions</th>
-			</tr>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Quantity</th>
+			<th>Category</th>
+			<th>Is Deleted</th>
+			<th>Actions</th>
+		</tr>
 		</thead>
 		<tbody>
-			@foreach (var product in Model)
-			{
-				<tr>
-					<td>@product.Name</td>
-					<td>@product.Price BGN.</td>
-					<td>@product.StockQuantity</td>
-					<td>@product.CategoryName</td>
+		@foreach (var product in Model)
+		{
+			<tr>
+				<td>@product.Name</td>
+				<td>@product.Price BGN.</td>
+				<td>@product.StockQuantity</td>
+				<td>@product.CategoryName</td>
 
-					<td>
-						@if (product.IsDeleted)
-						{
-							<span class="badge deleted">Deleted</span>
-						}
-						else
-						{
-							<span class="badge active">Active</span>
-						}
-					</td>
-					<td class="action-buttons">
-						<a asp-area="Admin" asp-action="Edit" asp-route-id="@product.Id" class="btn yellow-btn">Edit</a>
+				<td>
+					@if (product.IsDeleted)
+					{
+						<span class="badge deleted">Deleted</span>
+					}
+					else
+					{
+						<span class="badge active">Active</span>
+					}
+				</td>
+				<td class="action-buttons">
+					<a asp-area="Admin" asp-action="Edit" asp-route-id="@product.Id" class="btn yellow-btn">Edit</a>
 
-						@if (product.IsDeleted)
-						{
-							<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
-								<button type="submit" class="btn green-btn">Restore</button>
-							</form>
-						}
-						else
-						{
-							<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
-								<button type="submit" class="btn red-btn">Delete</button>
-							</form>
-						}
-					</td>
-				</tr>
-			}
+					@if (product.IsDeleted)
+					{
+						<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
+							<button type="submit" class="btn green-btn">Restore</button>
+						</form>
+					}
+					else
+					{
+						<form asp-area="Admin" asp-controller="ProductManagement" asp-action="DeleteOrRestore" method="post" asp-route-id="@product.Id" class="inline-form">
+							<button type="submit" class="btn red-btn">Delete</button>
+						</form>
+					}
+				</td>
+			</tr>
+		}
 		</tbody>
 	</table>
 

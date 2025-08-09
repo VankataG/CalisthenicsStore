@@ -24,11 +24,11 @@ namespace CalisthenicsStore.Services
         public async Task<CheckoutViewModel> CheckoutCartItemsAsync()
         {
             var cartItems = await cartService.GetCartProductsDataAsync();
-   
+
 
             var model = new CheckoutViewModel
             {
-                
+
                 CartItems = cartItems,
                 TotalPrice = cartItems.Sum(ci => ci.Price * ci.Quantity),
                 Address = "",
@@ -38,7 +38,7 @@ namespace CalisthenicsStore.Services
             return model;
         }
 
-        public async Task<Guid> PlaceOrderAsync(CheckoutViewModel model, string email)
+        public async Task<Guid> PlaceOrderAsync(CheckoutViewModel model, string userId)
         {
             IEnumerable<CartItem> cartItems = cartService.GetCart();
 
@@ -47,13 +47,15 @@ namespace CalisthenicsStore.Services
                 throw new InvalidOperationException("Cart is empty!");
             }
 
+
             Order order = new Order()
             {
+                ApplicationUserId = Guid.Parse(userId),
                 Address = model.Address,
                 City = model.City,
                 OrderDate = DateTime.Now,
                 Status = "Pending",
-                Products = new List<OrderProduct>()
+                Products = new List<OrderProduct>(),
             };
 
             foreach (CartItem cartItem in cartItems)
@@ -77,7 +79,10 @@ namespace CalisthenicsStore.Services
 
             }
 
+
             await repository.AddAsync(order);
+
+
 
             cartService.ClearCart();
 

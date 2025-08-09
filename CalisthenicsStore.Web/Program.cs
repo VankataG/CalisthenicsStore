@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
@@ -10,7 +7,8 @@ using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
