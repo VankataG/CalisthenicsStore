@@ -1,0 +1,57 @@
+﻿@using CalisthenicsStore.ViewModels.Admin.UserManagement
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<UserOrderViewModel>
+
+@{
+	ViewData["Title"] = "User Orders";
+}
+
+<link rel="stylesheet" href="~/css/user-management.css" />
+
+<div class="user-management-container">
+	<h1 class="title">User Orders</h1>
+
+	<table class="user-table">
+		<thead>
+		<tr>
+			<th>#</th>
+			<th>Order ID</th>
+			<th>City</th>
+			<th>Address</th>
+			<th>Order Date</th>
+			<th>Status</th>
+			<th>Products</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach (var order in Model.Select((value, index) => new { value, index }))
+		{
+			<tr>
+				<td>@(order.index + 1)</td>
+				<td>@order.value.Id</td>
+				<td>@order.value.City</td>
+				<td>@order.value.Address</td>
+				<td>@order.value.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+				<td>@order.value.Status</td>
+				<td>
+					@if (order.value.Products != null && order.value.Products.Any())
+					{
+						<ul>
+							@foreach (var product in order.value.Products)
+							{
+								<li>@product.ProductName (x @product.Quantity)</li>
+							}
+						</ul>
+					}
+					else
+					{
+						<span>No products</span>
+					}
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+
+	<a asp-action="Index" asp-controller="UserManagement" class="btn gray-btn">Go Back</a>
+</div>

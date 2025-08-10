@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,10 +15,12 @@ namespace CalisthenicsStore.Services.Admin
     public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IOrderRepository orderRepository;
 
-        public UserService(UserManager<ApplicationUser> userManager)
+        public UserService(UserManager<ApplicationUser> userManager, IOrderRepository orderRepository)
         {
             this.userManager = userManager;
+            this.orderRepository = orderRepository;
         }
 
         public async Task<IEnumerable<UserManagementIndexViewModel>> GetUsersBoardDataAsync(string userId)
@@ -54,6 +57,32 @@ namespace CalisthenicsStore.Services.Admin
 
             IdentityResult addResult = await userManager.AddToRoleAsync(user, newRole);
             return addResult.Succeeded;
+        }
+
+        public async Task<IEnumerable<UserOrderViewModel>> GetUserOrdersAsync(Guid userId)
+        {
+            IEnumerable<UserOrderViewModel> userOrders = await orderRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .Where(o => o.ApplicationUserId == userId)
+                .Select(o => new UserOrderViewModel()
+                {
+                    Id = o.Id,
+                    City = o.City,
+                    Address = o.Address,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status,
+                    Products = o.Products
+                        .Select(p => new UserOrderProductViewModel()
+                        {
+                            ProductName = p.Product.Name,
+                            Quantity = p.Quantity
+                        })
+                        .ToArray()
+                })
+                .ToArrayAsync();
+
+            return userOrders;
         }
     }
 }

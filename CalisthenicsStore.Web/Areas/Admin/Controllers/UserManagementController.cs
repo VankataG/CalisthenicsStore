@@ -39,5 +39,12 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> UserOrders(Guid id)
+        {
+            IEnumerable<UserOrderViewModel> userOrders = await userService.GetUserOrdersAsync(id);
+
+            return View(userOrders);
+        }
     }
 }

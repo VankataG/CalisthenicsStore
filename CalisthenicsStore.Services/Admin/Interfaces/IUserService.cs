@@ -8,5 +8,7 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
 
         Task<bool> ChangeRoleAsync(Guid userId, string newRole);
 
+        Task<IEnumerable<UserOrderViewModel>> GetUserOrdersAsync(Guid userId);
+
     }
 }
