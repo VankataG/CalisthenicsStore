@@ -47,7 +47,6 @@ namespace CalisthenicsStore.Services
                 throw new InvalidOperationException("Cart is empty!");
             }
 
-
             Order order = new Order()
             {
                 ApplicationUserId = Guid.Parse(userId),
@@ -65,7 +64,6 @@ namespace CalisthenicsStore.Services
 
                 if (product != null)
                 {
-
                     OrderProduct orderProduct = new OrderProduct()
                     {
                         ProductId = product.Id,
@@ -74,18 +72,11 @@ namespace CalisthenicsStore.Services
                     };
 
                     order.Products.Add(orderProduct);
-
                 }
-
             }
 
-
             await repository.AddAsync(order);
-
-
-
             cartService.ClearCart();
-
 
             return order.Id;
         }

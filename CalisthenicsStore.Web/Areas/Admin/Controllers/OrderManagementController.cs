@@ -1,6 +1,8 @@
-﻿using CalisthenicsStore.Services.Admin.Interfaces;
+﻿
+using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.OrderManagement;
 using Microsoft.AspNetCore.Mvc;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -18,6 +20,35 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         {
             IEnumerable<OrderManagementIndexViewModel> orders = await orderService.GetOrderBoardDataAsync();
             return View(orders);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrRestore(Guid id)
+        {
+            try
+            {
+                Tuple<bool, string> results = await orderService.DeleteOrRestoreAsync(id);
+
+                bool isSuccess = results.Item1;
+                string action = results.Item2;
+
+                if (!isSuccess)
+                {
+                    TempData[ErrorMessageKey] = $"Error occured while trying to {action} order!";
+                }
+                else
+                {
+                    TempData[SuccessMessageKey] = $"The {action} was successful!";
+                }
+
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessageKey] = $"Unexpected error occured!";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

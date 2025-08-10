@@ -1,4 +1,5 @@
-﻿using CalisthenicsStore.Data.Repositories;
+﻿using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.OrderManagement;
@@ -34,6 +35,27 @@ namespace CalisthenicsStore.Services.Admin
                 })
                 .ToArrayAsync();
             return orders;
+        }
+
+        public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)
+        {
+            bool result = false;
+            string action = string.Empty;
+            Order? order = await orderRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (order != null)
+            {
+                action = order.IsDeleted ? "restore" : "delete";
+
+                order.IsDeleted = !order.IsDeleted;
+                await orderRepository.SaveChangesAsync();
+                result = true;
+            }
+
+            return new Tuple<bool, string>(result, action);
         }
     }
 }
