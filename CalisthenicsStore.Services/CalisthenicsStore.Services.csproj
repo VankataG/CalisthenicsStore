@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CalisthenicsStore.Common\CalisthenicsStore.Common.csproj" />
     <ProjectReference Include="..\CalisthenicsStore.Data\CalisthenicsStore.Data.csproj" />
     <ProjectReference Include="..\CalisthenicsStore.ViewModels\CalisthenicsStore.ViewModels.csproj" />
