@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
+using Microsoft.AspNetCore.Http.HttpResults;
 using static CalisthenicsStore.Common.RolesConstants;
 
 
@@ -37,6 +38,22 @@ namespace CalisthenicsStore.Services.Admin
                 .ToArrayAsync();
 
             return allUsers;
+        }
+
+        public async Task<bool> ChangeRoleAsync(Guid userId, string newRole)
+        {
+            ApplicationUser? user = await userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                return false;
+
+            var currentRoles = await userManager.GetRolesAsync(user);
+            IdentityResult removeResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+            if (!removeResult.Succeeded)
+                return false;
+
+            IdentityResult addResult = await userManager.AddToRoleAsync(user, newRole);
+            return addResult.Succeeded;
         }
     }
 }

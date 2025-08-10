@@ -2,6 +2,7 @@
 
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
@@ -24,9 +25,19 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
             return View(allUsers);
         }
 
-        public IActionResult ChangeUserRole()
+        public async Task<IActionResult> ChangeUserRole(Guid id, string newRole)
         {
-            throw new NotImplementedException();
+            bool isSuccess = await userService.ChangeRoleAsync(id, newRole);
+
+            if (isSuccess)
+            {
+                TempData[SuccessMessageKey] = "Successfully updated user role!";
+            }
+            else
+            {
+                TempData[ErrorMessageKey] = "Failed to change user role.";
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
