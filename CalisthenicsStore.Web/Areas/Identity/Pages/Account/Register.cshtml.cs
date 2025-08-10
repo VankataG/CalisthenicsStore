@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using CalisthenicsStore.Data.Models;
 using static CalisthenicsStore.Common.Constants.ApplicationUser;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account
 {
@@ -131,6 +132,7 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
+                    TempData[ErrorMessageKey] += error.Description + Environment.NewLine;
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
