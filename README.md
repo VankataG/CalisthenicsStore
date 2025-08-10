@@ -64,3 +64,10 @@
 ![Screenshot 2025-06-25 192122](https://github.com/user-attachments/assets/4d822164-6ec1-41bb-b2d8-d607f49b7ebe)
 
 <img width="1903" height="954" alt="Screenshot 2025-08-10 173403" src="https://github.com/user-attachments/assets/6acbf3e2-d32c-44b1-881e-cd131abd6605" />
+
+<img width="1910" height="952" alt="Screenshot 2025-08-10 173518" src="https://github.com/user-attachments/assets/06c241ab-9dea-44eb-bcd4-ac5093b0d939" />
+
+<img width="1884" height="952" alt="Screenshot 2025-08-10 173554" src="https://github.com/user-attachments/assets/51ce5981-2d16-4be7-866f-66c2475ee978" />
+
+<img width="1889" height="950" alt="Screenshot 2025-08-10 173612" src="https://github.com/user-attachments/assets/671df6d0-1d30-4653-b207-574bf30b9f1a" />
+
