@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿
 using Microsoft.EntityFrameworkCore;
 
-
-using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Product;
-using CalisthenicsStore.ViewModels.Admin.ProductManagement;
+
 
 namespace CalisthenicsStore.Services
 {
@@ -59,6 +57,7 @@ namespace CalisthenicsStore.Services
 
         public async Task<ProductViewModel?> GetByIdAsync(Guid id)
         {
+
             return await repository
                 .GetAllAttackedWithCategory()
                 .AsNoTracking()
@@ -74,9 +73,6 @@ namespace CalisthenicsStore.Services
                 })
                 .FirstAsync();
         }
-
-
-        //DELETE
         
     }
 }
