@@ -98,17 +98,12 @@ namespace CalisthenicsStore.Services
                 .FirstOrDefaultAsync(p => p.Id == productId);
             if (itemToRemove != null && product != null)
             {
-
-
-
                 product.StockQuantity += itemToRemove.Quantity;
                 await productRepository.SaveChangesAsync();
 
 
                 cart.Remove(itemToRemove);
                 SaveCart(cart);
-
-
             }
         }
 
