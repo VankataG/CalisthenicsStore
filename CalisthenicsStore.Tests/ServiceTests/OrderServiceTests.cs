@@ -18,6 +18,8 @@ namespace CalisthenicsStore.Tests.ServiceTests
         private ICartService cartService;
         private IOrderService orderService;
 
+        private TestSession fakeSession;
+
         [SetUp]
         public void SetUp()
         {
@@ -25,7 +27,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
             this.orderRepositoryMock = new Mock<IOrderRepository>();
 
             DefaultHttpContext context = new DefaultHttpContext();
-            TestSession fakeSession = new TestSession();
+            fakeSession = new TestSession();
             context.Session = fakeSession;
             HttpContextAccessor httpContextAccessor = new HttpContextAccessor
             {
