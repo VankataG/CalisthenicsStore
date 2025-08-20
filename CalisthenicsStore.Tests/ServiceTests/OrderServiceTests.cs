@@ -96,7 +96,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
 
             CheckoutViewModel checkoutViewModel = await orderService.CheckoutCartItemsAsync();
 
-            Assert.ThrowsAsync<InvalidOperationException>(async () => await orderService.PlaceOrderAsync(checkoutViewModel, Guid.NewGuid().ToString() ));
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await orderService.PlaceOrderAsync(checkoutViewModel, Guid.NewGuid().ToString()));
         }
 
         [Test]
@@ -131,11 +131,13 @@ namespace CalisthenicsStore.Tests.ServiceTests
 
             Guid result = await orderService.PlaceOrderAsync(model, Guid.NewGuid().ToString());
 
-            Order? createdOrder = await orderRepositoryMock.Object.FirstOrDefaultAsync(o => o.Id == result);
-
-            Assert.That(createdOrder, Is.Not.Null);
-            //TODO: FIX
-
+            orderRepositoryMock.Verify(or => or.AddAsync(It.Is<Order>(o =>
+                o.Id == result &&
+                o.Status == "Pending" &&
+                o.Products.Count == 1 &&
+                o.Products.First().ProductId == product.Id &&
+                o.Products.First().Quantity == 2
+                )), Times.Once);
         }
     }
 }
