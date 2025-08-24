@@ -2,7 +2,6 @@
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ExerciseManagement;
-using CalisthenicsStore.ViewModels.Exercise;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Services.Admin
