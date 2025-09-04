@@ -134,6 +134,349 @@ namespace CalisthenicsStore.Tests.ServiceTests
         }
 
         [Test]
+        public async Task GetEditableExerciseAsyncShouldReturnCorrectExercise()
+        {
+            Guid correctGuid = Guid.NewGuid();
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
 
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+            ExerciseCreateViewModel? result = await exerciseService.GetEditableExerciseAsync(correctGuid);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Id, Is.EqualTo(correctGuid));
+            Assert.That(result.Name, Is.EqualTo("Test"));
+            Assert.That(result.Level, Is.EqualTo(DifficultyLevel.Advanced));
+            Assert.That(result.ImageUrl, Is.EqualTo(null));
+        }
+
+        [Test]
+        public async Task GetEditableExerciseAsyncShouldReturnNull()
+        {
+            IQueryable<Exercise> emptyExerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(emptyExerciseList);
+
+            ExerciseCreateViewModel? result = await exerciseService.GetEditableExerciseAsync(Guid.NewGuid());
+
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public async Task EditExerciseAsyncShouldReturnTrueWhenExistAndUpdate()
+        {
+            Guid correctGuid = Guid.NewGuid();
+
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+
+            string changedName = "ChangedTest";
+            DifficultyLevel changedLevel = DifficultyLevel.Insane;
+
+            ExerciseCreateViewModel model = new ExerciseCreateViewModel()
+            {
+                Id = correctGuid,
+                Name = changedName,
+                Level = changedLevel
+            };
+
+            Exercise? updatedExercise = null;
+
+            exerciseRepositoryMock
+                .Setup(er => er.UpdateAsync(It.IsAny<Exercise>()))
+                .Callback<Exercise>(e => updatedExercise = e)
+                .ReturnsAsync(true);
+
+            bool result = await exerciseService.EditExerciseAsync(model);
+            
+            Assert.That(result, Is.True);
+            Assert.That(updatedExercise, Is.Not.Null);
+            Assert.That(updatedExercise.Id, Is.EqualTo(correctGuid));
+            Assert.That(updatedExercise.Name, Is.EqualTo(changedName));
+            Assert.That(updatedExercise.Level, Is.EqualTo(changedLevel));
+        }
+
+        [Test]
+        public async Task EditExerciseAsyncShouldReturnFalseWhenExistAndUpdateFail()
+        {
+            Guid correctGuid = Guid.NewGuid();
+
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+
+            string changedName = "ChangedTest";
+            DifficultyLevel changedLevel = DifficultyLevel.Insane;
+
+            ExerciseCreateViewModel model = new ExerciseCreateViewModel()
+            {
+                Id = correctGuid,
+                Name = changedName,
+                Level = changedLevel
+            };
+
+            exerciseRepositoryMock
+                .Setup(er => er.UpdateAsync(It.IsAny<Exercise>()))
+                .ReturnsAsync(false);
+
+            bool result = await exerciseService.EditExerciseAsync(model);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task EditExerciseAsyncShouldReturnFalseWhenExerciseIsDeleted()
+        {
+            Guid correctGuid = Guid.NewGuid();
+
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+
+            string changedName = "ChangedTest";
+            DifficultyLevel changedLevel = DifficultyLevel.Insane;
+
+            ExerciseCreateViewModel model = new ExerciseCreateViewModel()
+            {
+                Id = correctGuid,
+                Name = changedName,
+                Level = changedLevel
+            };
+
+            bool result = await exerciseService.EditExerciseAsync(model);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task EditExerciseAsyncShouldReturnFalseWhenExerciseDoNotExist()
+        {
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+
+            string changedName = "ChangedTest";
+            DifficultyLevel changedLevel = DifficultyLevel.Insane;
+
+            ExerciseCreateViewModel model = new ExerciseCreateViewModel()
+            {
+                Id = Guid.NewGuid(),
+                Name = changedName,
+                Level = changedLevel
+            };
+
+            bool result = await exerciseService.EditExerciseAsync(model);
+
+            Assert.That(result, Is.False);
+        }
+
+
+        [Test]
+        public async Task DeleteOrRestoreAsyncShouldReturnFalseWhenExerciseDoNotExist()
+        {
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+            Tuple<bool,string> result = await exerciseService.DeleteOrRestoreAsync(Guid.NewGuid());
+
+            Assert.That(result.Item1, Is.False);
+            Assert.That(result.Item2, Is.Empty);
+        }
+
+        [Test]
+        public async Task DeleteOrRestoreAsyncShouldReturnTrueWhenExerciseExistAndIsActive()
+        {
+            Guid correctGuid = Guid.NewGuid();
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+            Tuple<bool, string> result = await exerciseService.DeleteOrRestoreAsync(correctGuid);
+
+            Assert.That(result.Item1, Is.True);
+            Assert.That(result.Item2, Is.EqualTo("delete"));
+        }
+
+        [Test]
+        public async Task DeleteOrRestoreAsyncShouldReturnTrueWhenExerciseExistAndIsDeleted()
+        {
+            Guid correctGuid = Guid.NewGuid();
+            IQueryable<Exercise> exerciseList = new List<Exercise>()
+            {
+                new Exercise()
+                {
+                    Id = correctGuid,
+                    Name = "Test",
+                    IsDeleted = true,
+                    Level = DifficultyLevel.Advanced
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Test2",
+                    IsDeleted = false,
+                    Level = DifficultyLevel.Beginner
+                }
+            }.BuildMock();
+
+            exerciseRepositoryMock
+                .Setup(er => er.GetAllAttached())
+                .Returns(exerciseList);
+
+            Tuple<bool, string> result = await exerciseService.DeleteOrRestoreAsync(correctGuid);
+
+            Assert.That(result.Item1, Is.True);
+            Assert.That(result.Item2, Is.EqualTo("restore"));
+        }
     }
 }
