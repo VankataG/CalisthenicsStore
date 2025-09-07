@@ -16,7 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add EF Core context
 var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(
+        connectionString,
+        sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null )));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -71,6 +73,19 @@ else
     app.UseHsts();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var db = services.GetRequiredService<CalisthenicsStoreDbContext>();
+    db.Database.Migrate();
+
+    var validator = services.GetRequiredService<IValidator>();
+    var dataProcessor = new DataProcessor(validator);
+
+    await dataProcessor.ImportProductsFromJson(db);
+}
+
 app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode= {0}"); 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -92,21 +107,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
-using (var scope = app.Services.CreateScope())
-{
-    IServiceProvider services = scope.ServiceProvider;
-
-    CalisthenicsStoreDbContext dbContext = services.GetRequiredService<CalisthenicsStoreDbContext>();
-
-    //Here we add the EntityValidator which we get from the services collection
-    IValidator entityValidator = services.GetRequiredService<IValidator>();
-
-    DataProcessor dataProcessor = new DataProcessor(entityValidator);
-
-    //TODO: Fix the Import Method
-    //await dataProcessor.ImportProductsFromJson(dbContext);
-}
 
 
 app.Run();

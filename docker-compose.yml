@@ -1,0 +1,6 @@
+services:
+  calisthenicsstore.web:
+    image: ${DOCKER_REGISTRY-}calisthenicsstoreweb
+    build:
+      context: .
+      dockerfile: CalisthenicsStore.Web/Dockerfile

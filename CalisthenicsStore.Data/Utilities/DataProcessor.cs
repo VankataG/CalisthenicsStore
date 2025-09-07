@@ -17,22 +17,23 @@ namespace CalisthenicsStore.Data.Utilities
 
         public async Task ImportProductsFromJson(CalisthenicsStoreDbContext dbContext)
         {
+            if (await dbContext.Products.AnyAsync()) return;
+
             string path = Path.Combine(AppContext.BaseDirectory, "Files", "products.json");
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException($"Seed file not found: {path}");
+            }
+
             string productsStr = await File.ReadAllTextAsync(path);
 
             var products = JsonSerializer.Deserialize<List<Product>>(productsStr);
 
             if (products != null && products.Count > 0)
             {
-                List<Guid> productsIds = products
-                    .Select(p => p.Id)
-                    .ToList();
-
-                if (!await dbContext.Products.AnyAsync(p => productsIds.Contains(p.Id)))
-                {
                     await dbContext.Products.AddRangeAsync(products);
                     await dbContext.SaveChangesAsync();
-                }
             }
         }
 
