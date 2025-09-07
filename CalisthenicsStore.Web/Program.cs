@@ -81,6 +81,7 @@ using (var scope = app.Services.CreateScope())
 
     if (app.Environment.IsEnvironment("Render"))
     {
+        db.Database.EnsureCreated();
         await dataProcessor.ImportProductsFromJson(db);
     }
     else

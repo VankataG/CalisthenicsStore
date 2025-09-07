@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Files\products.json">
+    <Content Update="Files\products.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+	    <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
