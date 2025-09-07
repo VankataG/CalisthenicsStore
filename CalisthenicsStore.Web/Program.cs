@@ -13,12 +13,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsEnvironment("Render"))
+{
+    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
+        options.UseInMemoryDatabase("CalisthenicsStoreDb"));
+}
+else
+{
 // Add EF Core context
-var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
-    options.UseSqlServer(
-        connectionString,
-        sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null )));
+    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ??
+                           throw new InvalidOperationException("Connection string 'CalisthenicsStore' not found.");
+    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
+        options.UseSqlServer(
+            connectionString,
+            sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null)));
+}
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -61,6 +70,26 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var db = services.GetRequiredService<CalisthenicsStoreDbContext>();
+
+    var validator = services.GetRequiredService<IValidator>();
+    var dataProcessor = new DataProcessor(validator);
+
+    if (app.Environment.IsEnvironment("Render"))
+    {
+        await dataProcessor.ImportProductsFromJson(db);
+    }
+    else
+    {
+        db.Database.Migrate();
+        await dataProcessor.ImportProductsFromJson(db);
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -73,21 +102,12 @@ else
     app.UseHsts();
 }
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Render"))
 {
-    var services = scope.ServiceProvider;
-
-    var db = services.GetRequiredService<CalisthenicsStoreDbContext>();
-    db.Database.Migrate();
-
-    var validator = services.GetRequiredService<IValidator>();
-    var dataProcessor = new DataProcessor(validator);
-
-    await dataProcessor.ImportProductsFromJson(db);
+    app.UseHttpsRedirection();
 }
 
 app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode= {0}"); 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
