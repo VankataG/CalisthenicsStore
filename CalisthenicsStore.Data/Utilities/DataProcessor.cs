@@ -20,6 +20,8 @@ namespace CalisthenicsStore.Data.Utilities
             if (await dbContext.Products.AnyAsync()) return;
 
             string path = Path.Combine(AppContext.BaseDirectory, "Files", "products.json");
+            Console.WriteLine("[SEED] Looking for: " + path);
+
 
             if (!File.Exists(path))
             {
