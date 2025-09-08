@@ -15,12 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsEnvironment("Render"))
 {
+    //Add InMemory Database for Render
     builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
         options.UseInMemoryDatabase("CalisthenicsStoreDb"));
 }
 else
 {
-// Add EF Core context
+    // Add EF Core context
     var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ??
                            throw new InvalidOperationException("Connection string 'CalisthenicsStore' not found.");
     builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
