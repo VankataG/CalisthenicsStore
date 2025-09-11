@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.ViewModels.ApplicationUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +18,8 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+
+        public ProfileViewModel Profile { get; set; } = null!;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
@@ -82,7 +85,25 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            await LoadAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            this.Profile = new ProfileViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName!,
+                Email = user.Email!,
+                EmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                TwoFactorEnabled = user.TwoFactorEnabled,
+                LockoutEnabled = user.LockoutEnabled,
+                LockoutEnd = user.LockoutEnd,
+                AccessFailedCount = user.AccessFailedCount,
+                Roles = roles
+            };
+
             return Page();
         }
 
