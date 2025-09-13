@@ -2,15 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.ViewModels.ApplicationUser;
+using CalisthenicsStore.ViewModels.Order;
+using CalisthenicsStore.ViewModels.Product;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
 {
@@ -18,15 +20,18 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IOrderRepository orderRepository;
 
         public ProfileViewModel Profile { get; set; } = null!;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IOrderRepository orderRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.orderRepository = orderRepository;
         }
 
         /// <summary>
@@ -85,11 +90,39 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            Guid userId = user.Id;
+
             var roles = await _userManager.GetRolesAsync(user);
+
+            List<ProfileOrderViewModel> orders = await this.orderRepository
+                .GetAllAttached()
+                .Where(o => o.ApplicationUserId == userId)
+                .Select(o => new ProfileOrderViewModel()
+                {
+                    Id = o.Id,
+                    ApplicationUserId = o.ApplicationUserId,
+                    OrderDate = o.OrderDate,
+                    Address = o.Address,
+                    City = o.City,
+                    Status = o.Status,
+                    Products = o.Products
+                        .Select(op => new ProfileProductViewModel()
+                        {
+                            ProductId = op.ProductId,
+                            Name = op.Product.Name,
+                            ImageUrl = op.Product.ImageUrl,
+                            Quantity = op.Quantity,
+                            Price = op.UnitPrice,
+                            Total = op.UnitPrice * op.Quantity
+                        })
+                        .ToList()
+                })
+                .AsNoTracking()
+                .ToListAsync();
 
             this.Profile = new ProfileViewModel()
             {
-                Id = user.Id,
+                Id = userId,
                 UserName = user.UserName!,
                 Email = user.Email!,
                 EmailConfirmed = user.EmailConfirmed,
@@ -101,7 +134,8 @@ namespace CalisthenicsStore.Web.Areas.Identity.Pages.Account.Manage
                 LockoutEnabled = user.LockoutEnabled,
                 LockoutEnd = user.LockoutEnd,
                 AccessFailedCount = user.AccessFailedCount,
-                Roles = roles
+                Roles = roles,
+                Orders = orders
             };
 
             return Page();
