@@ -1,4 +1,6 @@
-﻿namespace CalisthenicsStore.ViewModels.ApplicationUser
+﻿using CalisthenicsStore.ViewModels.Order;
+
+namespace CalisthenicsStore.ViewModels.ApplicationUser
 {
     public class ProfileViewModel
     {
@@ -15,5 +17,7 @@
         public DateTimeOffset? LockoutEnd { get; set; }
         public int AccessFailedCount { get; set; }
         public IEnumerable<string> Roles { get; set; } = Enumerable.Empty<string>();
+
+        public IEnumerable<ProfileOrderViewModel> Orders { get; set; } = Enumerable.Empty<ProfileOrderViewModel>();
     }
 }
