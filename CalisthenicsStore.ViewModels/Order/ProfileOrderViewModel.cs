@@ -18,7 +18,7 @@ namespace CalisthenicsStore.ViewModels.Order
         public string Status { get; set; } = null!;
 
         public IEnumerable<ProfileProductViewModel> Products { get; set; }
-            = Enumerable.Empty<ProfileProductViewModel>();
+            = new HashSet<ProfileProductViewModel>();
 
     }
 }
