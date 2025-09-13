@@ -1,4 +1,6 @@
 ﻿@page
+@using CalisthenicsStore.ViewModels.Order
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IndexModel
 @{
     ViewData["Title"] = "My Profile";
@@ -133,21 +135,19 @@
         padding: 24px;
         grid-template-columns: 1fr 1fr;
     }
+
     @@media (max-width:900px) {
-        .hero
+        .hero {
+            grid-template-columns: 88px 1fr;
+        }
 
-    {
-        grid-template-columns: 88px 1fr;
-    }
+        .actions {
+            grid-column: 1 / -1;
+        }
 
-    .actions {
-        grid-column: 1 / -1;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
+        .grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     .panel {
@@ -236,10 +236,8 @@
 
 <div class="wrap">
     <div class="card">
-        <!-- Header / identity -->
         <section class="hero">
             <div class="avatar">
-                @* Fallback initials *@
                 @{
                     var initials = string.Join("", new[]{
                 (user.FirstName).Trim().FirstOrDefault(),
@@ -267,7 +265,6 @@
 
             <div class="actions">
                 <a class="btn" asp-area="Identity" asp-page="/Account/Manage/Email">Change Email</a>
-                <a class="btn" asp-area="Identity" asp-page="/Account/Manage/Phone">Update Phone</a>
                 <a class="btn" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">2FA</a>
                 <a class="btn primary" asp-area="Identity" asp-page="/Account/Manage/Index">Edit Profile</a>
             </div>
@@ -275,63 +272,117 @@
 
         <div class="divider"></div>
 
-        <!-- Content -->
         <section class="grid">
-
-            <!-- Personal -->
             <div class="panel">
                 <h3>Personal</h3>
                 <div class="kv">
                     <div class="k">First name</div><div class="v">@user?.FirstName</div>
                     <div class="k">Last name</div><div class="v">@user?.LastName</div>
                     <div class="k">Email</div><div class="v">@user?.Email</div>
-                    <div class="k">Phone</div><div class="v">@user?.PhoneNumber ?? "<span class='muted'>—</span>"</div>
                     <div class="k">User ID</div><div class="v"><span class="muted">@user?.Id</span></div>
                 </div>
             </div>
 
-            <!-- Account status -->
+            <!-- Orders panel (refactored) -->
             <div class="panel">
-                <h3>Security & Status</h3>
-                <div class="kv">
-                    <div class="k">Two-factor</div>
-                    <div class="v">
-                        <div class="state">
-                            <span class="dot @(user?.TwoFactorEnabled==true ? "ok" : "warn")"></span>
-                            @(user?.TwoFactorEnabled == true ? "Enabled" : "Disabled")
-                        </div>
-                    </div>
+                <h3>Orders</h3>
 
-                    <div class="k">Lockout</div>
-                    <div class="v">
-                        <div class="state">
-                            <span class="dot @(user?.LockoutEnabled==true ? "warn" : "ok")"></span>
-                            @(user?.LockoutEnabled == true ? $"Enabled {(user?.LockoutEnd != null ? $"(until {user.LockoutEnd:g})" : "")}" : "Not active")
-                        </div>
-                    </div>
+                @{
+                    var orders = user?.Orders ?? new List<ProfileOrderViewModel>();
 
-                    <div class="k">Failed sign-ins</div>
-                    <div class="v"><span class="badge">@user?.AccessFailedCount</span></div>
+                    Func<string, string> statusClass = s => (s ?? "").ToLower() switch
+                    {
+                        "pending" => "warn",
+                        "processing" => "warn",
+                        "shipped" => "warn",
+                        "delivered" => "ok",
+                        "completed" => "ok",
+                        "cancelled" => "err",
+                        "failed" => "err",
+                        _ => "warn"
+                    };
 
-                    <div class="k">Email</div>
-                    <div class="v">
-                        <div class="state">
-                            <span class="dot @(user?.EmailConfirmed==true ? "ok" : "warn")"></span>
-                            @(user?.EmailConfirmed == true ? "Confirmed" : "Not confirmed")
-                        </div>
-                    </div>
+                    Func<decimal, string> money = v => v.ToString("C");
+                    Func<Guid, string> shortId = id => id.ToString("N")[..8].ToUpperInvariant();
+                }
 
-                    <div class="k">Phone</div>
-                    <div class="v">
-                        <div class="state">
-                            <span class="dot @(user?.PhoneNumberConfirmed==true ? "ok" : "warn")"></span>
-                            @(user?.PhoneNumberConfirmed == true ? "Confirmed" : "Not confirmed")
-                        </div>
+                @if (!orders.Any())
+                {
+                    <div class="state" style="background:#121622;">
+                        <span class="dot warn"></span>
+                        No orders yet.
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="orders-grid">
+                        @foreach (var o in orders)
+                        {
+                            var total = o.Products?.Sum(p => p.Quantity * p.Price) ?? 0m;
+                            <article class="order-card">
+                                <header class="order-head">
+                                    <div class="order-id">
+                                        <span class="label">Order</span>
+                                        <span class="mono">#@shortId(o.Id)</span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span class="badge">@o.OrderDate.ToString("dd MMM yyyy")</span>
+                                        <span class="state chip">
+                                            <span class="dot @statusClass(o.Status)"></span>@o.Status
+                                        </span>
+                                    </div>
+                                </header>
+
+                                <div class="order-body">
+                                    <div class="ship-to">
+                                        <div class="k">Ship to</div>
+                                        <div class="v">@o.Address, @o.City</div>
+                                    </div>
+
+                                    @if (o.Products?.Any() == true)
+                                    {
+                                        <table class="order-items">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th class="num">Qty</th>
+                                                    <th class="num">Price</th>
+                                                    <th class="num">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in o.Products)
+                                                {
+                                                    var line = item.Quantity * item.Price;
+                                                    <tr>
+                                                        <td class="product">
+                                                            @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                                            {
+                                                                <img src="@item.ImageUrl" alt="@item.Name" class="thumb" />
+                                                            }
+                                                            <span>@item.Name</span>
+                                                        </td>
+                                                        <td class="num">@item.Quantity</td>
+                                                        <td class="num">@money(item.Price)</td>
+                                                        <td class="num">@money(line)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3" class="num label">Order total</td>
+                                                    <td class="num total">@money(total)</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    }
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
             </div>
 
-            <!-- Roles / Claims -->
             <div class="panel">
                 <h3>Roles</h3>
                 <div class="badges">
@@ -349,20 +400,123 @@
                 </div>
             </div>
 
-            <!-- Quick actions -->
             <div class="panel">
                 <h3>Quick actions</h3>
                 <div style="display:flex; gap:12px; flex-wrap:wrap;">
                     <a class="btn" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change password</a>
-                    <a class="btn" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">Manage 2FA</a>
                     <a class="btn" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Download personal data</a>
                     <a class="btn" asp-area="Identity" asp-page="/Account/Manage/PersonalData">Delete account</a>
                 </div>
             </div>
-
         </section>
     </div>
 </div>
+
+<style>
+    /* ---- Orders UI (scoped) ---- */
+    .orders-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr
+    }
+    @@media (min-width:860px) {
+        .orders-grid
+
+    {
+        grid-template-columns: 1fr
+    }
+
+    }
+
+    .order-card {
+        border: 1px solid #232733;
+        border-radius: 12px;
+        background: #121622;
+        padding: 14px;
+    }
+
+    .order-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: .5rem;
+    }
+
+    .order-id .label {
+        font-size: .8rem;
+        color: var(--muted);
+        margin-right: .35rem
+    }
+
+    .order-id .mono {
+        font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace
+    }
+
+    .order-meta {
+        display: flex;
+        gap: .5rem;
+        align-items: center
+    }
+
+    .order-body .ship-to {
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        gap: .5rem;
+        margin: .35rem 0 1rem
+    }
+
+    .order-items {
+        width: 100%;
+        border-collapse: collapse
+    }
+
+        .order-items th, .order-items td {
+            padding: .55rem;
+            border-top: 1px solid #1f2431;
+            vertical-align: middle
+        }
+
+        .order-items thead th {
+            font-weight: 600;
+            color: #cfd5e6;
+            background: #0f1320;
+            border-top: none
+        }
+
+        .order-items td.product {
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .order-items img.thumb {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #1f2431
+        }
+
+        .order-items .num {
+            text-align: right;
+            white-space: nowrap
+        }
+
+        .order-items tfoot td {
+            font-weight: 700
+        }
+
+        .order-items tfoot .total {
+            font-size: 1.05rem
+        }
+
+    .state.chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #0f1420;
+        border: 1px solid #232733
+    }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
