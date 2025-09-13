@@ -3,6 +3,8 @@ using CalisthenicsStore.Data.Repositories;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.OrderManagement;
+using CalisthenicsStore.ViewModels.Order;
+using CalisthenicsStore.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Services.Admin
@@ -35,6 +37,41 @@ namespace CalisthenicsStore.Services.Admin
                 })
                 .ToArrayAsync();
             return orders;
+        }
+
+        public async Task<ProfileOrderViewModel> GetOrderDataAsync(Guid id)
+        {
+            Order? order = await this.orderRepository
+                .GetAllAttached()
+                .IgnoreQueryFilters()
+                .SingleOrDefaultAsync(o => o.Id == id);
+
+            ProfileOrderViewModel? orderModel = null;
+
+            if (order != null)
+            {
+                orderModel = new ProfileOrderViewModel()
+                {
+                    Id = order.Id,
+                    ApplicationUserId = order.ApplicationUserId,
+                    OrderDate = order.OrderDate,
+                    Status = order.Status,
+                    City = order.City,
+                    Address = order.Address,
+                    Products = order.Products
+                        .Select(op => new ProfileProductViewModel()
+                        {
+                            ProductId = op.ProductId,
+                            Name = op.Product.Name,
+                            ImageUrl = op.Product.ImageUrl,
+                            Price = op.UnitPrice,
+                            Quantity = op.Quantity,
+                            Total = op.UnitPrice * op.Quantity
+                        })
+                        .ToList()
+                };
+            }
+            return orderModel;
         }
 
         public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)

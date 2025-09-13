@@ -1,6 +1,7 @@
 ﻿
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.OrderManagement;
+using CalisthenicsStore.ViewModels.Order;
 using Microsoft.AspNetCore.Mvc;
 using static CalisthenicsStore.Common.Constants.Notifications;
 
@@ -20,6 +21,14 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         {
             IEnumerable<OrderManagementIndexViewModel> orders = await orderService.GetOrderBoardDataAsync();
             return View(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            ProfileOrderViewModel orderModel = await orderService.GetOrderDataAsync(id);
+
+            return View(orderModel);
         }
 
         [HttpPost]
