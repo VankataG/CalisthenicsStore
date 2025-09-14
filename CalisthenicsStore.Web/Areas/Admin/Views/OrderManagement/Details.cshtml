@@ -255,21 +255,21 @@
                                                 <img src="@item.ImageUrl" alt="@item.Name" />
                                             }
                                             <div>
-                                                <div>@item.Name</div>
+                                                <div class="muted">@item.Name</div>
                                                 <div class="muted">ID: @item.ProductId</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="num">@item.Quantity</td>
-                                    <td class="num">@Money(item.Price)</td>
-                                    <td class="num">@Money(line)</td>
+                                    <td class="num muted">@item.Quantity</td>
+                                    <td class="num muted">@Money(item.Price)</td>
+                                    <td class="num muted">@Money(line)</td>
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3" class="num"><strong>Order total</strong></td>
-                                <td class="num"><strong>@Money(subtotal)</strong></td>
+                                <td colspan="3" class="num muted"><strong>Order total</strong></td>
+                                <td class="num muted"><strong>@Money(subtotal)</strong></td>
                             </tr>
                         </tfoot>
                     </table>
