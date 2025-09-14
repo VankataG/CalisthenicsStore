@@ -41,37 +41,33 @@ namespace CalisthenicsStore.Services.Admin
 
         public async Task<ProfileOrderViewModel> GetOrderDataAsync(Guid id)
         {
-            Order? order = await this.orderRepository
+            ProfileOrderViewModel? order = await this.orderRepository
                 .GetAllAttached()
                 .IgnoreQueryFilters()
-                .SingleOrDefaultAsync(o => o.Id == id);
-
-            ProfileOrderViewModel? orderModel = null;
-
-            if (order != null)
-            {
-                orderModel = new ProfileOrderViewModel()
+                .Where(o => o.Id == id)
+                .Select(o => new ProfileOrderViewModel()
                 {
-                    Id = order.Id,
-                    ApplicationUserId = order.ApplicationUserId,
-                    OrderDate = order.OrderDate,
-                    Status = order.Status,
-                    City = order.City,
-                    Address = order.Address,
-                    Products = order.Products
-                        .Select(op => new ProfileProductViewModel()
+                    Id = o.Id,
+                    ApplicationUserId = o.ApplicationUserId,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status,
+                    City = o.City,
+                    Address = o.Address,
+                    Products = o.Products
+                        .Select(op => new ProfileProductViewModel
                         {
                             ProductId = op.ProductId,
-                            Name = op.Product.Name,
+                            Name = op.Product.Name,      
                             ImageUrl = op.Product.ImageUrl,
                             Price = op.UnitPrice,
                             Quantity = op.Quantity,
                             Total = op.UnitPrice * op.Quantity
                         })
                         .ToList()
-                };
-            }
-            return orderModel;
+                })
+                .SingleOrDefaultAsync();
+
+            return order;
         }
 
         public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)
