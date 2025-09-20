@@ -1,4 +1,4 @@
-name: .NET Build
+name: Build and Test
 
 on:
   push:
@@ -18,8 +18,18 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore CalisthenicsStore.sln
 
       - name: Build
         run: dotnet build CalisthenicsStore.sln -c Release --no-restore
+        
+      - name: Test
+        run: dotnet test CalisthenicsStore.sln -c Release --no-build --logger "trx;LogFileName=test_results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results
+          path: '**/TestResults/*.trx'
