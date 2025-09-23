@@ -24,7 +24,7 @@ namespace CalisthenicsStore.Web.Controllers
                 return View("Checkout", model);
             }
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
             Guid orderId = await orderService.PlaceOrderAsync(model, userId);
 

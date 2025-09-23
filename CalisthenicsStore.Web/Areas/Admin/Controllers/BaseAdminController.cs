@@ -10,7 +10,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
     [Authorize(Roles = AdminRoleName)]
     public abstract class BaseAdminController : Controller
     {
-        protected string GetUserId()
+        protected string? GetUserId()
         {
             
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

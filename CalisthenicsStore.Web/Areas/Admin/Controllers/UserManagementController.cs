@@ -20,7 +20,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<UserManagementIndexViewModel> allUsers
-                = await this.userService.GetUsersBoardDataAsync(this.GetUserId().ToLower());
+                = await this.userService.GetUsersBoardDataAsync(GetUserId()!.ToLower());
 
             return View(allUsers);
         }

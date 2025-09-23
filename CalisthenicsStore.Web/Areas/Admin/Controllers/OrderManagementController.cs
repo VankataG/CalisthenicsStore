@@ -26,7 +26,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            ProfileOrderViewModel orderModel = await orderService.GetOrderDataAsync(id);
+            ProfileOrderViewModel? orderModel = await orderService.GetOrderDataAsync(id);
 
             return View(orderModel);
         }
