@@ -105,7 +105,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
         [Test]
         public async Task AddExerciseAsyncShouldReturnTrue()
         {
-            Exercise createdExercise = null;
+            Exercise? createdExercise = null;
             exerciseRepositoryMock
                 .Setup(er => er.AddAsync(It.IsAny<Exercise>()))
                 .Callback<Exercise>(e => createdExercise = e)
@@ -125,7 +125,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
 
             Assert.That(result, Is.True);
             Assert.That(createdExercise, Is.Not.Null);
-            Assert.That(createdExercise.Name, Is.EqualTo(correctName));
+            Assert.That(createdExercise!.Name, Is.EqualTo(correctName));
             Assert.That(createdExercise.Description, Is.EqualTo(correctDesc));
             Assert.That(createdExercise.IsDeleted, Is.EqualTo(false));
             Assert.That(createdExercise.Level, Is.EqualTo(DifficultyLevel.Insane));
@@ -162,7 +162,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
             ExerciseCreateViewModel? result = await exerciseService.GetEditableExerciseAsync(correctGuid);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(correctGuid));
+            Assert.That(result!.Id, Is.EqualTo(correctGuid));
             Assert.That(result.Name, Is.EqualTo("Test"));
             Assert.That(result.Level, Is.EqualTo(DifficultyLevel.Advanced));
             Assert.That(result.ImageUrl, Is.EqualTo(null));
@@ -247,7 +247,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
             
             Assert.That(result, Is.True);
             Assert.That(updatedExercise, Is.Not.Null);
-            Assert.That(updatedExercise.Id, Is.EqualTo(correctGuid));
+            Assert.That(updatedExercise!.Id, Is.EqualTo(correctGuid));
             Assert.That(updatedExercise.Name, Is.EqualTo(changedName));
             Assert.That(updatedExercise.Level, Is.EqualTo(changedLevel));
         }
