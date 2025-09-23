@@ -32,7 +32,7 @@ namespace CalisthenicsStore.Services.Admin
                     Price = p.Price,
                     StockQuantity = p.StockQuantity,
                     IsDeleted = p.IsDeleted,
-                    CategoryName = p.Category.Name ,
+                    CategoryName = p.Category!.Name ,
                 })
                 .ToArrayAsync();
 

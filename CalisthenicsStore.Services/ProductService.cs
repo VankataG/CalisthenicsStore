@@ -30,7 +30,7 @@ namespace CalisthenicsStore.Services
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
-                    CategoryName = p.Category.Name,
+                    CategoryName = p.Category!.Name,
                     ImageUrl = p.ImageUrl
                 })
                 .ToListAsync();
@@ -42,14 +42,14 @@ namespace CalisthenicsStore.Services
             return await repository
                 .GetAllAttackedWithCategory()
                 .AsNoTracking()
-                .Where(p => p.Category.Id == categoryId)
+                .Where(p => p.Category!.Id == categoryId)
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
-                    CategoryName = p.Category.Name,
+                    CategoryName = p.Category!.Name,
                     ImageUrl = p.ImageUrl
                 })
                 .ToListAsync();
@@ -68,7 +68,7 @@ namespace CalisthenicsStore.Services
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
-                    CategoryName = p.Category.Name,
+                    CategoryName = p.Category!.Name,
                     ImageUrl = p.ImageUrl
                 })
                 .FirstAsync();

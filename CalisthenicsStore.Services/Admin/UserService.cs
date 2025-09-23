@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-using CalisthenicsStore.Data.Models;
+﻿using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.UserManagement;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using static CalisthenicsStore.Common.RolesConstants;
 
 
@@ -32,7 +30,7 @@ namespace CalisthenicsStore.Services.Admin
                 {
                     Id = u.Id.ToString(),
                     FullName = $"{u.FirstName} {u.LastName}",
-                    Email = u.Email,
+                    Email = u.Email!,
                     Role = userManager.GetRolesAsync(u).
                         GetAwaiter()
                         .GetResult()
