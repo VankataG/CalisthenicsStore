@@ -7,7 +7,7 @@ namespace CalisthenicsStore.Services.Admin.Interfaces
     {
         Task<IEnumerable<OrderManagementIndexViewModel>> GetOrderBoardDataAsync();
 
-        Task<ProfileOrderViewModel> GetOrderDataAsync(Guid id);
+        Task<ProfileOrderViewModel?> GetOrderDataAsync(Guid id);
 
         Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id);
     }

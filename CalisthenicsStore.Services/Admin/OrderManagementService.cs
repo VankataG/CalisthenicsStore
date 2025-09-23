@@ -39,7 +39,7 @@ namespace CalisthenicsStore.Services.Admin
             return orders;
         }
 
-        public async Task<ProfileOrderViewModel> GetOrderDataAsync(Guid id)
+        public async Task<ProfileOrderViewModel?> GetOrderDataAsync(Guid id)
         {
             ProfileOrderViewModel? order = await this.orderRepository
                 .GetAllAttached()

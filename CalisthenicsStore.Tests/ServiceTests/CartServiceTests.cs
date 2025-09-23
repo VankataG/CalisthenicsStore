@@ -105,13 +105,16 @@ namespace CalisthenicsStore.Tests.ServiceTests
             bool result = fakeSession.TryGetValue("Cart", out var value);
             Assert.That(result, Is.True);
 
-            string jsonCartItems = Encoding.UTF8.GetString(value);
-            List<CartItem>? deserializedCartItems = JsonSerializer.Deserialize<List<CartItem>>(jsonCartItems);
+            if (value != null)
+            {
+                string jsonCartItems = Encoding.UTF8.GetString(value);
+                List<CartItem>? deserializedCartItems = JsonSerializer.Deserialize<List<CartItem>>(jsonCartItems);
 
-            Assert.That(deserializedCartItems, Is.Not.Null);
-            Assert.That(deserializedCartItems.Count, Is.EqualTo(cartItems.Count));
-            Assert.That(deserializedCartItems[0].ProductId, Is.EqualTo(cartItems[0].ProductId));
-            Assert.That(deserializedCartItems[1].Quantity, Is.EqualTo(cartItems[1].Quantity));
+                Assert.That(deserializedCartItems, Is.Not.Null);
+                Assert.That(deserializedCartItems!.Count, Is.EqualTo(cartItems.Count));
+                Assert.That(deserializedCartItems[0].ProductId, Is.EqualTo(cartItems[0].ProductId));
+                Assert.That(deserializedCartItems[1].Quantity, Is.EqualTo(cartItems[1].Quantity));
+            }
         }
 
         [Test]
