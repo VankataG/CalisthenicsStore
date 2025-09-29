@@ -279,7 +279,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
             ProductViewModel? foundProduct = await this.productService.GetByIdAsync(searchedProduct.Id);
 
             Assert.That(foundProduct, Is.Not.Null);
-            Assert.That(foundProduct.Id, Is.EqualTo(searchedProduct.Id));
+            Assert.That(foundProduct!.Id, Is.EqualTo(searchedProduct.Id));
             Assert.That(foundProduct.Name, Is.EqualTo(searchedProduct.Name));
             Assert.That(foundProduct.Description, Is.EqualTo(searchedProduct.Description));
             Assert.That(foundProduct.Price, Is.EqualTo(searchedProduct.Price));

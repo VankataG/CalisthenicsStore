@@ -196,7 +196,7 @@ namespace CalisthenicsStore.Data.Repositories
 
             if (isDeletedProperty == null)
             {
-                throw new InvalidOperationException();  //TODO: Add ExceptionMessages consts
+                throw new InvalidOperationException();  //TODO: Add ExceptionMessages const
             }
 
             isDeletedProperty.SetValue(item, true);

@@ -5,6 +5,7 @@ using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ProductManagement;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CalisthenicsStore.Services.Admin
 {
@@ -13,10 +14,15 @@ namespace CalisthenicsStore.Services.Admin
         private readonly IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;
 
-        public ProductManagementService(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        private readonly ILogger<ProductManagementService> logger;
+
+        public ProductManagementService(IProductRepository productRepository, 
+            ICategoryRepository categoryRepository, 
+            ILogger<ProductManagementService> logger)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
+            this.logger = logger;
         }
 
 
@@ -165,15 +171,12 @@ namespace CalisthenicsStore.Services.Admin
                 }
                 else
                 {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
+                    logger.LogWarning("Attempted to delete product with ID {ProductId}, but it was not found.", id);
                 }
             }
             catch (Exception ex)
             {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
-
+                logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
             }
 
         }
