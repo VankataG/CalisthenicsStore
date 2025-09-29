@@ -1,6 +1,7 @@
 ﻿using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Admin;
 using CalisthenicsStore.Services.Admin.Interfaces;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -12,6 +13,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
     {
         private IMock<IProductRepository> productRepositoryMock;
         private IMock<ICategoryRepository> categoryRepositoryMock;
+        private IMock<ILogger<ProductManagementService>> loggerMock;
 
         private IProductManagementService productService;
 
@@ -20,8 +22,9 @@ namespace CalisthenicsStore.Tests.ServiceTests
         {
             this.productRepositoryMock = new Mock<IProductRepository>();
             this.categoryRepositoryMock = new Mock<ICategoryRepository>();
+            this.loggerMock = new Mock<ILogger<ProductManagementService>>();
             this.productService =
-                new ProductManagementService(productRepositoryMock.Object, categoryRepositoryMock.Object);
+                new ProductManagementService(productRepositoryMock.Object, categoryRepositoryMock.Object, loggerMock.Object);
         }
 
         [Test]
