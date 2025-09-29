@@ -11,9 +11,12 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
     {
         private readonly IExerciseManagementService exerciseService;
 
-        public ExerciseManagementController(IExerciseManagementService exerciseService)
+        private readonly ILogger<ExerciseManagementController> logger;
+
+        public ExerciseManagementController(IExerciseManagementService exerciseService, ILogger<ExerciseManagementController> logger)
         {
             this.exerciseService = exerciseService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -54,7 +57,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                     TempData[SuccessMessageKey] = "Exercise added successfully!";
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 TempData[ErrorMessageKey] =
                     "Unexpected error occured while adding the exercise! Please contact the developer team.";
@@ -71,9 +74,8 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
                 ExerciseCreateViewModel? model = await exerciseService.GetEditableExerciseAsync(id);
 
                 if (model == null)
-                {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
+                { 
+                    logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
 
                     TempData[ErrorMessageKey] = "Exercise does not exist!";
 
@@ -85,8 +87,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to edit product with ID {ProductId}", id);
+                logger.LogError(e, "Error occurred while trying to edit product with ID {ProductId}", id);
 
                 return RedirectToAction(nameof(Index));
             }

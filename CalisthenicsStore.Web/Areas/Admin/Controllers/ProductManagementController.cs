@@ -12,9 +12,12 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
     {
         private readonly IProductManagementService productService;
 
-        public ProductManagementController(IProductManagementService productService)
+        private readonly ILogger<ExerciseManagementController> logger;
+
+        public ProductManagementController(IProductManagementService productService, ILogger<ExerciseManagementController> logger)
         {
             this.productService = productService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -74,22 +77,18 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 
                 if (editableProduct == null)
                 {
-                    //TODO: Add ILogger
-                    //logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
+                    logger.LogWarning("Attempted to edit product with ID {ProductId}, but it was not found.", id);
 
                     TempData[ErrorMessageKey] = "Product was not found!";
 
                     return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    return View(editableProduct);
-                }
+                
+                return View(editableProduct);
             }
             catch (Exception e)
             {
-                //TODO: Add ILogger
-                //logger.LogError(ex, "Error occurred while trying to edit product with ID {ProductId}", id);
+                logger.LogError(e, "Error occurred while trying to edit product with ID {ProductId}", id);
                 TempData[ErrorMessageKey] = "Unexpected error occured while trying to edit the product!";
 
                 return RedirectToAction(nameof(Index));
