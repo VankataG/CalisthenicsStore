@@ -221,7 +221,7 @@ namespace CalisthenicsStore.Tests.ServiceTests
             ExerciseViewModel? actualResult = await this.exerciseService.GetExerciseDetailsAsync(expectedExercise.Id);
 
             Assert.That(actualResult, Is.Not.Null);
-            Assert.That(actualResult.Id, Is.EqualTo(expectedExercise.Id));
+            Assert.That(actualResult!.Id, Is.EqualTo(expectedExercise.Id));
             Assert.That(actualResult.Name, Is.EqualTo(expectedExercise.Name));
             Assert.That(actualResult.Description, Is.EqualTo(expectedExercise.Description));
             Assert.That(actualResult.ImageUrl, Is.EqualTo(expectedExercise.ImageUrl));
