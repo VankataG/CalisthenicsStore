@@ -1,7 +1,17 @@
 ﻿using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options
+    ;
+using Stripe;
+using Stripe.Checkout;
+
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Order;
-using Microsoft.AspNetCore.Mvc;
+using CalisthenicsStore.ViewModels.Payment;
+using CalisthenicsStore.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Controllers
 {
@@ -17,18 +27,114 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
+        public async Task<IActionResult> PlaceOrderAndPay(CheckoutViewModel model,
+            [FromServices] IOptions<StripeSettings> stripeOptions)
         {
             if (!ModelState.IsValid)
             {
                 return View("Checkout", model);
             }
 
+            //Create Pending Order
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-
             Guid orderId = await orderService.PlaceOrderAsync(model, userId);
 
-            return RedirectToAction(nameof(ThankYou));
+
+            //Map to Stripe line items
+            PaymentViewModel? paymentVm = await orderService.GetPaymentViewModelAsync(orderId);
+            if (paymentVm is null || !paymentVm.CartItems.Any())
+                return RedirectToAction(nameof(Checkout));
+
+            var lineItems = paymentVm.CartItems.Select(ci =>
+                {
+                    long unitAmount = (long)Math.Round(ci.Price * 100m, MidpointRounding.AwayFromZero);
+                    return new SessionLineItemOptions
+                    {
+                        Quantity = ci.Quantity,
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            Currency = "bgn",
+                            UnitAmount = unitAmount,
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = ci.ProductName,
+                                Images = string.IsNullOrWhiteSpace(ci.ImageUrl)
+                                    ? null
+                                    : new List<string> { ci.ImageUrl }
+                            }
+                        }
+                    };
+                })
+                .ToList();
+
+            var baseSuccess = Url.Action(nameof(PaymentSuccess), "Order", new { orderId }, Request.Scheme);
+            var successSeparator = baseSuccess!.Contains("?") ? "&" : "?";
+
+            var options = new SessionCreateOptions
+            {
+                Mode = "payment",
+                PaymentMethodTypes = new List<String> { "card" },
+                LineItems = lineItems,
+
+                SuccessUrl = baseSuccess + successSeparator + "session_id={CHECKOUT_SESSION_ID}",
+                CancelUrl = Url.Action(nameof(PaymentCancel), "Order", new { orderId }, Request.Scheme),
+
+                Metadata = new Dictionary<string, string>
+                {
+                    ["orderId"] = orderId.ToString(),
+                    ["userId"] = userId
+                }
+            };
+
+            try
+            {
+                var session = await new SessionService().CreateAsync(options);
+
+                return Redirect(session.Url);
+            }
+            catch (StripeException ex)
+            {
+                ModelState.AddModelError("", "We couldn't start the payment, Please try again.");
+                return View("Checkout", model);
+            }
+
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PaymentSuccess(Guid orderId,
+            [FromQuery(Name = "session_id")] string sessionId)
+        {
+
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                Console.WriteLine($"[PaymentSuccess] Missing session_id. Path={Request.Path}, Query={Request.QueryString}");
+
+                TempData[ErrorMessageKey] = "Missing session_id on return from Stripe.";
+                return RedirectToAction(nameof(PaymentCancel), new { orderId });
+            }
+
+
+            var session = await new SessionService().GetAsync(sessionId);
+            if (String.IsNullOrEmpty(session.PaymentIntentId))
+            {
+                return RedirectToAction(nameof(PaymentCancel), new { orderId });
+            }
+
+            var pi = await new Stripe.PaymentIntentService().GetAsync(session.PaymentIntentId);
+            if (pi.Status == "succeeded")
+            {
+                await orderService.MarkOrderAsPaidAsync(orderId);
+                return RedirectToAction(nameof(ThankYou));
+            }
+
+            return RedirectToAction(nameof(PaymentCancel), new { orderId });
+        }
+
+        [HttpGet]
+        public IActionResult PaymentCancel(Guid orderId)
+        {
+            return View(model: orderId);
         }
 
         public IActionResult ThankYou()
