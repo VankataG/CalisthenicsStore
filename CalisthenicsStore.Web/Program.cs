@@ -7,8 +7,10 @@ using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
+using CalisthenicsStore.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,9 @@ else
 builder.Services.AddControllersWithViews();
     
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+//Configure StripeSettings using values from appsettings.json
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -130,5 +135,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+//Configure Stripe secret key from configuration
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
 
 app.Run();

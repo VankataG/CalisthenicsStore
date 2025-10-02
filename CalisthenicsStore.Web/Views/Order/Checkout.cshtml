@@ -146,7 +146,9 @@
 
 		<div class="order-info">
 			<h2>Order Info</h2>
-			<form asp-action="PlaceOrder" method="post">
+			<form asp-action="PlaceOrderAndPay" method="post">
+				
+                @Html.AntiForgeryToken()
 
 				<div class="form-group">
 					<label asp-for="City"></label>
@@ -160,7 +162,7 @@
 					<span asp-validation-for="Address" class="text-danger fw-bold"></span>
 				</div>
 
-				<button type="submit" class="confirm-btn">Confirm Order</button>
+				<button type="submit" class="confirm-btn">Confirm Order & Pay</button>
 			</form>
 		</div>
 	</div>

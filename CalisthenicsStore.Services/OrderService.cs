@@ -2,7 +2,10 @@
 using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Services.Interfaces;
+using CalisthenicsStore.ViewModels.CartItem;
 using CalisthenicsStore.ViewModels.Order;
+using CalisthenicsStore.ViewModels.Payment;
+using Microsoft.EntityFrameworkCore;
 
 namespace CalisthenicsStore.Services
 {
@@ -79,6 +82,42 @@ namespace CalisthenicsStore.Services
             cartService.ClearCart();
 
             return order.Id;
+        }
+
+        public async Task<PaymentViewModel?> GetPaymentViewModelAsync(Guid orderId)
+        {
+            PaymentViewModel? model = await repository
+                .GetAllAttached()
+                .AsNoTracking()
+                .Where(o => o.Id == orderId)
+                .Select(o => new PaymentViewModel()
+                {
+                    CartItems = o.Products
+                        .Select(p => new CartItemViewModel()
+                        {
+                            ProductId = p.ProductId,
+                            ProductName = p.Product.Name,
+                            ImageUrl = p.Product.ImageUrl,
+                            Price = p.UnitPrice,
+                            Quantity = p.Quantity
+                        })
+                        .ToList(),
+                    TotalPrice = o.Products.Sum(p => p.UnitPrice * p.Quantity)
+                })
+                .SingleOrDefaultAsync();
+
+            return model;
+        }
+
+        public async Task MarkOrderAsPaidAsync(Guid orderId)
+        {
+            Order? order = await repository.GetByIdAsync(orderId);
+
+            if (order is null) return;
+
+            order.Status = "Paid";
+
+            await repository.UpdateAsync(order);
         }
     }
 }

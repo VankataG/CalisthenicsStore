@@ -1,0 +1,18 @@
+﻿@model Guid
+@{
+	ViewBag.Title = "Payment canceled";
+}
+<section class="container py-5">
+	<h1>⚠️ Payment canceled</h1>
+	<p>No charge was made. You can try again anytime.</p>
+
+	<form asp-action="PlaceOrderAndPay" method="post" class="mt-3">
+		@Html.AntiForgeryToken()
+		<!-- If you need address again, show inputs here or send them via TempData/session.
+		If not, just provide a retry button that reuses the existing pending order. -->
+		<input type="hidden" name="OrderId" value="@Model" />
+		<button class="btn btn-primary">Try again</button>
+	</form>
+
+	<a asp-action="Checkout" class="btn btn-link mt-2">Back to Checkout</a>
+</section>

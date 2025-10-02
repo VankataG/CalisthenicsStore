@@ -1,5 +1,6 @@
 ﻿using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.ViewModels.Order;
+using CalisthenicsStore.ViewModels.Payment;
 
 namespace CalisthenicsStore.Services.Interfaces
 {
@@ -8,5 +9,9 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<CheckoutViewModel> CheckoutCartItemsAsync();
 
         Task<Guid> PlaceOrderAsync(CheckoutViewModel model, string userId);
+
+        Task<PaymentViewModel?> GetPaymentViewModelAsync(Guid orderId);
+
+        Task MarkOrderAsPaidAsync(Guid orderId);
     }
 }
