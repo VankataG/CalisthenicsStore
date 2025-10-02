@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="cz3egqil.kkk~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
     <PackageReference Include="System.IO" Version="4.3.0" />

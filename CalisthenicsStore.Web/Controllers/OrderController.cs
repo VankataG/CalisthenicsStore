@@ -67,8 +67,13 @@ namespace CalisthenicsStore.Web.Controllers
                 })
                 .ToList();
 
-            var baseSuccess = Url.Action(nameof(PaymentSuccess), "Order", new { orderId }, Request.Scheme);
-            var successSeparator = baseSuccess!.Contains("?") ? "&" : "?";
+
+            var baseUrl = Environment.GetEnvironmentVariable("APP__PUBLICBASEURL")
+                          ?? $"{Request.Scheme}://{Request.Host}";
+            var successBase = baseUrl + Url.Action(nameof(PaymentSuccess), "Order", new { orderId });
+            var cancelUrl = baseUrl + Url.Action(nameof(PaymentCancel), "Order", new { orderId });
+            var successSeparator = successBase.Contains('?') ? "&" : "?";
+            var successUrl = successBase + successSeparator + "session_id={CHECKOUT_SESSION_ID}";
 
             var options = new SessionCreateOptions
             {
@@ -76,8 +81,8 @@ namespace CalisthenicsStore.Web.Controllers
                 PaymentMethodTypes = new List<String> { "card" },
                 LineItems = lineItems,
 
-                SuccessUrl = baseSuccess + successSeparator + "session_id={CHECKOUT_SESSION_ID}",
-                CancelUrl = Url.Action(nameof(PaymentCancel), "Order", new { orderId }, Request.Scheme),
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
 
                 Metadata = new Dictionary<string, string>
                 {
@@ -94,6 +99,7 @@ namespace CalisthenicsStore.Web.Controllers
             }
             catch (StripeException ex)
             {
+                Console.WriteLine("[Stripe] " + ex.Message);
                 ModelState.AddModelError("", "We couldn't start the payment, Please try again.");
                 return View("Checkout", model);
             }
