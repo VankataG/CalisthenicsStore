@@ -12,7 +12,6 @@ https://calisthenicsstore.onrender.com
   - Browse products organized by categories
   - View detailed descriptions, prices, and images
 - 🔍 **Search & Filter**
-  - Search products by keyword
   - Filter by category
 - 🧺 **Shopping Cart**
   - Add, remove, and update items in the cart
@@ -20,12 +19,11 @@ https://calisthenicsstore.onrender.com
 - 🧾 **Order Processing**
   - Checkout page with order summary
   - Collect customer information during checkout
-  - Order confirmation page *(in development)*
-- 🛠️ **Admin Panel** *(planned)*
-  - Manage products (create, edit, delete)
-  - View and manage orders
-- 📷 **Product Images**
-  - Upload and display product images
+  - Order confirmation and pay page - Stripe Integrated
+  - Order history for customers
+- 🛠️ **Admin Panel** 
+  - Manage products and exercises (create, edit, delete)
+  - View and manage orders and users
 - 🧩 **ViewModels**
   - Strongly-typed ViewModels for cleaner separation of concerns
 
@@ -44,9 +42,6 @@ https://calisthenicsstore.onrender.com
 
 ## 🏗️ Planned Enhancements
 
-- Complete the **Admin Panel** for managing products and orders
-- Implement **order history** for customers
-- Add **email notifications** upon order completion
 - Refine **frontend styling** and mobile responsiveness
 - Improve **validation and error handling**
 
