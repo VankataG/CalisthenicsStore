@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Checkout";
+    var siteKey = (string)ViewData["ReCaptchaSiteKey"];
 }
 
 <style>
@@ -121,6 +122,9 @@
         }
 
 </style>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <section class="checkout-container">
 	<div class="checkout-card">
 		<h1>🛒 Finish Order</h1>
@@ -161,6 +165,9 @@
 					<input asp-for="Address" placeholder="Enter your Address" class="form-control"/>
 					<span asp-validation-for="Address" class="text-danger fw-bold"></span>
 				</div>
+
+                <div class="g-recaptcha" data-sitekey="@siteKey"></div>
+                <span asp-validation-summary="ModelOnly" class="text-danger"></span>
 
 				<button type="submit" class="confirm-btn">Confirm Order & Pay</button>
 			</form>

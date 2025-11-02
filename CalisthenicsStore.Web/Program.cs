@@ -1,10 +1,12 @@
 using CalisthenicsStore.Data;
 using CalisthenicsStore.Data.Models;
+using CalisthenicsStore.Data.Models.ReCaptcha;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Data.Seeding;
 using CalisthenicsStore.Data.Seeding.Interfaces;
 using CalisthenicsStore.Data.Utilities;
 using CalisthenicsStore.Data.Utilities.Interfaces;
+using CalisthenicsStore.Services;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
 using CalisthenicsStore.Web.Models;
@@ -36,9 +38,6 @@ else
 builder.Services.AddControllersWithViews();
     
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-//Configure StripeSettings using values from appsettings.json
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -72,6 +71,13 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+//ReCaptcha
+builder.Services.Configure<GoogleReCaptchaSettings>(builder.Configuration.GetSection("GoogleReCaptcha"));
+builder.Services.AddHttpClient<IReCaptchaServ, ReCaptchaServ>();
+
+//Configure StripeSettings using values from appsettings.json
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 
 var app = builder.Build();

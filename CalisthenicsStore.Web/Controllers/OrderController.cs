@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options
 using Stripe;
 using Stripe.Checkout;
 
+using CalisthenicsStore.Data.Models.ReCaptcha;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.ViewModels.Order;
 using CalisthenicsStore.ViewModels.Payment;
@@ -15,13 +16,26 @@ using static CalisthenicsStore.Common.Constants.Notifications;
 
 namespace CalisthenicsStore.Web.Controllers
 {
-    public class OrderController(IOrderService orderService) : BaseController
+    public class OrderController : BaseController
     {
+        private readonly IOrderService orderService;
+
+        private readonly IReCaptchaServ captchaService;
+
+        private readonly IOptions<GoogleReCaptchaSettings> captchaSett;
+
+        public OrderController(IOrderService orderService, IReCaptchaServ captchaService, IOptions<GoogleReCaptchaSettings> captchaSett)
+        {
+            this.orderService = orderService;
+            this.captchaService = captchaService;
+            this.captchaSett = captchaSett;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Checkout()
         {
             CheckoutViewModel model = await orderService.CheckoutCartItemsAsync();
-           
+            ViewData["ReCaptchaSiteKey"] = captchaSett.Value.SiteKey;
 
             return View(model);
         }
@@ -30,8 +44,19 @@ namespace CalisthenicsStore.Web.Controllers
         public async Task<IActionResult> PlaceOrderAndPay(CheckoutViewModel model,
             [FromServices] IOptions<StripeSettings> stripeOptions)
         {
+            var token = Request.Form["g-recaptcha-response"];
+            var ok = await captchaService.VerifyAsync(token);
+            if (!ok)
+            {
+                ModelState.AddModelError(string.Empty, "Please confirm you’re not a robot.");
+
+                ViewData["ReCaptchaSiteKey"] = captchaSett.Value.SiteKey;
+                return View("Checkout", model);
+            }
+
             if (!ModelState.IsValid)
             {
+                ViewData["ReCaptchaSiteKey"] = captchaSett.Value.SiteKey;
                 return View("Checkout", model);
             }
 
