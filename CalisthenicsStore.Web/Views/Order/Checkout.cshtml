@@ -138,13 +138,13 @@
 					<img src="@item.ImageUrl" alt="Product Image" />
 					<div>
 						<p><strong>@item.ProductName</strong> (@item.Quantity)</p>
-						<p class="price">@($"{(item.Price * item.Quantity):F2}") BGN.</p>
+						<p class="price">@($"{(item.Price * item.Quantity):F2}") EUR</p>
 					</div>
 				</div>
 			}
 
 			<div class="cart-total">
-				<strong>Total:</strong> @($"{Model.TotalPrice:F2}") BGN.
+				<strong>Total:</strong> @($"{Model.TotalPrice:F2}") EUR
 			</div>
 		</div>
 

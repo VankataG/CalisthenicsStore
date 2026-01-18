@@ -27,7 +27,7 @@
 							<p class="card-text">@product.Description?.Substring(0, Math.Min(100, product.Description.Length))...</p>
 
 							<div class="mt-auto">
-								<p class="fw-bold h5">@product.Price.ToString("F2") BGN.</p>
+								<p class="fw-bold h5">@product.Price.ToString("F2") EUR</p>
 								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
 									View Details
 								</a>
