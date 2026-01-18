@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options
-    ;
+using Microsoft.Extensions.Options;
+
 using Stripe;
 using Stripe.Checkout;
 
@@ -78,7 +78,7 @@ namespace CalisthenicsStore.Web.Controllers
                         Quantity = ci.Quantity,
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            Currency = "bgn",
+                            Currency = "eur",
                             UnitAmount = unitAmount,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
