@@ -7,6 +7,11 @@
 ## Live Demo
 
 **🔗 [CalisthenicsStore on Render](https://calisthenicsstore.onrender.com)**  
+--------------------------
+Credentials: 
+  Email: adminUser@abv.bg
+  Password: Admin123
+--------------------------
 *(Deployed using Render — runs with InMemory or SQL database)*
 
 ---
