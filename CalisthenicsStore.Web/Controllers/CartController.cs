@@ -19,7 +19,7 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(Guid productId)
+        public async Task<IActionResult> AddToCart(Guid productId, string returnUrl)
         {
             try
             {
@@ -30,6 +30,9 @@ namespace CalisthenicsStore.Web.Controllers
             {
                 TempData[ErrorMessageKey] = "Failed adding to cart!";
             }
+
+            if (!string.IsNullOrEmpty(returnUrl))
+                return Redirect(returnUrl);
             
             return RedirectToAction("Details", "Product", new { id = productId});
         }
