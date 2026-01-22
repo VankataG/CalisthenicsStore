@@ -47,7 +47,6 @@ namespace CalisthenicsStore.Web.Controllers
 
                 int cartCount = cartService.GetCart().Count();
 
-                TempData[SuccessMessageKey] = "Successfully added to cart!";
                 return Json(new
                 {
                     success = true,
@@ -57,8 +56,6 @@ namespace CalisthenicsStore.Web.Controllers
             }
             catch 
             {
-                TempData[ErrorMessageKey] = "Failed adding to cart!";
-
                 return Json(new
                 {
                     success = false,

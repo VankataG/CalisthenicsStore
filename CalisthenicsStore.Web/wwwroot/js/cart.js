@@ -1,5 +1,19 @@
 ﻿(function () {
 
+    function showAjaxAlert(message, isSuccess) {
+        const host = document.getElementById('ajaxAlertHost');
+        if (!host) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = `alert ${isSuccess ? 'alert-success' : 'alert-danger'} shadow`;
+        wrapper.textContent = message;
+
+        host.appendChild(wrapper);
+
+        setTimeout(() => wrapper.remove(), 2500);
+    }
+
+
     function setCartCount(count) {
         const badge = document.getElementById('cartCountBadge');
         const countSpan = document.getElementById('cartCount');
@@ -29,8 +43,10 @@
 
             if (data.success) {
                 setCartCount(data.cartCount);
+                showAjaxAlert(data.message || 'Added to cart!', true);
             } else {
                 console.error(data.message);
+                showAjaxAlert(data.message || 'Failed adding to cart!', false);
             }
         } catch (err) {
             console.error(err);
