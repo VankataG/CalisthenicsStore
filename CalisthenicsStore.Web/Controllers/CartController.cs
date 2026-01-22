@@ -38,6 +38,7 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCartAjax(Guid productId)
         {
             try
