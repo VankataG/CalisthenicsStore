@@ -38,6 +38,35 @@ namespace CalisthenicsStore.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> AddToCartAjax(Guid productId)
+        {
+            try
+            {
+                await cartService.AddToCartAsync(productId);
+
+                int cartCount = cartService.GetCart().Count();
+
+                TempData[SuccessMessageKey] = "Successfully added to cart!";
+                return Json(new
+                {
+                    success = true,
+                    message = "Successfully added to cart!",
+                    cartCount
+                });
+            }
+            catch 
+            {
+                TempData[ErrorMessageKey] = "Failed adding to cart!";
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Failed adding to cart!"
+                });
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Remove(Guid productId)
         {
             try
