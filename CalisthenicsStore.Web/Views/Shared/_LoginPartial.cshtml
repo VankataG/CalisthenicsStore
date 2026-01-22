@@ -7,8 +7,16 @@
 @if (SignInManager.IsSignedIn(User))
 {
 	<li class="nav-item">
-		<a class="nav-link text-white bg-dark rounded px-3" asp-area="" asp-controller="Cart" asp-action="Index">
-			<i class="bi bi-cart-fill me-1"></i> Cart
+		<a class="nav-link text-white bg-dark rounded px-3 position-relative 
+            asp-area="" 
+            asp-controller="Cart" 
+            asp-action="Index">
+			    <i class="bi bi-cart-fill me-1"></i> Cart
+
+                <span id="cartCountBadge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                    <span id="cartCount">0</span>
+                </span>
 		</a>
 	</li>
 
@@ -31,3 +39,6 @@ else
     </li>
 }
 </ul>
+
+<script src="~/js/cart.js" asp-append-version="true"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
