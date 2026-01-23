@@ -14,6 +14,26 @@
     }
 
 
+    async function loadInitialCartCount() {
+        const badge = document.getElementById('cartCountBadge');
+        const countSpan = document.getElementById('cartCount');
+        if (!badge || !countSpan) return;
+
+        try {
+            const res = await fetch('/Cart/GetCartCount');
+            const data = await res.json();
+
+            const count = data.cartCount || 0;
+            countSpan.textContent = count;
+
+            if (count > 0) badge.classList.remove('d-none');
+            else badge.classList.add('d-none');
+        } catch (err) {
+            console.error('Failed to load cart count', err);
+        }
+    }
+
+
     function setCartCount(count) {
         const badge = document.getElementById('cartCountBadge');
         const countSpan = document.getElementById('cartCount');
@@ -58,6 +78,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.add-to-cart-ajax')
             .forEach(f => f.addEventListener('submit', handleAddToCartSubmit));
+
+        loadInitialCartCount();
     });
 
 })();

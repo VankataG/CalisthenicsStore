@@ -18,6 +18,13 @@ namespace CalisthenicsStore.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult GetCartCount()
+        {
+            int count = cartService.GetCart().Count();
+            return Json(new { cartCount = count });
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddToCart(Guid productId, string returnUrl)
         {
