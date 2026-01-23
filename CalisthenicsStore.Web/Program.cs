@@ -24,7 +24,6 @@ if (builder.Environment.IsEnvironment("Render"))
     //    options.UseInMemoryDatabase("CalisthenicsStoreDb"));
 
     var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStorePostgres")
-                            ?? Environment.GetEnvironmentVariable("DATABASE_URL")
                             ?? throw new InvalidOperationException("PostgreSQL connection string not found.");
 
     builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options => options.UseNpgsql(connectionString));
