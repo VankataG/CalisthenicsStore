@@ -20,8 +20,14 @@ var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsEnvironment("Render"))
 {
     //Add InMemory Database for Render
-    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
-        options.UseInMemoryDatabase("CalisthenicsStoreDb"));
+    //builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
+    //    options.UseInMemoryDatabase("CalisthenicsStoreDb"));
+
+    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStorePostgres")
+                            ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+                            ?? throw new InvalidOperationException("PostgreSQL connection string not found.");
+
+    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options => options.UseNpgsql(connectionString));
 }
 else
 {
@@ -91,16 +97,19 @@ using (var scope = app.Services.CreateScope())
     var validator = services.GetRequiredService<IValidator>();
     var dataProcessor = new DataProcessor(validator);
 
-    if (app.Environment.IsEnvironment("Render"))
-    {
-        db.Database.EnsureCreated();
-        await dataProcessor.ImportProductsFromJson(db);
-    }
-    else
-    {
-        db.Database.Migrate();
-        await dataProcessor.ImportProductsFromJson(db);
-    }
+    //if (app.Environment.IsEnvironment("Render"))
+    //{
+    //    db.Database.EnsureCreated();
+    //    await dataProcessor.ImportProductsFromJson(db);
+    //}
+    //else
+    //{
+    //    db.Database.Migrate();
+    //    await dataProcessor.ImportProductsFromJson(db);
+    //}
+
+    db.Database.Migrate();
+    await dataProcessor.ImportProductsFromJson(db);
 }
 
 // Configure the HTTP request pipeline.
