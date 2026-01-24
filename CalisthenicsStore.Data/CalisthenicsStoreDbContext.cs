@@ -9,7 +9,7 @@ namespace CalisthenicsStore.Data
 {
     public class CalisthenicsStoreDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        public CalisthenicsStoreDbContext(DbContextOptions<CalisthenicsStoreDbContext> options)
+        public CalisthenicsStoreDbContext(DbContextOptions options)
                 : base(options)
         {
         }
