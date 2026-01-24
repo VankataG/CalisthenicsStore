@@ -31,6 +31,9 @@ if (builder.Environment.IsEnvironment("Render"))
             npgsql.MigrationsAssembly(typeof(PostgresCalisthenicsStoreDbContext).Assembly.FullName)
                 .MigrationsHistoryTable("__EFMigrationsHistory", "public")));
 
+    builder.Services.AddScoped<CalisthenicsStoreDbContext>(sp =>
+        sp.GetRequiredService<PostgresCalisthenicsStoreDbContext>());
+
 
     builder.Services
     .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -57,6 +60,9 @@ else
         options.UseSqlServer(connectionString, sql =>
             sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null)
                 .MigrationsAssembly(typeof(SqlServerCalisthenicsStoreDbContext).Assembly.FullName)));
+
+    builder.Services.AddScoped<CalisthenicsStoreDbContext>(sp =>
+        sp.GetRequiredService<SqlServerCalisthenicsStoreDbContext>());
 
 
     builder.Services
