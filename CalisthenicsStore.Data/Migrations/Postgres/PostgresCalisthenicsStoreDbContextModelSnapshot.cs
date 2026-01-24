@@ -115,7 +115,7 @@ namespace CalisthenicsStore.Data.Migrations.Postgres
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -209,7 +209,7 @@ namespace CalisthenicsStore.Data.Migrations.Postgres
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
 
                     b.HasData(
                         new
@@ -295,7 +295,7 @@ namespace CalisthenicsStore.Data.Migrations.Postgres
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.OrderProduct", b =>
@@ -322,7 +322,7 @@ namespace CalisthenicsStore.Data.Migrations.Postgres
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("CalisthenicsStore.Data.Models.Product", b =>
@@ -363,7 +363,7 @@ namespace CalisthenicsStore.Data.Migrations.Postgres
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

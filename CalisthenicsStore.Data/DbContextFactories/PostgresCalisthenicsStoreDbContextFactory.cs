@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace CalisthenicsStore.Data.DbContextFactories
 {
@@ -12,10 +13,22 @@ namespace CalisthenicsStore.Data.DbContextFactories
     {
         public PostgresCalisthenicsStoreDbContext CreateDbContext(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddUserSecrets<PostgresCalisthenicsStoreDbContextFactory>(optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            var conn = configuration.GetConnectionString("CalisthenicsStorePostgres");
+
+            if (string.IsNullOrWhiteSpace(conn))
+            {
+                throw new InvalidOperationException("Connection string 'ConnectionStrings:CalisthenicsStorePostgres' was not found. " +
+                    "Set it in User Secrets (local) or as an environment variable (ConnectionStrings__CalisthenicsStorePostgres).");
+            }
+
+
             var optionsBuilder = new DbContextOptionsBuilder<PostgresCalisthenicsStoreDbContext>();
-
-            var conn = "Host=dpg-d5qdjt95pdvs7393udp0-a.oregon-postgres.render.com;Database=calisthenics_store_postgres_p2wx;Username=calisthenics_store_postgres_p2wx_user;Password=x6HojWSbzgPChPUxUV4fxXribjBWu13J;SSL Mode=Require;Trust Server Certificate=true";
-
             optionsBuilder.UseNpgsql(conn);
 
             return new PostgresCalisthenicsStoreDbContext(optionsBuilder.Options);
