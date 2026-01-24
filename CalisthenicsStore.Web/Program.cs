@@ -26,25 +26,13 @@ if (builder.Environment.IsEnvironment("Render"))
     var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStorePostgres")
                             ?? throw new InvalidOperationException("PostgreSQL connection string not found.");
 
-    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options => options.UseNpgsql(connectionString));
-}
-else
-{
-    // Add EF Core context
-    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ??
-                           throw new InvalidOperationException("Connection string 'CalisthenicsStore' not found.");
-    builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
-        options.UseSqlServer(
-            connectionString,
-            sql => sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null)));
-}
+    builder.Services.AddDbContext<PostgresCalisthenicsStoreDbContext>(options =>
+        options.UseNpgsql(connectionString, npgsql =>
+            npgsql.MigrationsAssembly(typeof(PostgresCalisthenicsStoreDbContext).Assembly.FullName)
+                .MigrationsHistoryTable("__EFMigrationsHistory", "public")));
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-    
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services
+    builder.Services
     .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
@@ -57,7 +45,41 @@ builder.Services
         options.Password.RequiredLength = 5;
 
     })
-    .AddEntityFrameworkStores<CalisthenicsStoreDbContext>();
+    .AddEntityFrameworkStores<PostgresCalisthenicsStoreDbContext>();
+}
+else
+{
+    // Add EF Core context
+    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ??
+                           throw new InvalidOperationException("SQL Server connection string not found.");
+
+    builder.Services.AddDbContext<SqlServerCalisthenicsStoreDbContext>(options =>
+        options.UseSqlServer(connectionString, sql =>
+            sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null)
+                .MigrationsAssembly(typeof(SqlServerCalisthenicsStoreDbContext).Assembly.FullName)));
+
+
+    builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+
+        //Add requirements for the password
+        options.Password.RequireDigit = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 5;
+
+    })
+    .AddEntityFrameworkStores<SqlServerCalisthenicsStoreDbContext>();
+}
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+    
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
 builder.Services.AddRazorPages();
 
@@ -91,24 +113,24 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    var db = services.GetRequiredService<CalisthenicsStoreDbContext>();
-
     var validator = services.GetRequiredService<IValidator>();
     var dataProcessor = new DataProcessor(validator);
 
-    //if (app.Environment.IsEnvironment("Render"))
-    //{
-    //    db.Database.EnsureCreated();
-    //    await dataProcessor.ImportProductsFromJson(db);
-    //}
-    //else
-    //{
-    //    db.Database.Migrate();
-    //    await dataProcessor.ImportProductsFromJson(db);
-    //}
+    if (app.Environment.IsEnvironment("Render"))
+    {
+        var db = services.GetRequiredService<PostgresCalisthenicsStoreDbContext>();
 
-    db.Database.Migrate();
-    await dataProcessor.ImportProductsFromJson(db);
+        db.Database.Migrate();
+        await dataProcessor.ImportProductsFromJson(db);
+    }
+    else
+    {
+        var db = services.GetRequiredService<SqlServerCalisthenicsStoreDbContext>();
+
+        db.Database.Migrate();
+        await dataProcessor.ImportProductsFromJson(db);
+    }
+
 }
 
 // Configure the HTTP request pipeline.
@@ -128,7 +150,7 @@ if (!app.Environment.IsEnvironment("Render"))
     app.UseHttpsRedirection();
 }
 
-app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode= {0}"); 
+app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}"); 
 app.UseStaticFiles();
 
 app.UseRouting();
