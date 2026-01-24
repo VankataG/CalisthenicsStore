@@ -57,64 +57,67 @@ namespace CalisthenicsStore.Data.Seeding
             string testUserLastName = "User";
             string testUserEmail = "testUser@abv.bg";
             string testUserPassword = "Test123";
+
             string adminUserFirstName = "Admin";
             string adminUserLastName = "User";
             string adminUserEmail = "adminUser@abv.bg";
             string adminUserPassword = "Admin123";
 
-            
-            ApplicationUser? testUserSeeded =
-                await this.userStore.FindByNameAsync(testUserEmail, CancellationToken.None);
+            // ---- Test user ----
+            var testUserSeeded = await userManager.FindByEmailAsync(testUserEmail);
             if (testUserSeeded == null)
             {
-                ApplicationUser testUser = new ApplicationUser()
+                var testUser = new ApplicationUser
                 {
                     FirstName = testUserFirstName,
                     LastName = testUserLastName,
+                    UserName = testUserEmail,
+                    Email = testUserEmail
                 };
 
-                await this.userStore.SetUserNameAsync(testUser, testUserEmail, CancellationToken.None);
-                await this.emailStore.SetEmailAsync(testUser, testUserEmail, CancellationToken.None);
-
-                IdentityResult result = await this.userManager.CreateAsync(testUser, testUserPassword);
+                var result = await userManager.CreateAsync(testUser, testUserPassword);
                 if (!result.Succeeded)
                 {
-                    throw new Exception($"There was an exception while seeding the {UserRoleName} user.");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Seeding {UserRoleName} user failed: {errors}");
                 }
 
-                result = await this.userManager.AddToRoleAsync(testUser, UserRoleName);
+                result = await userManager.AddToRoleAsync(testUser, UserRoleName);
                 if (!result.Succeeded)
                 {
-                    throw new Exception($"There was an exception while assigning to {UserRoleName}.");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Assigning {UserRoleName} role failed: {errors}");
                 }
             }
 
-            ApplicationUser? adminUserSeeded =
-                await this.userStore.FindByNameAsync(adminUserEmail, CancellationToken.None);
+            // ---- Admin user ----
+            var adminUserSeeded = await userManager.FindByEmailAsync(adminUserEmail);
             if (adminUserSeeded == null)
             {
-                ApplicationUser adminUser = new ApplicationUser()
+                var adminUser = new ApplicationUser
                 {
                     FirstName = adminUserFirstName,
                     LastName = adminUserLastName,
+                    UserName = adminUserEmail,
+                    Email = adminUserEmail
                 };
 
-                await this.userStore.SetUserNameAsync(adminUser, adminUserEmail, CancellationToken.None);
-                await this.emailStore.SetEmailAsync(adminUser, adminUserEmail, CancellationToken.None);
-
-                IdentityResult result = await this.userManager.CreateAsync(adminUser, adminUserPassword);
+                var result = await userManager.CreateAsync(adminUser, adminUserPassword);
                 if (!result.Succeeded)
                 {
-                    throw new Exception($"There was an exception while seeding the {AdminRoleName} user.");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Seeding {AdminRoleName} user failed: {errors}");
                 }
 
-                result = await this.userManager.AddToRoleAsync(adminUser, AdminRoleName);
+                result = await userManager.AddToRoleAsync(adminUser, AdminRoleName);
                 if (!result.Succeeded)
                 {
-                    throw new Exception($"There was an exception while assigning to {AdminRoleName}.");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Assigning {AdminRoleName} role failed: {errors}");
                 }
             }
         }
+
 
         private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
