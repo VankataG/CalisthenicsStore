@@ -55,7 +55,7 @@ namespace CalisthenicsStore.Services
                 ApplicationUserId = Guid.Parse(userId),
                 Address = model.Address,
                 City = model.City,
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.UtcNow,
                 Status = "Pending",
                 Products = new List<OrderProduct>(),
             };
