@@ -79,8 +79,7 @@ namespace CalisthenicsStore.Services
             }
 
             await repository.AddAsync(order);
-            cartService.ClearCart();
-
+          
             return order.Id;
         }
 
@@ -118,6 +117,7 @@ namespace CalisthenicsStore.Services
             order.Status = "Paid";
 
             await repository.UpdateAsync(order);
+            cartService.ClearCart();
         }
     }
 }
