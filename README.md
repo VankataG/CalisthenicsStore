@@ -13,7 +13,7 @@
  - Password: Admin123
  
  
-*(Deployed using Render — runs with InMemory or SQL database)*
+*(Deployed on Render using PostgreSQL; supports SQL Server and InMemory for local development)*
 
 ---
 
@@ -34,7 +34,7 @@
 |-------|-------------|
 | **Backend** | ASP.NET Core MVC (.NET 8) |
 | **Frontend** | Razor Views, HTML5, CSS3, Bootstrap 5 |
-| **Database** | Entity Framework Core (SQL Server / InMemory) |
+| **Database** | Entity Framework Core (SQL Server / PostgreSQL / InMemory) |
 | **Architecture** | MVC pattern, Dependency Injection |
 | **CI/CD** | GitHub Actions |
 | **Payment** | Stripe API |
@@ -42,11 +42,21 @@
 | **Deployment** | Render Cloud Platform |
 
 ---
+## 🗄️ Database & Environment Architecture
 
-## 🏗️ Planned Enhancements
+This project is designed to run across **multiple environments** using **different database providers**, demonstrating real-world production readiness.
 
-- Refine **frontend styling** and mobile responsiveness
-- Improve **validation and error handling**
+### Supported database providers
+- **SQL Server** – local development
+- **PostgreSQL** – production (Render-hosted)
+- **InMemory** – demo / fallback mode
+
+### EF Core migrations
+- Separate migration histories are maintained for:
+  - SQL Server
+  - PostgreSQL
+- PostgreSQL migrations are applied automatically on deployment
+- Design-time factories are used for safe migration generation
 
 ---
 ![Screenshot 2025-07-02 190948](https://github.com/user-attachments/assets/80403669-4490-4cf2-9533-3c3900d8669f)
