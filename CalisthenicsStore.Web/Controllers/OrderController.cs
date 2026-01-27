@@ -164,6 +164,10 @@ namespace CalisthenicsStore.Web.Controllers
             return View();
         }
 
-        
+        [HttpGet]
+        public IActionResult _PreviewPaymentProccessing()
+        {
+            return View("PaymentProccessing", Guid.NewGuid());
+        }
     }
 }
