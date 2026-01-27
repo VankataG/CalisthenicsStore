@@ -119,5 +119,17 @@ namespace CalisthenicsStore.Services
             await repository.UpdateAsync(order);
             cartService.ClearCart();
         }
+
+        public async Task<string?> GetOrderStatusAsync(Guid orderId)
+        {
+            Order? order = await repository.GetByIdAsync(orderId);
+
+            if (order is null)
+            {
+                return null;
+            }
+
+            return order.Status;
+        }
     }
 }

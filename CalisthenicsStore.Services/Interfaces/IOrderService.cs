@@ -13,5 +13,7 @@ namespace CalisthenicsStore.Services.Interfaces
         Task<PaymentViewModel?> GetPaymentViewModelAsync(Guid orderId);
 
         Task MarkOrderAsPaidAsync(Guid orderId);
+
+        Task<string?> GetOrderStatusAsync(Guid orderId);
     }
 }
