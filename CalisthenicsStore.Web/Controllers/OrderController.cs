@@ -145,21 +145,12 @@ namespace CalisthenicsStore.Web.Controllers
                 return RedirectToAction(nameof(PaymentCancel), new { orderId });
             }
 
-
-            var session = await new SessionService().GetAsync(sessionId);
-            if (String.IsNullOrEmpty(session.PaymentIntentId))
-            {
-                return RedirectToAction(nameof(PaymentCancel), new { orderId });
-            }
-
-            var pi = await new Stripe.PaymentIntentService().GetAsync(session.PaymentIntentId);
-            if (pi.Status == "succeeded")
-            {
-                await orderService.MarkOrderAsPaidAsync(orderId);
+            var status = await orderService.GetOrderStatusAsync(orderId);
+            if (status == "Paid")
                 return RedirectToAction(nameof(ThankYou));
-            }
+            
 
-            return RedirectToAction(nameof(PaymentCancel), new { orderId });
+            return View("PaymentProccessing", model: orderId);
         }
 
         [HttpGet]
@@ -172,5 +163,7 @@ namespace CalisthenicsStore.Web.Controllers
         {
             return View();
         }
+
+        
     }
 }
