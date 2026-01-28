@@ -23,20 +23,26 @@ namespace CalisthenicsStore.Services.Admin
 
         public async Task<IEnumerable<UserManagementIndexViewModel>> GetUsersBoardDataAsync(string userId)
         {
-            IEnumerable<UserManagementIndexViewModel> allUsers = await userManager
+            List<ApplicationUser> users = await userManager
                 .Users
                 .Where(u => u.Id.ToString().ToLower() != userId.ToLower())
-                .Select(u => new UserManagementIndexViewModel()
+                .AsNoTracking()
+                .ToListAsync();
+
+            var allUsers = new List<UserManagementIndexViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+
+                allUsers.Add(new UserManagementIndexViewModel
                 {
-                    Id = u.Id.ToString(),
-                    FullName = $"{u.FirstName} {u.LastName}",
-                    Email = u.Email!,
-                    Role = userManager.GetRolesAsync(u).
-                        GetAwaiter()
-                        .GetResult()
-                        .FirstOrDefault() ?? UserRoleName
-                })
-                .ToArrayAsync();
+                    Id = user.Id.ToString(),
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    Email = user.Email!,
+                    Role = roles.FirstOrDefault() ?? UserRoleName
+                });
+            }
 
             return allUsers;
         }
