@@ -14,15 +14,19 @@ namespace CalisthenicsStore.Services.Admin
         private readonly IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;
 
+        private readonly IFileStorageService supabaseService;
+
         private readonly ILogger<ProductManagementService> logger;
 
         public ProductManagementService(IProductRepository productRepository, 
             ICategoryRepository categoryRepository, 
-            ILogger<ProductManagementService> logger)
+            ILogger<ProductManagementService> logger,
+            IFileStorageService supabaseService)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
             this.logger = logger;
+            this.supabaseService = supabaseService;
         }
 
 
@@ -66,13 +70,25 @@ namespace CalisthenicsStore.Services.Admin
 
         public async Task<bool> AddProductAsync(ProductInputModel inputModel)
         {
+            string imageUrl = "/images/no-image.jpg";
+
+            if (inputModel.ImageFile != null)
+            {
+                string? uploadedUrl = await supabaseService.UploadImageAsync(inputModel.ImageFile);
+                
+                if (!string.IsNullOrWhiteSpace(uploadedUrl))
+                {
+                    imageUrl = uploadedUrl;
+                }
+            }
+
             Product newProduct = new Product
             {
                 Name = inputModel.Name,
                 Description = inputModel.Description,
                 Price = inputModel.Price,
                 StockQuantity = inputModel.StockQuantity,
-                ImageUrl = inputModel.ImageUrl ?? "/images/no-image.jpg",
+                ImageUrl = imageUrl,
                 CategoryId = inputModel.CategoryId,
             };
 
@@ -92,7 +108,7 @@ namespace CalisthenicsStore.Services.Admin
                     Description = p.Description,
                     Price = p.Price,
                     StockQuantity = p.StockQuantity,
-                    ImageUrl = p.ImageUrl,
+                    ImageFile = p.ImageUrl,
                     CategoryId = p.CategoryId
                 })
                 .SingleOrDefaultAsync();
