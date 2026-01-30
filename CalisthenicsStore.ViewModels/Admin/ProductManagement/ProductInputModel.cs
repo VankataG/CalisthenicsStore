@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using static CalisthenicsStore.Common.Constants.Product;
@@ -24,7 +25,7 @@ namespace CalisthenicsStore.ViewModels.Admin.ProductManagement
 
         [Url(ErrorMessage = ImageUrlInvalidError)]
         [MaxLength(ImageUrlMaxLength, ErrorMessage = ImageUrlMaxLengthError)]
-        public string? ImageUrl { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         public Guid CategoryId { get; set; }
 
