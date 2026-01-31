@@ -87,7 +87,7 @@ builder.Services.AddSingleton(provider =>
     var config = provider.GetRequiredService<IConfiguration>();
 
     var url = config["Supabase:Url"];
-    var key = config["Supabase:AnonKey"];
+    var key = config["Supabase:ServiceRoleKey"];
     var options = new Supabase.SupabaseOptions
     {
         AutoConnectRealtime = false,
