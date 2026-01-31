@@ -133,21 +133,18 @@ using (var scope = app.Services.CreateScope())
     var validator = services.GetRequiredService<IValidator>();
     var dataProcessor = new DataProcessor(validator);
 
+    CalisthenicsStoreDbContext db;
     if (app.Environment.IsEnvironment("Render"))
     {
-        var db = services.GetRequiredService<PostgresCalisthenicsStoreDbContext>();
-
-        db.Database.Migrate();
-        await dataProcessor.ImportProductsFromJson(db);
+        db = services.GetRequiredService<PostgresCalisthenicsStoreDbContext>();
     }
     else
     {
-        var db = services.GetRequiredService<SqlServerCalisthenicsStoreDbContext>();
-
-        db.Database.Migrate();
-        await dataProcessor.ImportProductsFromJson(db);
+        db = services.GetRequiredService<SqlServerCalisthenicsStoreDbContext>();
     }
 
+    db.Database.Migrate();
+    await dataProcessor.ImportProductsFromJson(db);
 }
 
 // Configure the HTTP request pipeline.
