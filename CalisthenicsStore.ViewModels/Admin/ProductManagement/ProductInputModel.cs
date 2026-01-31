@@ -21,10 +21,7 @@ namespace CalisthenicsStore.ViewModels.Admin.ProductManagement
         public decimal Price { get; set; }
 
         public int StockQuantity { get; set; }
-
-
-        [Url(ErrorMessage = ImageUrlInvalidError)]
-        [MaxLength(ImageUrlMaxLength, ErrorMessage = ImageUrlMaxLengthError)]
+      
         public IFormFile? ImageFile { get; set; }
 
         public Guid CategoryId { get; set; }
