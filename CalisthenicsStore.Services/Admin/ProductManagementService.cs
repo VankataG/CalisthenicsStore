@@ -95,64 +95,64 @@ namespace CalisthenicsStore.Services.Admin
             return await productRepository.AddAsync(newProduct);
         }
 
-        public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)
-        {
-            ProductInputModel? editableProduct = await productRepository
-                .GetAllAttackedWithCategory()
-                .AsNoTracking()
-                .Where(p => p.Id == id)
-                .Select(p => new ProductInputModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    Price = p.Price,
-                    StockQuantity = p.StockQuantity,
-                    ImageFile = p.ImageUrl,
-                    CategoryId = p.CategoryId
-                })
-                .SingleOrDefaultAsync();
+        //public async Task<ProductInputModel?> GetEditableProductAsync(Guid id)
+        //{
+        //    ProductInputModel? editableProduct = await productRepository
+        //        .GetAllAttackedWithCategory()
+        //        .AsNoTracking()
+        //        .Where(p => p.Id == id)
+        //        .Select(p => new ProductInputModel()
+        //        {
+        //            Id = p.Id,
+        //            Name = p.Name,
+        //            Description = p.Description,
+        //            Price = p.Price,
+        //            StockQuantity = p.StockQuantity,
+        //            ImageFile = p.ImageUrl,
+        //            CategoryId = p.CategoryId
+        //        })
+        //        .SingleOrDefaultAsync();
 
-            if (editableProduct != null)
-            {
-                var categories = await categoryRepository
-                    .GetAllAttached()
-                    .Select(c => new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Name
-                    })
-                    .ToListAsync();
+        //    if (editableProduct != null)
+        //    {
+        //        var categories = await categoryRepository
+        //            .GetAllAttached()
+        //            .Select(c => new SelectListItem
+        //            {
+        //                Value = c.Id.ToString(),
+        //                Text = c.Name
+        //            })
+        //            .ToListAsync();
 
-                editableProduct.Categories = categories;
-            }
+        //        editableProduct.Categories = categories;
+        //    }
 
-            return editableProduct;
-        }
+        //    return editableProduct;
+        //}
 
-        public async Task<bool> EditProductAsync(ProductInputModel model)
-        {
-            bool result = false;
+        //public async Task<bool> EditProductAsync(ProductInputModel model)
+        //{
+        //    bool result = false;
 
-            Product? editableProduct = await productRepository
-                .GetAllAttackedWithCategory()
-                .SingleOrDefaultAsync(p => p.Id == model.Id);
+        //    Product? editableProduct = await productRepository
+        //        .GetAllAttackedWithCategory()
+        //        .SingleOrDefaultAsync(p => p.Id == model.Id);
 
-            if (editableProduct != null)
-            {
-                editableProduct.Name = model.Name;
-                editableProduct.Description = model.Description;
-                editableProduct.Price = model.Price;
-                editableProduct.StockQuantity = model.StockQuantity;
-                editableProduct.ImageUrl = model.ImageUrl ?? "/images/no-image.jpg";
-                editableProduct.CategoryId = model.CategoryId;
+        //    if (editableProduct != null)
+        //    {
+        //        editableProduct.Name = model.Name;
+        //        editableProduct.Description = model.Description;
+        //        editableProduct.Price = model.Price;
+        //        editableProduct.StockQuantity = model.StockQuantity;
+        //        editableProduct.ImageUrl = model.ImageUrl ?? "/images/no-image.jpg";
+        //        editableProduct.CategoryId = model.CategoryId;
 
-                result = await productRepository.UpdateAsync(editableProduct);
+        //        result = await productRepository.UpdateAsync(editableProduct);
 
-            }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public async Task<Tuple<bool, string>> DeleteOrRestoreAsync(Guid id)
         {
@@ -195,6 +195,16 @@ namespace CalisthenicsStore.Services.Admin
                 logger.LogError(ex, "Error occurred while trying to delete product with ID {ProductId}", id);
             }
 
+        }
+
+        public Task<ProductInputModel?> GetEditableProductAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> EditProductAsync(ProductInputModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
