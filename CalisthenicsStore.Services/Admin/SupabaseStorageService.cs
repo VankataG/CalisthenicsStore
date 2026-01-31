@@ -22,7 +22,7 @@ namespace CalisthenicsStore.Services.Admin
                 return null;
 
             var ext = Path.GetExtension(file.Name);
-            var fileName = $"{Guid.NewGuid}{ext}";
+            var fileName = Guid.NewGuid().ToString() + ext;
 
             using MemoryStream ms = new MemoryStream();
             await file.CopyToAsync(ms);
