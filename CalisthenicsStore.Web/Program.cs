@@ -81,16 +81,27 @@ else
     .AddEntityFrameworkStores<SqlServerCalisthenicsStoreDbContext>();
 }
 
+//Add Supabase storage
+builder.Services.AddSingleton(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+
+    var url = config["Supabase:Url"];
+    var key = config["Supabase:AnonKey"];
+    var options = new Supabase.SupabaseOptions
+    {
+        AutoConnectRealtime = false,
+    };
+
+    return new Supabase.Client(url!, key, options);
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-    
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IValidator, EntityValidator>();
-
 builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
 builder.Services.AddRepositories(typeof(IProductRepository).Assembly);
 builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
