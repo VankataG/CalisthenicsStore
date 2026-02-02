@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model CalisthenicsStore.ViewModels.Admin.ProductManagement.ProductInputModel
+@model CalisthenicsStore.ViewModels.Admin.ProductManagement.ProductEditModel
 
 @{
     ViewData["Title"] = "Edit Product";
@@ -114,9 +114,12 @@
 		</div>
 
 		<div class="form-group">
-			<label asp-for="ImageFile" class="control-label">Image URL</label>
-			<input asp-for="ImageFile" class="form-control" type="file"/>
-            <span asp-validation-for="ImageFile" class="text-danger"></span>
+            <label asp-for="NewImageFile" class="control-label">Image</label>
+            @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+            {
+                <img src="@Model.ExistingImageUrl" style="max-height:150px" />
+            }
+            <input asp-for="NewImageFile" class="form-control" type="file" accept="image/*" />
 		</div>
 
 		<div class="form-group">
