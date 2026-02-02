@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using CalisthenicsStore.Services.Admin.Interfaces;
+﻿using CalisthenicsStore.Services.Admin.Interfaces;
 using CalisthenicsStore.ViewModels.Admin.ProductManagement;
+using Microsoft.AspNetCore.Mvc;
 using static CalisthenicsStore.Common.Constants.Notifications;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using CalisthenicsStore.Services;
 
 namespace CalisthenicsStore.Web.Areas.Admin.Controllers
 {
@@ -73,7 +70,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         {
             try
             {
-                ProductInputModel? editableProduct = await productService.GetEditableProductAsync(id);
+                ProductEditModel? editableProduct = await productService.GetEditableProductAsync(id);
 
                 if (editableProduct == null)
                 {
@@ -96,7 +93,7 @@ namespace CalisthenicsStore.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductInputModel model)
+        public async Task<IActionResult> Edit(ProductEditModel model)
         {
 
             if (!ModelState.IsValid)
