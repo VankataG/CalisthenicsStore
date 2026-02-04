@@ -17,69 +17,7 @@ using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsEnvironment("Render"))
-{
-    //Add InMemory Database for Render
-    //builder.Services.AddDbContext<CalisthenicsStoreDbContext>(options =>
-    //    options.UseInMemoryDatabase("CalisthenicsStoreDb"));
-
-    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStorePostgres")
-                            ?? throw new InvalidOperationException("PostgreSQL connection string not found.");
-
-    builder.Services.AddDbContext<PostgresCalisthenicsStoreDbContext>(options =>
-        options.UseNpgsql(connectionString, npgsql =>
-            npgsql.MigrationsAssembly(typeof(PostgresCalisthenicsStoreDbContext).Assembly.FullName)
-                .MigrationsHistoryTable("__EFMigrationsHistory", "public")));
-
-    builder.Services.AddScoped<CalisthenicsStoreDbContext>(sp =>
-        sp.GetRequiredService<PostgresCalisthenicsStoreDbContext>());
-
-
-    builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-        options.SignIn.RequireConfirmedEmail = false;
-        options.SignIn.RequireConfirmedPhoneNumber = false;
-
-        //Add requirements for the password
-        options.Password.RequireDigit = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 5;
-
-    })
-    .AddEntityFrameworkStores<PostgresCalisthenicsStoreDbContext>();
-}
-else
-{
-    // Add EF Core context
-    var connectionString = builder.Configuration.GetConnectionString("CalisthenicsStore") ??
-                           throw new InvalidOperationException("SQL Server connection string not found.");
-
-    builder.Services.AddDbContext<SqlServerCalisthenicsStoreDbContext>(options =>
-        options.UseSqlServer(connectionString, sql =>
-            sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(3), null)
-                .MigrationsAssembly(typeof(SqlServerCalisthenicsStoreDbContext).Assembly.FullName)));
-
-    builder.Services.AddScoped<CalisthenicsStoreDbContext>(sp =>
-        sp.GetRequiredService<SqlServerCalisthenicsStoreDbContext>());
-
-
-    builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-        options.SignIn.RequireConfirmedEmail = false;
-        options.SignIn.RequireConfirmedPhoneNumber = false;
-
-        //Add requirements for the password
-        options.Password.RequireDigit = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 5;
-
-    })
-    .AddEntityFrameworkStores<SqlServerCalisthenicsStoreDbContext>();
-}
+builder.Services.AddDatabaseAndIdentity(builder.Configuration, builder.Environment);
 
 //Add Supabase storage
 builder.Services.AddSingleton(provider =>
