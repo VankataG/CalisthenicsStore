@@ -1,4 +1,8 @@
 ﻿using System.Reflection;
+using CalisthenicsStore.Data.Models.ReCaptcha;
+using CalisthenicsStore.Services;
+using CalisthenicsStore.Services.Interfaces;
+using CalisthenicsStore.Web.Models;
 
 namespace CalisthenicsStore.Web.Extensions
 {
@@ -55,6 +59,51 @@ namespace CalisthenicsStore.Web.Extensions
                 }
 
             }
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddSupabase(this IServiceCollection serviceCollection, IConfiguration config)
+        {
+            serviceCollection.AddSingleton(_ =>
+            {
+                var url = config["Supabase:Url"];
+                var key = config["Supabase:ServiceRoleKey"];
+                var options = new Supabase.SupabaseOptions
+                {
+                    AutoConnectRealtime = false,
+                };
+
+                return new Supabase.Client(url!, key, options);
+            });
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddReCaptcha(this IServiceCollection serviceCollection, IConfiguration config)
+        {
+            serviceCollection.Configure<GoogleReCaptchaSettings>(config.GetSection("GoogleReCaptcha"));
+            serviceCollection.AddHttpClient<IReCaptchaServ, ReCaptchaServ>();
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddStripe(this IServiceCollection serviceCollection, IConfiguration config)
+        {
+            serviceCollection.Configure<StripeSettings>(config.GetSection("Stripe"));
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection AddCartSession(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddHttpContextAccessor();
+            serviceCollection.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             return serviceCollection;
         }
