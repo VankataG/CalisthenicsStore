@@ -1,5 +1,4 @@
 using CalisthenicsStore.Data;
-using CalisthenicsStore.Data.Models;
 using CalisthenicsStore.Data.Models.ReCaptcha;
 using CalisthenicsStore.Data.Repositories.Interfaces;
 using CalisthenicsStore.Data.Seeding;
@@ -10,7 +9,6 @@ using CalisthenicsStore.Services;
 using CalisthenicsStore.Services.Interfaces;
 using CalisthenicsStore.Web.Extensions;
 using CalisthenicsStore.Web.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
@@ -64,26 +62,7 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Str
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var validator = services.GetRequiredService<IValidator>();
-    var dataProcessor = new DataProcessor(validator);
-
-    CalisthenicsStoreDbContext db;
-    if (app.Environment.IsEnvironment("Render"))
-    {
-        db = services.GetRequiredService<PostgresCalisthenicsStoreDbContext>();
-    }
-    else
-    {
-        db = services.GetRequiredService<SqlServerCalisthenicsStoreDbContext>();
-    }
-
-    db.Database.Migrate();
-    await dataProcessor.ImportProductsFromJson(db);
-}
+await app.ApplyMigrationsAndSeedDataAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
