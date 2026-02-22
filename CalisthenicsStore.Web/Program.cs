@@ -17,6 +17,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IValidator, EntityValidator>();
+builder.Services.AddScoped<DataProcessor>();
 builder.Services.AddUserDefinedServices(typeof(IProductService).Assembly);
 builder.Services.AddRepositories(typeof(IProductRepository).Assembly);
 builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
