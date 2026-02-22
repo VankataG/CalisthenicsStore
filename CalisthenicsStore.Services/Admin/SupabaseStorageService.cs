@@ -21,8 +21,8 @@ namespace CalisthenicsStore.Services.Admin
             if (file == null || file.Length == 0)
                 return null;
 
-            var ext = Path.GetExtension(file.Name);
-            var fileName = Guid.NewGuid().ToString() + ext;
+            var ext = Path.GetExtension(file.FileName);
+            var fileName = file.FileName;
 
             using MemoryStream ms = new MemoryStream();
             await file.CopyToAsync(ms);
