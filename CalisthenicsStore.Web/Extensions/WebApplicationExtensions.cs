@@ -38,12 +38,20 @@ namespace CalisthenicsStore.Web.Extensions
                 var services = scope.ServiceProvider;
 
                 var validator = services.GetRequiredService<IValidator>();
-                var dataProcessor = new DataProcessor(validator);
+                var dataProcessor = services.GetRequiredService<DataProcessor>();
 
                 CalisthenicsStoreDbContext db = services.GetRequiredService<CalisthenicsStoreDbContext>();
-               
+                var config = services.GetRequiredService<IConfiguration>();
+                string? supabaseUrl = config["Supabase:Url"];
+                string? bucket = config["Supabase:Bucket"];
+
+                if (supabaseUrl == null || bucket == null)
+                {
+                    throw new InvalidOperationException("Supabase data is missing.");
+                }
+
                 await db.Database.MigrateAsync();
-                await dataProcessor.ImportProductsFromJson(db);
+                await dataProcessor.ImportProductsFromJson(db, supabaseUrl, bucket);
             }
         }
     }
