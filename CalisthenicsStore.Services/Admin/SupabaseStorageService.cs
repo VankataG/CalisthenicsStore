@@ -21,19 +21,24 @@ namespace CalisthenicsStore.Services.Admin
             if (file == null || file.Length == 0)
                 return null;
 
-            var ext = Path.GetExtension(file.FileName);
-            var fileName = file.FileName;
+            var fullFileName = Path.GetFileName(file.Name);
+
+            var ext = Path.GetExtension(fullFileName);
+            var fileName = Path.GetFileNameWithoutExtension(fullFileName);
+            var safeFileName = fileName.ToLower();
+
+            var objectKey = $"products/{safeFileName}{ext}";
 
             using MemoryStream ms = new MemoryStream();
             await file.CopyToAsync(ms);
 
             await client.Storage
                 .From(BucketName)
-                .Upload(ms.ToArray(), fileName);
+                .Upload(ms.ToArray(), objectKey);
 
             return client.Storage
                 .From(BucketName)
-                .GetPublicUrl(fileName);
+                .GetPublicUrl(objectKey);
         }
     }
 }
