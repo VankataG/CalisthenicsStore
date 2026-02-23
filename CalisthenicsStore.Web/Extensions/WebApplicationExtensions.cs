@@ -24,6 +24,13 @@ namespace CalisthenicsStore.Web.Extensions
             return app;
         }
 
+        public static async Task SeedDefaultIdentityAsync(this WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var identitySeeder = scope.ServiceProvider.GetRequiredService<IIdentitySeeder>();
+            await identitySeeder.SeedIdentityAsync();
+        }
+
         public static IApplicationBuilder UseAdminRedirection(this IApplicationBuilder app)
         {
             app.UseMiddleware<AdminRedirectionMiddleware>();
@@ -37,11 +44,11 @@ namespace CalisthenicsStore.Web.Extensions
             {
                 var services = scope.ServiceProvider;
 
-                var validator = services.GetRequiredService<IValidator>();
-                var dataProcessor = services.GetRequiredService<DataProcessor>();
-
                 CalisthenicsStoreDbContext db = services.GetRequiredService<CalisthenicsStoreDbContext>();
+                var dataProcessor = services.GetRequiredService<DataProcessor>();
                 var config = services.GetRequiredService<IConfiguration>();
+                var identitySeeder = services.GetRequiredService<IIdentitySeeder>();
+
                 string? supabaseUrl = config["Supabase:Url"];
                 string? bucket = config["Supabase:Bucket"];
 
@@ -52,6 +59,7 @@ namespace CalisthenicsStore.Web.Extensions
 
                 await db.Database.MigrateAsync();
                 await dataProcessor.ImportProductsFromJson(db, supabaseUrl, bucket);
+                await identitySeeder.SeedIdentityAsync();
             }
         }
     }
