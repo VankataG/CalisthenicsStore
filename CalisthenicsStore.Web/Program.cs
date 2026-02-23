@@ -51,6 +51,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
+await app.ApplyMigrationsAndSeedDataAsync();
 app.SeedDefaultIdentity();
 
 app.UseAuthentication();
@@ -71,7 +72,5 @@ app.MapRazorPages();
 //Configure Stripe secret key from configuration
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
 
-//Startup work
-await app.ApplyMigrationsAndSeedDataAsync();
 
 app.Run();
