@@ -49,13 +49,11 @@ app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();
-
-await app.ApplyMigrationsAndSeedDataAsync();
-app.SeedDefaultIdentity();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.UseAdminRedirection();
 
@@ -72,5 +70,7 @@ app.MapRazorPages();
 //Configure Stripe secret key from configuration
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
 
+//await app.ApplyMigrationsAndSeedDataAsync();
+//app.SeedDefaultIdentity();
 
 app.Run();
