@@ -70,7 +70,19 @@ app.MapRazorPages();
 //Configure Stripe secret key from configuration
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
 
-//await app.ApplyMigrationsAndSeedDataAsync();
-//app.SeedDefaultIdentity();
-
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    _ = Task.Run(async () =>
+    {
+        try
+        {
+            await app.ApplyMigrationsAndSeedDataAsync();
+            Console.WriteLine("[SEED] Migrations + seeding completed.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[SEED] FAILED: " + ex);
+        }
+    });
+});
 app.Run();
