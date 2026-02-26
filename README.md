@@ -59,7 +59,7 @@ This project is designed to run across **multiple environments** using **differe
 - Design-time factories are used for safe migration generation
 
 ---
-![Screenshot 2025-07-02 190948](https://github.com/user-attachments/assets/80403669-4490-4cf2-9533-3c3900d8669f)
+<img width="1903" height="993" alt="image" src="https://github.com/user-attachments/assets/7ebf2a65-a7fb-44c2-a5f4-b5f17304fa1a" />
 
 ![Screenshot 2025-07-02 191023](https://github.com/user-attachments/assets/2a271990-a96f-4b46-9a64-a177990a4937)
 
@@ -77,5 +77,6 @@ This project is designed to run across **multiple environments** using **differe
 
 <img width="1884" height="952" alt="Screenshot 2025-08-10 173554" src="https://github.com/user-attachments/assets/51ce5981-2d16-4be7-866f-66c2475ee978" />
 
-<img width="1889" height="950" alt="Screenshot 2025-08-10 173612" src="https://github.com/user-attachments/assets/671df6d0-1d30-4653-b207-574bf30b9f1a" />
+<img width="1903" height="989" alt="image" src="https://github.com/user-attachments/assets/82280ddb-0154-4f51-9dac-f3624dfd29dc" />
+
 
